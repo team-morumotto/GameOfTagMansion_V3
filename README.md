@@ -5,8 +5,8 @@
 
 | 概要                 | 説明                             |
 | :------------------- | :------------------------------- |
-| 開発環境             | Unity 2021.3.11f1                |
-| 対象プラットフォーム | Windows x86-86 / Android / WebGL |
+| 開発環境             | Unity 2021.3.19f1                |
+| 対象プラットフォーム | Windows x86-86 / macOS / WebGL   |
 | ゲームの種類         | 3Dアクションゲーム               |
 
 ## 【開発メンバー】
@@ -19,9 +19,9 @@
 
 ## 【ソフトウェアダウンロード】
 
-| 種類           | ダウンロードリンク(一部除き直リン)           |
+| 種類           | ダウンロードリンク                           |
 | :------------: | :------------------------------------------- |
-| 通常版         | [Stable Release Artifact](https://github.com/team-morumotto/GameOfTagMansion_V2/releases/download/mainbranch_autorelease/GameOfTagMansion-BuildData_Win64.zip) |
+| 通常版         | [Stable Release Artifact](https://github.com/team-morumotto/GameOfTagMansion_V2/releases/download/mainbranch_autorelease/) |
 | 通常版Mirror   | ＜未設定＞ |
 | ベータ版       | [Beta Release Artifact](https://github.com/team-morumotto/GameOfTagMansion_V2/releases/tag/workbranch_testbuild) |
 | ベータ版Mirror | ＜未設定＞ |
