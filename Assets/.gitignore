@@ -1,0 +1,39 @@
+####################################
+### 公開対策用Git Ignoreファイル ###
+### 流用は可能ですが、随時書換を ###
+### お願いします。          waya ###
+####################################
+
+# Plugin Files
+# Liltoonは https://github.com/lilxyzw/lilToon/releases よりDLをお願いします。
+# UTS2は https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/releases よりDLをお願いします。
+/[Pp]lugins/DynamicBone/
+/[Pp]lugins/[Hh]ierarchy 2/
+/[Pp]lugins/[Ll]il[Tt]oon/
+/[Pp]lugins/Oyasumisan_glasses/
+/[Pp]lugins/[Pp]hoton/
+/[Pp]lugins/[Tt]oon/
+
+# Resource Files
+# 著作権の関係で除外
+/[Rr]esources/[Aa]dd[Aa]ssets/48 Particle Effect Pack/
+/[Rr]esources/[Aa]dd[Aa]ssets/Controller Icons Pack (by NullSave)/
+/[Rr]esources/[Aa]dd[Aa]ssets/Keyboard Keys & Mouse Sprites/
+/[Rr]esources/[Aa]dd[Aa]ssets/Pixel Play/
+/[Rr]esources/[Aa]dd[Aa]ssets/SkySeries Freebie/
+/[Rr]esources/[Ff]onts/
+
+# Resource Files - 3D Character Models
+# 著作権の関係で除外
+/[Rr]esources/Models/MikagamiKoyomi/
+/[Rr]esources/Models/NORANEKOSEVEN/
+/[Rr]esources/Models/Unity-chan! Model/
+
+# Resource Files - Sounds
+# 著作権の関係で除外
+/[Rr]esources/[Ss]ounds/*.[Mm][Pp]3
+/[Rr]esources/[Ss]ounds/*.[Ww][Aa][Vv]
+/[Rr]esources/[Ss]ounds/*.[Oo][Gg][Gg]
+/[Rr]esources/[Ss]ounds/*/*.[Mm][Pp]3
+/[Rr]esources/[Ss]ounds/*/*.[Ww][Aa][Vv]
+/[Rr]esources/[Ss]ounds/*/*.[Oo][Gg][Gg]

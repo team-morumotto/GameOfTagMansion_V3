@@ -1,0 +1,90 @@
+name: WorkBranch - Standalone Windows builder
+on:
+  push:
+    branches:
+      - WorkBranch
+env:
+  cache-version: v1
+jobs:
+  build:
+    name: WorkBranch Test builder
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+    steps:
+      # 作業前にリアルタイムを取得
+      - name: Set current datetime as env variable.
+        env:
+          TZ: 'Asia/Tokyo' # タイムゾーン指定
+        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_ENV
+
+      # actions/checkout@v3 を利用して作業ディレクトリに Unity プロジェクトの中身をダウンロードしてくる
+      - name: Check out my unity project.
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      # 以前のライブラリファイルをキャッシュ（ビルド成功時のみ）
+      - name: Check out cache.
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/work/GameOfTagMansion_V2/GameOfTagMansion_V2/Library
+          key: ${{ env.cache-version }}-Library
+          restore-keys: ${{ env.cache-version }}-Library
+
+      # GameCI の Builder を利用して、Unity プロジェクトのビルドを実行する
+      - name: Run the building.
+        uses: game-ci/unity-builder@v2.1.2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          # ビルド時にプラットフォーム指定可能な値は下記に記載の値が利用可能
+          # ref: https://docs.unity3d.com/ScriptReference/BuildTarget.html
+          targetPlatform: ${{ matrix.targetPlatform }}
+          # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
+          # unityVersion: 2020.3.5f1
+
+      # ビルドデータの権限をDockerに引き渡す https://zenn.dev/kabuakantech/articles/c6bb510e631f1f
+      - name: change owner of vender directory(some files owner is root)
+        run: sudo chown -R runner:docker /home/runner/work/GameOfTagMansion_V2/GameOfTagMansion_V2/build
+
+      # ファイル作成
+      - name: Maked Files.
+        run: cd /home/runner/work/GameOfTagMansion_V2/GameOfTagMansion_V2 && mkdir ./libs/
+
+      # ファイル圧縮 https://github.com/marketplace/actions/zip-release
+      - name: Zip Release.
+        uses: TheDoctor0/zip-release@0.6.2
+        with:
+          filename: TestBuild_${{ env.CURRENT_DATETIME }}_Win64
+          directory: ./libs/ # 基準フォルダ
+          path: ../build/${{ matrix.targetPlatform }}/ # 基準フォルダからの相対パス
+
+      # 既存のビルドデータを削除
+      - name: Delete Auto Release.
+        if: success() && contains(github.ref, 'WorkBranch')
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          keep_latest: 0
+          delete_tag_pattern: workbranch_testbuild
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 自動リリース
+      - name: Create Auto Release.
+        if: success() && contains(github.ref, 'WorkBranch')
+        uses: softprops/action-gh-release@v1
+        with:
+          name: WorkBranch-TestRelease
+          tag_name: workbranch_testbuild
+          body: ${{ format('This artifacts from [`{0}`]({1}) ({2})', github.event.head_commit.message, github.event.head_commit.url, github.sha) }}
+          files: ./libs/*
+          fail_on_unmatched_files: true
+          token: ${{ secrets.GITHUB_TOKEN }}

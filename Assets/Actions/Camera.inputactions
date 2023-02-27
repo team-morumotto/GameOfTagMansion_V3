@@ -1,0 +1,34 @@
+{
+    "name": "Camera",
+    "maps": [
+        {
+            "name": "Camera",
+            "id": "0c2407ff-10a6-4d51-b2d9-073148b9178c",
+            "actions": [
+                {
+                    "name": "Camera",
+                    "type": "Value",
+                    "id": "15caeefd-1428-4c84-81f6-e07b3de8ac5b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c5d187b6-9e95-44bf-b11b-cbb8135e13c5",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
