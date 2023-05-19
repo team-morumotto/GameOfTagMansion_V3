@@ -77,3 +77,6 @@ UserSettings/*
 # 巨大ファイルを除外
 .DS_Store
 *.psb
+.vsconfig
+.editorconfig
+.vscode/
