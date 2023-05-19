@@ -15,8 +15,8 @@ using Photon.Pun;
 
 namespace Smile_waya {
     namespace GOM {
-        namespace scrTimer {
-            public class scrTimer {
+        namespace ScreenTimer {
+            public class ScreenTimer {
                 //------------- 変数宣言 -------------//
 
                 //------------ Static変数 ------------//
