@@ -6,7 +6,6 @@ TagManager:
   tags:
   - MainCameraManager
   - Wall
-  - Nigeru
   - Oni
   - PlayerInputManager
   - Item
@@ -14,6 +13,7 @@ TagManager:
   - NavPoint
   - NavNigeru
   - NavOni
+  - Nige
   layers:
   - Default
   - TransparentFX

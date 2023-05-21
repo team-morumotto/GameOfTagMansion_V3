@@ -36,7 +36,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     [FormerlySerializedAs("before")] public GameObject[] PlayerObject = {null,null,null};            // プレイヤーオブジェクト.
     [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
     [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
-    [FormerlySerializedAs("before")] public GameObject stanbyButton;                                 // 待機中のテキスト.
     public GameObject BGPanel;
     public Transform roomScroll;                                                                     // ルームリストのスクロールビュー.
     public InputField inputCreateRoomName;                                                           // 作成するルーム名を入力するInputField.
@@ -50,7 +49,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     // int型変数
     private int number;										// 鬼側か逃げる側かを識別するナンバー.
-    private int trueValues = 0;                             // ルーム内の準備完了人数.
+
     private int beforePlayers = 0;                          // 前フレームのルームの人数を格納する変数.
 
     // bool型変数
@@ -190,45 +189,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //-------------------- フォトンのコールバック関数 --------------------//
     //この関数たちはこのスクリプト内で明示的に呼び出すことはありません//
 
-    /// <summary>
-    /// ルーム内のプレイヤーのカスタムプロパティが更新された場合のコールバック関数.
-    /// </summary>
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) {
-        // プレイヤープロパティのgsが更新された場合.
-        if(changedProps.ContainsKey("gs")){
-            int[] gsValues = new int[PhotonNetwork.PlayerList.Length];                // ルーム内のプレイヤーの準備状態を格納する配列.
-
-            // 準備状態を格納(gsの値がtrueなら準備完了).
-            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++) {
-                int gs = (PhotonNetwork.PlayerList[i].CustomProperties["gs"] is int value) ? value : 0;
-                gsValues[i] = gs;
-                print("【Debug】: Member : " + PhotonNetwork.PlayerList[i] + " : " + gs);
-            }
-
-            trueValues = 0;                                                             // 準備完了状態のプレイヤーの数を初期化.
-
-            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++) {
-                // 準備完了状態のプレイヤーの数をカウント.
-                if(gsValues[i] == 1) {
-                    trueValues++;
-                }
-                print("【Debug】 : " + PhotonNetwork.PlayerList[i] + " : " + gsValues[i]);
-            }
-
-            if(PhotonNetwork.LocalPlayer.IsMasterClient){
-                if(PhotonNetwork.PlayerList.Length != 1) {
-                    if(trueValues == PhotonNetwork.PlayerList.Length) {
-                        stanbyButton.GetComponentInChildren<Text>().text = "ゲーム開始";                // ルーム作成者のゲーム開始ボタンをOnにする.
-                    }
-                }else{
-                    stanbyButton.GetComponentInChildren<Text>().text = "人数が足りません";              // ルーム作成者のゲーム開始ボタンをOnにする.
-                }
-            }
-
-            print("【Debug】 : " + trueValues + "人が準備完了しました");
-        }
-    }
-
     // ルームのカスタムプロパティが更新された場合.
     public override void OnRoomPropertiesUpdate(Hashtable roomProperties) {
         // ルームプロパティのonが更新された場合.
@@ -243,6 +203,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    
     public override void OnMasterClientSwitched(Player newMasterClient) {
         if(!GameStartFlg) {
             gameErrorPanel.SetActive(true); // エラー表示パネルを表示.

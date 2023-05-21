@@ -24,7 +24,6 @@ namespace Smile_waya {
 
                 //------------ Public変数 ------------//
                 ///<summary>スポーンワールドの階層を入力したもの</summary>
-                public int[] countExit = new int[3];     // 【カウントダウンの秒数格納】Max, Second, MilliSecond
                 public int[] countTime = new int[3];     // 【カウントダウンの秒数格納】Minute, Second, Millisecond(1000ms)
                 public int svTimeStart;     // ゲーム開始時のサーバーの時間を取得
                 public int svTimeOver;      // ゲーム終了時のサーバーの時間を取得
@@ -40,12 +39,8 @@ namespace Smile_waya {
                 public float timeCountLocalDelta = 1.0f; // 【カウントダウンの秒数格納】DeltaTime(Local)
 
                 //----------- Private 変数 -----------//
-                private float countExitDeltaTime = 0.0f; // カウントダウンのDeltaTime
                 private bool hasCounterStartUp = false; // カウントダウン開始フラグ
-                private bool hasExitCountStartUp = false; // Exitカウントダウン開始フラグ
                 private bool isInit = false;
-
-                //-------- SerializeField変数 --------//
 
                 //----------- 変数宣言終了 -----------//
 

@@ -3298,7 +3298,7 @@ GameObject:
   - component: {fileID: -1550850623745262376}
   m_Layer: 0
   m_Name: "\u9003_UnityChan"
-  m_TagString: Nigeru
+  m_TagString: Nige
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3347,6 +3347,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!136 &9094972176278579643
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3473,7 +3474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  COUNTDOWN: 5
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -3484,7 +3484,15 @@ MonoBehaviour:
   - {fileID: 2813249604632921673, guid: fcc8349e9fc3e1a43b07c9ea8e4f7e51, type: 3}
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
+  COUNTDOWN: 5
   charaState: 0
+  isGameStart_CountDown: 1
+  isOnGui: 0
+  isGround: 1
+  isSneak: 0
+  isInstantedItem: 1
+  walkSpeed: 10
+  runSpeed: 20
 --- !u!82 &8502407851292141370
 AudioSource:
   m_ObjectHideFlags: 0
