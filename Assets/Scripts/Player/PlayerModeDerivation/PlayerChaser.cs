@@ -17,12 +17,8 @@ public class PlayerChaser : PlayerBase
 
     //----------- Private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
-    private Text resultWLText;             // リザルトパネルの勝敗テキスト.
-    private Text resultWinLoseText;        // リザルトの勝敗.
     public GameObject[] players;
     private GUIStyle speedUpStyle;         // スピードアップ中のGUIテキストのスタイル.
-    private int beforePlayers = 0;
-    private int catchEscapes = 0;
     //----------- 変数宣言終了 -----------//
 
     void Start() {
@@ -43,7 +39,6 @@ public class PlayerChaser : PlayerBase
         resultWLText = resultScoreTable.transform.Find("Score_TextBox").gameObject.GetComponentInChildren<Text>();
 
         particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
-        isMenuOn = false;
 
         speedUpStyle = new GUIStyle();
         speedUpStyle.fontSize = 50;
@@ -68,10 +63,6 @@ public class PlayerChaser : PlayerBase
                     PlayerMove();
                 }
                 PlayNumber();
-
-                foreach(var player in players) {
-                    print(player);
-                }
 
                 /* 【Debug】
                 if(Input.GetKeyDown(KeyCode.Z)) {
@@ -188,7 +179,6 @@ public class PlayerChaser : PlayerBase
             hashTable["c"] = true;
             collision.gameObject.GetComponent<PhotonView>().Owner.SetCustomProperties(hashTable);
 
-            catchEscapes++;
             catch_text.enabled = true;
             var pName = collision.gameObject.GetComponent<PhotonView>().Owner.NickName;// 接触した逃げキャラのプレイヤー名を取得
             catch_text.text = pName + "を捕まえた！";

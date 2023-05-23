@@ -41,7 +41,7 @@ public class CharacterTeleporter : MonoBehaviour
     //oniかnigeが触れたらTeleportPoint(テレポート先)に移動する
     void OnCollisionStay(Collision collision)
     {
-        if(collision.gameObject.tag == "Oni"||collision.gameObject.tag == "Nigeru"){
+        if(collision.gameObject.tag == "Oni"||collision.gameObject.tag == "Nige"){
             collision.gameObject.transform.position = TeleportPoint.GetComponent<CharacterTeleporter>().RespownPoint.transform.position;
             PCC.CameraReset();
             GameObject.Find("Obj_SE").GetComponent<Button_SE>().Call_SE(1);

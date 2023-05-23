@@ -3486,11 +3486,6 @@ MonoBehaviour:
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   COUNTDOWN: 5
   charaState: 0
-  isGameStart_CountDown: 1
-  isOnGui: 0
-  isGround: 1
-  isSneak: 0
-  isInstantedItem: 1
   walkSpeed: 10
   runSpeed: 20
 --- !u!82 &8502407851292141370

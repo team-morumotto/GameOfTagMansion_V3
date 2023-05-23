@@ -18,20 +18,19 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected Button_SE SE;
     protected BGM_Script BGM;
     protected Text countDownText;            // タイマー出力用.
-    protected GameObject resultPanel;       // リザルトパネル.
+    protected GameObject resultPanel;        // リザルトパネル.
+    protected Text resultWLText;             // リザルトパネルの勝敗テキスト.
+    protected Text resultWinLoseText;        // リザルトの勝敗.
     
     protected Rigidbody rb;                  // リジッドボディ.
 
-    public static bool isMenuOn{get; set;}   // ゲームロビーでメニューを表示しているかどうか.
-    public static bool isHaveItem = false;         // アイテムを取得したかどうか.
+    //------ bool型変数 ------//
+    public static bool isHaveItem = false;   // アイテムを取得したかどうか.
     public static bool isUseItem = false;    // アイテムを使用したかどうか.
-
-    // bool型変数.
-    public bool isGameStart_CountDown = true; //ゲームスタートカウントダウンが終了したかどうか.
-    public bool isOnGui = false;              // GUIを表示しているかどうか.
-    public bool isGround = true;              // 地面に接地しているかどうか.
-    public bool isSneak = false;              // スニーク状態かどうか.
-    public bool isInstantedItem = true;       // アイテムを生成したかどうか.
+    protected bool isGameStart_CountDown = true; //ゲームスタートカウントダウンが終了したかどうか.
+    protected bool isOnGui = false;              // GUIを表示しているかどうか.
+    protected bool isGround = true;              // 地面に接地しているかどうか.
+    protected bool isSneak = false;              // スニーク状態かどうか.
 
     public enum CharaState { // ゲームの進行状況.
         ゲーム開始前,
@@ -40,9 +39,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         ゲーム終了
     }
 
-    //----------- protected変数 -----------//
     // int型変数.
     protected int isGameStartTimer = 5;
+    //----------- float変数 -----------//
     [SerializeField]
     protected float walkSpeed = 10.0f;    // 歩く速度.
     [SerializeField]
@@ -60,11 +59,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             var inputHorizontal = Input.GetAxis("Horizontal"); // 入力デバイスの水平軸.
             var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
 
-            if(isMenuOn) {
-                inputHorizontal = 0;
-                inputVertical = 0;
-            }
-
             if(inputHorizontal == 0 && inputVertical == 0) {
                 anim.SetFloat("Speed", 0f);                   //プレイヤーが移動してないときは走るアニメーションを止める
             }
@@ -73,27 +67,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 if(isUseItem) {
                     particleSystem.Play();     //パーティクルシステムをスタート
                     anim.SetFloat("DashSpeed", 1.5f); //プレイヤーが移動しているときは走るアニメーションを再生する
-                    anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
                 }else{
                     particleSystem.Stop();     //パーティクルシステムをストップ
                     anim.SetFloat("DashSpeed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
-                    anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
                 }
+                anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
             }
             Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
             Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
             float nowspeed; // プレイヤーの移動速度
 
-            // スピードアップアイテムを取得したかどうか
             if(isSneak) {
                 nowspeed = sneakSpeed; // スニーク状態なら.
             }
             else if(isUseItem) {
-                nowspeed = runSpeed;  // 取得しているなら走る
+                nowspeed = runSpeed;  // アイテムを使用しているなら走る
             }
             else {
-                nowspeed = walkSpeed; // 取得していないなら歩く
+                nowspeed = walkSpeed; // それ以外なら歩く
             }
 
             // プレイヤーの移動処理
@@ -221,7 +213,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         }
     }
 
-    ///<summary> スピードアップアイテムを取得したときの処理 </summary>
+    ///<summary> スピードアップアイテムを使用したときの処理 </summary>
     public IEnumerator ChangeSpeed() {
         // 5秒間スピードアップ
         yield return new WaitForSeconds(5.0f);

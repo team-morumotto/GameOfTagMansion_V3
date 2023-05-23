@@ -5,11 +5,11 @@ using Photon.Pun;
 public class SpeedUpItem : MonoBehaviourPunCallbacks
 {
     void Start() {
-        StartCoroutine("Destroy");
+        StartCoroutine(Destroy());
     }
 
     void Update(){
-        transform.Rotate(0,10,0);           // 回転させる.
+        transform.Rotate(0,1,0);           // 回転させる.
     }
 
     void OnTriggerEnter(Collider collision){
@@ -19,12 +19,12 @@ public class SpeedUpItem : MonoBehaviourPunCallbacks
         }
 
         // 触れたオブジェクトのタグがNigeruかOniの場合.
-        if(collision.gameObject.tag == "Nigeru" || collision.gameObject.tag == "Oni"){
-            PhotonNetwork.Destroy(gameObject);                                                   // このオブジェクトを消す.
+        if(collision.gameObject.tag == "Nige" || collision.gameObject.tag == "Oni"){
+            PhotonNetwork.Destroy(gameObject); // このオブジェクトを消す.
         }
     }
 
-    // 10秒後に消す.
+    // 生成してから10秒後に消す.
     IEnumerator Destroy(){
         yield return new WaitForSeconds(10.0f);
         PhotonNetwork.Destroy(gameObject);

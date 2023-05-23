@@ -44,18 +44,10 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     //------------ private ------------//
     private RoomList roomList = new RoomList();             // RoomListClassのインスタンスを生成.
-    private Toggle roomVisible;
-    private Text playerCountText;                            // ルーム内の逃げの残り人数.
-
-    // int型変数
-    private int number;										// 鬼側か逃げる側かを識別するナンバー.
-
-    private int beforePlayers = 0;                          // 前フレームのルームの人数を格納する変数.
 
     // bool型変数
+    public static bool isMenuOn{get; set;}   // ゲームロビーでメニューを表示しているかどうか.
     private bool isConnect = true;                          // マスターサーバーに接続したか.
-    private bool isStanby = false;                          // 待機中かどうか.
-    private bool isCanStart = false;                        // ゲームスタートが可能な状態か.
     private bool isJoinRoom = false;                        // ルームに参加したかどうか.
     private bool isVisible = false;                         // 作成したルームが非公開可どうか.
 
@@ -70,6 +62,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         isConnect = true;       // フォトン接続フラグを初期化.
         GameStartFlg = false;   // ゲームスタートフラグを初期化.
         isJoinRoom = false;     // ルーム参加フラグを初期化.
+        isMenuOn = false;       // メニュー表示フラグを初期化.
         // 逃げなら.
         if(GoToChooseChara.GetPlayMode() == 0) {
             sneakUI.SetActive(true);
@@ -83,7 +76,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         // 使用するキャラクターが選択された段階でフォトンに接続する関数を1回のみ動かす
         if(GoToChooseChara.GetIsEdit() && isConnect) {
             isConnect = false;
-            Connect();
+            PhotonNetwork.ConnectUsingSettings();	// フォトンに接続.
             print("Connecting");
         }
 
@@ -99,9 +92,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
                 // Eキーを押したら.
                 if(Input.GetKeyDown(KeyCode.E)) {
                     if(GameStartError()) {
-                        var HashTable = new ExitGames.Client.Photon.Hashtable();            // ハッシュテーブルを生成.
-                        HashTable["on"] = true;                                             // ルームカスタムプロパティのonにtrueを代入.
-                        PhotonNetwork.CurrentRoom.SetCustomProperties(HashTable);           // ルームのカスタムプロパティを更新.
+                        SetCustomProperty("on", true, 1);
                     }
                 }
             }
@@ -129,38 +120,13 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     // メニューの表示/非表示.
     private void MenuPanelBlind() {
-        // 鬼か逃げか.
-        switch(GoToChooseChara.GetPlayMode()) {
-            // 逃げなら.
-            case 0:
-                // メニューが表示されているなら.
-                if(Player_Escape.isMenuOn) {
-                    Player_Escape.isMenuOn = false;
-                    gameLobbyPanel.SetActive(false);
-                }else{
-                    Player_Escape.isMenuOn = true;
-                    gameLobbyPanel.SetActive(true);
-                }
-            break;
-
-            // 鬼なら.
-            case 1:
-                // メニューが表示されているなら.
-                if(Player_Chaser.isMenuOn) {
-                    Player_Chaser.isMenuOn = false;
-                    gameLobbyPanel.SetActive(false);
-                }else{
-                    Player_Chaser.isMenuOn = true;
-                    gameLobbyPanel.SetActive(true);
-                }
-            break;
+        if(isMenuOn) {
+            isMenuOn = false;
+            gameLobbyPanel.SetActive(false);
+        }else{
+            isMenuOn = true;
+            gameLobbyPanel.SetActive(true);
         }
-    }
-
-	// フォトンのマスターサーバーに接続.
-    private void Connect() {
-        number =GoToChooseChara.GetPlayMode();  // GotoChooseCharaから鬼か逃げる側かを識別するナンバーを受け取る.
-        PhotonNetwork.ConnectUsingSettings();	// Photonネットワークへの接続処理部分(これがないとPhotonは使用できない). // ConnectedMaster()コールバック関数が呼ばれる
     }
 
     /// <summary>
@@ -198,13 +164,10 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             if((bool)roomProperties["on"] == true) {
                 GameStartFlg = true;
                 gameLobbyPanel.SetActive(false);
-                Player_Chaser.isMenuOn = false; // 逃げのメニューを非表示.
-                Player_Escape.isMenuOn = false; // 鬼のメニューを非表示.
+                isMenuOn = false; // メニューを非表示.
             }
         }
     }
-
-    
     public override void OnMasterClientSwitched(Player newMasterClient) {
         if(!GameStartFlg) {
             gameErrorPanel.SetActive(true); // エラー表示パネルを表示.
@@ -237,36 +200,36 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause) {
         print("【Debug】サーバー非接続状態 : "+cause);
     }
-
+    
     // ルームから退室した場合.
     public override void OnLeftRoom()
     {
         print("【Debug】ルームから退室");
     }
 
-    // ルームの作成に失敗した場合.
-    /*
-        エラーコード.
-        32766 : 同じルーム名のルームが存在する.
-    */
+    /// <summary>
+    /// ルーム作成に失敗したとき.
+    /// </summary>
+    /// <param name="returnCode">エラーコード</param>
+    /// <param name="message">エラーメッセージ</param>
     public override void OnCreateRoomFailed(short returnCode, string message) {
         gameErrorPanel.SetActive(true); // エラー表示パネルを表示.
         var MatchErrorText = gameErrorPanel.transform.Find("Text_ErrorCode").GetComponent<Text>();
         MatchErrorText.text = "エラーコード :\n【" + returnCode + "】\nによりルームの作成に失敗しました。";
     }
 
-	// ルームに参加できなかった場合.
-    /*
-        エラーコード.
-        32758 : ルームが存在しない.
-    */
+	/// <summary>
+	/// ルーム傘下に失敗したとき.
+	/// </summary>
+	/// <param name="returnCode">エラーコード</param>
+	/// <param name="message">エラーメッセージ</param>
     public override void OnJoinRoomFailed(short returnCode, string message) {
         gameErrorPanel.SetActive(true);
         var MatchErrorText = gameErrorPanel.transform.Find("Text_ErrorCode").GetComponent<Text>();
         MatchErrorText.text = "エラーコード :\n【" + returnCode + "】\nによりルームの参加に失敗しました。";
     }
 
-	// フォトンのルームに参加したときに呼ばれます.
+	// フォトンのルームに参加したときに呼ばれる.
     public override void OnJoinedRoom() {
         isJoinRoom = true;              // ルームに参加した.
         gameDuringPanel.SetActive(true);
@@ -282,22 +245,17 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         float z = UnityEngine.Random.Range(SpawnPoint[0].transform.position.z, SpawnPoint[1].transform.position.z);
         Vector3 spawnPos = new Vector3(x, y, z);                                                                        // プレイヤーの生成位置をLobby内のランダムな位置に決定.
 
-        var hashTable = new ExitGames.Client.Photon.Hashtable();
-        hashTable["gs"] = 1;
-        hashTable["h"] = false;                                     // カスタムプロパティのハイドをfalseに設定.
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hashTable);   // プレイヤープロパティをセット.
+        SetCustomProperty("gs", 1, 0);
+        SetCustomProperty("h", false, 0);
 
         switch(GoToChooseChara.GetPlayMode()) {
             case 0:
-                    GameObject Player = PhotonNetwork.Instantiate(PlayerObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
-                    CreateCharacter(Player);
+                    GameObject Escape = PhotonNetwork.Instantiate(PlayerObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+                    CreateCharacter(Escape);
                 break;
             case 1:
-                    GameObject Oni = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
-                    CreateCharacter(Oni);
-                break;
-            default:
-                    Debug.LogError("【Debug】 : キャラタイプ" + number + "は存在しません");     // 0,1以外は想定外の値なのでエラーを出す.
+                    GameObject Chaser = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
+                    CreateCharacter(Chaser);
                 break;
         }
         GameStartFlg = false;
@@ -328,9 +286,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CreateRoom(createRoomName, roomOptions);	        // ルームを作成.
 
-        var hashTable = new ExitGames.Client.Photon.Hashtable();
-        hashTable["gs"] = 1;                                            // ルームを作成した段階で準備完了状態にする.
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hashTable);
+        SetCustomProperty("gs", 1, 0);
 
         PanelBlind(panel);
     }
@@ -426,4 +382,27 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         joinRoomName = inputJoinRoomName.text;
     }
     //--------- InputField ---------//
+
+    /// <summary>
+    /// カスタムプロパティを更新する関数
+    /// </summary>
+    /// <param name="_key">変更対象のキーを指定</param>
+    /// <param name="_value">代入する値</param>
+    /// <param name="_type">0:LocalPlayer、1:CurrentRoomが対象</param>
+    /// <typeparam name="T">原則int,bool型のみで使用/typeparam>
+    /// <returns>default(ダミー)</returns>
+    public static T SetCustomProperty<T>(string _key, T _value, int _type) {
+        if(_type == 0) {
+            var hashTable = new ExitGames.Client.Photon.Hashtable();
+            hashTable[_key] = _value;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hashTable);
+        }else if(_type == 1) {
+            var hashTable = new ExitGames.Client.Photon.Hashtable();
+            hashTable[_key] = _value;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
+        }else{
+            Debug.LogWarning("SetCustomProperty : unknown type");
+        }
+        return default;
+    }
 }

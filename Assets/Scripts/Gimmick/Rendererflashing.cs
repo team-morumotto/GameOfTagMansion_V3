@@ -24,7 +24,7 @@ public class Rendererflashing : MonoBehaviour
   }
   //当たったら発動
   void OnCollisionEnter(Collision collision){
-    if(collision.gameObject.tag == "Oni"||collision.gameObject.tag == "Nigeru"){
+    if(collision.gameObject.tag == "Oni"||collision.gameObject.tag == "Nige"){
         StartCoroutine("Transparent");
     }
   }   

@@ -6,9 +6,9 @@ public class LockerScript : MonoBehaviour
 {
     void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.tag == "Nigeru")
+        if (collision.gameObject.tag == "Nige")
         {
-            Debug.Log("Nigeru");
+            Debug.Log("Nige");
         }
     }
 }

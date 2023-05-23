@@ -17,7 +17,7 @@ public class CircleRecast : MonoBehaviourPunCallbacks
     public GameObject itemHowUse;    // アイテムの使用.
     void Update() {
         // アイテムを持っていたら.
-        if(Player_Chaser.isHaveItem || Player_Escape.isHaveItem) {
+        if(PlayerChaser.isHaveItem || PlayerEscape.isHaveItem) {
             itemHowUse.SetActive(true);
             ItemImage.enabled = true; // アイテムの画像を可視化.
         }else{
@@ -26,7 +26,7 @@ public class CircleRecast : MonoBehaviourPunCallbacks
         }
 
         // アイテムを使用したら.
-        if(Player_Chaser.isUseItem || Player_Escape.isUseItem) {
+        if(PlayerChaser.isUseItem || PlayerEscape.isUseItem) {
             RecastImage.fillAmount -= 1.0f / RecastTime * Time.deltaTime; // 円状のゲージを減少させていく.
             RecastImage.enabled = true; // ゲージの画像を可視化.
             itemHowUse.SetActive(false);

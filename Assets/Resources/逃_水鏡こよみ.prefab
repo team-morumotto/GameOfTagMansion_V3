@@ -5449,6 +5449,7 @@ GameObject:
   - component: {fileID: 111062325095022602}
   - component: {fileID: -8258936174577379280}
   - component: {fileID: -751429188502722454}
+  - component: {fileID: 2992359851606147044}
   m_Layer: 0
   m_Name: "\u9003_\u6C34\u93E1\u3053\u3088\u307F"
   m_TagString: Nige
@@ -5645,7 +5646,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2829568226418256726}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
@@ -5662,11 +5663,6 @@ MonoBehaviour:
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   COUNTDOWN: 5
   charaState: 0
-  isGameStart_CountDown: 1
-  isOnGui: 0
-  isGround: 1
-  isSneak: 0
-  isInstantedItem: 1
   walkSpeed: 10
   runSpeed: 20
 --- !u!82 &-8258936174577379280
@@ -5782,6 +5778,32 @@ MonoBehaviour:
   needArrowIndicator: 1
   needDistanceText: 1
   indicator: {fileID: 0}
+--- !u!114 &2992359851606147044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829568226418256726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c845b6e1a9d02498f0220535100728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userSpawnPoint:
+  - {fileID: 73677950351980725, guid: 59647ec591c467b46bdbc71973bb3f77, type: 3}
+  - {fileID: 2813249604632921673, guid: fcc8349e9fc3e1a43b07c9ea8e4f7e51, type: 3}
+  - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
+  - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
+  itemSpawnPoint:
+  - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
+  - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
+  - {fileID: 691642832634103993, guid: be4eccfb2d279f841aa3fcdb4134b2b4, type: 3}
+  - {fileID: 2589697894538804909, guid: 4cc79f15d4d25e54d97cfea88b1b2f40, type: 3}
+  COUNTDOWN: 5
+  charaState: 0
+  walkSpeed: 10
+  runSpeed: 20
 --- !u!1 &2942947677607023445
 GameObject:
   m_ObjectHideFlags: 0

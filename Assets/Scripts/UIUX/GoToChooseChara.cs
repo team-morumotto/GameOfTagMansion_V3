@@ -59,13 +59,6 @@ public class GoToChooseChara : MonoBehaviour {
         Characters = setCharacters;
     }
 
-    // ソロモード.
-    /*
-    public void SetIsSolo(bool setIsSolo) {
-        isSolo = setIsSolo;
-    }
-    */
-
     // ルームの参加の自分の順番を記録.
     public static void ActorNumber(int value) {
         actorNumber = value;

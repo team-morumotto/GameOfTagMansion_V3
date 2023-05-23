@@ -110,7 +110,7 @@ public class PivotColliderController : MonoBehaviour
 
     /*
     void OnTriggerStay(Collider other) {
-        if(other.gameObject.tag != "Floor" && other.gameObject.tag != "Nigeru" && other.gameObject.tag != "Oni"
+        if(other.gameObject.tag != "Floor" && other.gameObject.tag != "Nige" && other.gameObject.tag != "Oni"
             && other.gameObject.tag !="Untagged" && other.gameObject.tag != "Item") {
             if(Mathf.Max(transform.position.x, other.gameObject.transform.position.x) == transform.position.x) {
                 hitState = HitState.myX;
@@ -127,7 +127,7 @@ public class PivotColliderController : MonoBehaviour
 
     void OnTriggerExit(Collider other) {
         // 床/プレイヤー/Untaggedオブジェクト/アイテムでない場合.
-        if(other.gameObject.tag != "Floor" && other.gameObject.tag != "Nigeru" && other.gameObject.tag != "Oni"
+        if(other.gameObject.tag != "Floor" && other.gameObject.tag != "Nige" && other.gameObject.tag != "Oni"
             && other.gameObject.tag !="Untagged" && other.gameObject.tag != "Item") {
             /* tex = "接触していない";*/
             hitState = HitState.none;
