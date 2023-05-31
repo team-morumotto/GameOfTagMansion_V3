@@ -4,21 +4,18 @@
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
-using System.Collections;
 using Smile_waya.GOM.ScreenTimer;
-using UnityEngine.Serialization;
 using Photon.Realtime;
 
 public class PlayerChaser : PlayerBase
 {
     //------------ Public変数 ------------//
-    [Tooltip("捕まえたときに文字を出力する用（鬼専用）")]
+    [Tooltip("捕まえたキャラクターの表示")]
     public Text catch_text;
 
     //----------- Private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
     public GameObject[] players;
-    private GUIStyle speedUpStyle;         // スピードアップ中のGUIテキストのスタイル.
     //----------- 変数宣言終了 -----------//
 
     void Start() {
@@ -40,12 +37,12 @@ public class PlayerChaser : PlayerBase
 
         particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
 
-        speedUpStyle = new GUIStyle();
-        speedUpStyle.fontSize = 50;
-        speedUpStyle.normal.textColor = Color.red;
-
         var Target = GetComponent<Target>();
         Target.enabled = false;
+
+        characterDatabase = GameObject.Find("CharacterStatusLoad").GetComponent<CharacterDatabase>();
+
+        StatusGet();
 
         EscapeCount();
     }
@@ -143,7 +140,6 @@ public class PlayerChaser : PlayerBase
     private void GameTimer() {
         var gameTime = ST.GameTimeCounter();
 
-        
         // テキストへ残り時間を表示
         countDownText.text = gameTime.gameTimeStr;
 
@@ -227,7 +223,7 @@ public class PlayerChaser : PlayerBase
     //--------------- フォトンのコールバック ---------------//
     /// <summary>
     /// ルームにプレイヤーが入室してきたときのコールバック関数.
-    /// 引数 : newPlayer. 
+    /// 引数 : newPlayer.
     /// 戻り値 : なし.
     /// </summary>
     /// <param name="newPlayer">入室してきたプレイヤー</param>

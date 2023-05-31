@@ -5,13 +5,38 @@ using UnityEngine.UI;
 using System.Collections;
 public class PlayerBase : MonoBehaviourPunCallbacks
 {
+    //------ public static変数 ------//
+    public static bool isHaveItem = false;   // アイテムを取得したかどうか.
+    public static bool isUseItem = false;    // アイテムを使用したかどうか.
     //------------ 定数 ------------//
     public const string GAMECANVAS = "/Canvas_Main"; // Canvas_Mainの取得.
-    //------------ Public変数 ------------//
+
+    //----------- public変数 -----------//
     [Tooltip("キャラクターのステージのスポーン場所")] [FormerlySerializedAs("before")]               public GameObject[] userSpawnPoint;           // キャラクターのステージスポーン場所.
     [Tooltip("スピードアップアイテムのステージスポーン場所")] [FormerlySerializedAs("before")]       public GameObject[] itemSpawnPoint;         // アイテムのステージスポーン場所.
-    [Tooltip("ゲームスタートまでのカウントダウン時間")] [FormerlySerializedAs("before")]             public int COUNTDOWN= 5;                   // ゲームスタートまでのカウントダウン
+    public enum CharaState { // ゲームの進行状況.
+        ゲーム開始前,
+        カウントダウン,
+        ゲーム中,
+        ゲーム終了
+    }
     public CharaState charaState = CharaState.ゲーム開始前; // ゲーム開始前で初期化.
+
+    public enum Character {
+        Tolass,
+        Liloumois,
+        MikagamiKoyomi,
+        NoranekoSeven,
+        Shaclo,
+        Mulicia,
+        Wenrui,
+        Mishe,
+        AsakaYanoha,
+        Nayu
+    }
+    public Character character;
+    public CharacterDatabase characterDatabase;
+    //---------- protected変数----------//
     protected Animator anim;                 // アニメーション.
     protected ParticleSystem particleSystem; // パーティクルシステム.
     protected Camera playerCamera;           // プレイヤーを追尾するカメラ.
@@ -21,33 +46,31 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected GameObject resultPanel;        // リザルトパネル.
     protected Text resultWLText;             // リザルトパネルの勝敗テキスト.
     protected Text resultWinLoseText;        // リザルトの勝敗.
-    
     protected Rigidbody rb;                  // リジッドボディ.
+    protected Slider staminaSlider;          // スタミナゲージ.
 
-    //------ bool型変数 ------//
-    public static bool isHaveItem = false;   // アイテムを取得したかどうか.
-    public static bool isUseItem = false;    // アイテムを使用したかどうか.
+    //------ bool変数 ------//
     protected bool isGameStart_CountDown = true; //ゲームスタートカウントダウンが終了したかどうか.
     protected bool isOnGui = false;              // GUIを表示しているかどうか.
     protected bool isGround = true;              // 地面に接地しているかどうか.
     protected bool isSneak = false;              // スニーク状態かどうか.
 
-    public enum CharaState { // ゲームの進行状況.
-        ゲーム開始前,
-        カウントダウン,
-        ゲーム中,
-        ゲーム終了
-    }
-
-    // int型変数.
+    // int変数.
     protected int isGameStartTimer = 5;
+    private int countDown = 5;                   // ゲームスタートまでのカウントダウン
+
+    //=========== キャラクターステータス ===========//
     //----------- float変数 -----------//
-    [SerializeField]
-    protected float walkSpeed = 10.0f;    // 歩く速度.
-    [SerializeField]
-    protected float runSpeed = 20.0f;    // 走る速度.
-    // float型変数.
-    protected float sneakSpeed = 2.5f;   // スニーク状態のスピード.
+	protected float walkSpeed; // 歩行速度.
+	protected float runSpeed; // 走行速度.
+	protected float stamina; // 体力.
+
+    //---------- bool変数 ----------//
+	protected bool overCome; // 乗り越え.
+	protected bool obstructive; // 邪魔者.
+	protected bool stealth; //ステルス.
+	protected bool special; // 特殊.
+    //=========== キャラクターステータス ===========//
 
     /// <summary>
     /// 機能 : プレイヤーの移動制御.
@@ -56,47 +79,47 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// </summary>
     public void PlayerMove() {
         //プレイヤーの向きを変える
-            var inputHorizontal = Input.GetAxis("Horizontal"); // 入力デバイスの水平軸.
-            var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
+        var inputHorizontal = Input.GetAxis("Horizontal"); // 入力デバイスの水平軸.
+        var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
 
-            if(inputHorizontal == 0 && inputVertical == 0) {
-                anim.SetFloat("Speed", 0f);                   //プレイヤーが移動してないときは走るアニメーションを止める
+        if(inputHorizontal == 0 && inputVertical == 0) {
+            anim.SetFloat("Speed", 0f);                   //プレイヤーが移動してないときは走るアニメーションを止める
+        }
+        else{
+            if(Input.GetKey(KeyCode.LeftShift)) {
+                staminaSlider.value -= ((Time.deltaTime / 100) + (stamina / 1000));
             }
-            else{
-                //スピードアップアイテムを取得しているときは走る速度を上げる
-                if(isUseItem) {
-                    particleSystem.Play();     //パーティクルシステムをスタート
-                    anim.SetFloat("DashSpeed", 1.5f); //プレイヤーが移動しているときは走るアニメーションを再生する
-                }else{
-                    particleSystem.Stop();     //パーティクルシステムをストップ
-                    anim.SetFloat("DashSpeed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
-                }
-                anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
+            //スピードアップアイテムを取得しているときは走る速度を上げる
+            if(isUseItem) {
+                particleSystem.Play();     //パーティクルシステムをスタート
+                anim.SetFloat("DashSpeed", 1.5f); //プレイヤーが移動しているときは走るアニメーションを再生する
+            }else{
+                particleSystem.Stop();     //パーティクルシステムをストップ
+                anim.SetFloat("DashSpeed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
             }
-            Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
-            Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
+            anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
+        }
+        Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
+        Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
-            float nowspeed; // プレイヤーの移動速度
+        float nowspeed; // プレイヤーの移動速度
 
-            if(isSneak) {
-                nowspeed = sneakSpeed; // スニーク状態なら.
-            }
-            else if(isUseItem) {
-                nowspeed = runSpeed;  // アイテムを使用しているなら走る
-            }
-            else {
-                nowspeed = walkSpeed; // それ以外なら歩く
-            }
+        if(isUseItem) {
+            nowspeed = runSpeed;  // アイテムを使用しているなら走る
+        }
+        else {
+            nowspeed = walkSpeed; // それ以外なら歩く
+        }
 
-            // プレイヤーの移動処理
-            rb.velocity = moveForward * nowspeed + new Vector3(0, rb.velocity.y, 0);
-
-            // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする
-            if (moveForward != Vector3.zero) {
-                transform.rotation = Quaternion.LookRotation(moveForward);
-            }
+        // プレイヤーの移動処理
+        rb.velocity = moveForward * nowspeed + new Vector3(0, rb.velocity.y, 0);
+        print(nowspeed);
+        // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする
+        if (moveForward != Vector3.zero) {
+            transform.rotation = Quaternion.LookRotation(moveForward);
+        }
     }
-    
+
     public void CharaPositionReset() {
         // ステージ外に落ちたときy座標が-100以下になったら自分のスポーン位置に戻る.
         if(gameObject.transform.position.y <= -300f) {
@@ -161,11 +184,30 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         // マウスの右ボタンを押した && アイテムを持っている && スニーク状態でないなら.
         if(Input.GetMouseButton(1) && isHaveItem && !isSneak) {
             // ChangeSpeedコルーチンを発動
-            StartCoroutine("ChangeSpeed");
+            StartCoroutine(ChangeSpeed());
             isUseItem = true;
         }
     }
 
+    /// <summary>
+    /// キャラクターのステータスを取得する.
+    /// </summary>
+    public void StatusGet() {
+        var tmp1 = Character.GetValues(typeof(Character));
+        var tmp2 = (int)character;
+        foreach (var value in tmp1) {
+            var tmp3 = (int)value;
+            if(tmp2 == tmp3) {
+                walkSpeed = characterDatabase.statusList[tmp3].walkSpeed;
+                runSpeed = characterDatabase.statusList[tmp3].runSpeed;
+                stamina = characterDatabase.statusList[tmp3].stamina;
+                overCome = characterDatabase.statusList[tmp3].overCome;
+                obstructive = characterDatabase.statusList[tmp3].obstructive;
+                stealth = characterDatabase.statusList[tmp3].stealth;
+                special = characterDatabase.statusList[tmp3].special;
+            }
+        }
+    }
 
     ///<summary> UGUI表示 </summary>
     private void OnGUI() {
@@ -186,7 +228,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         SE.Call_SE(3);                          // カウントダウンの音を鳴らす.
         isGameStart_CountDown = false;
         // 5秒間カウントダウン.
-        for(isGameStartTimer = COUNTDOWN; isGameStartTimer > 0; isGameStartTimer--) {
+        for(isGameStartTimer = countDown; isGameStartTimer > 0; isGameStartTimer--) {
             isOnGui = true;                     // OnGuiを有効にする.
             yield return new WaitForSeconds(1f);
         }

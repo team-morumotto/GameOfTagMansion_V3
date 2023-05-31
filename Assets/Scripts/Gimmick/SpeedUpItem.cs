@@ -18,7 +18,7 @@ public class SpeedUpItem : MonoBehaviourPunCallbacks
             return;
         }
 
-        // 触れたオブジェクトのタグがNigeruかOniの場合.
+        // 触れたオブジェクトのタグがNigeかOniの場合.
         if(collision.gameObject.tag == "Nige" || collision.gameObject.tag == "Oni"){
             PhotonNetwork.Destroy(gameObject); // このオブジェクトを消す.
         }
@@ -26,7 +26,9 @@ public class SpeedUpItem : MonoBehaviourPunCallbacks
 
     // 生成してから10秒後に消す.
     IEnumerator Destroy(){
-        yield return new WaitForSeconds(10.0f);
-        PhotonNetwork.Destroy(gameObject);
+        if(PhotonNetwork.IsMasterClient) {
+            yield return new WaitForSeconds(10.0f);
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
