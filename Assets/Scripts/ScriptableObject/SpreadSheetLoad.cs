@@ -12,7 +12,7 @@ using LitJson; // ジャグ配列を扱うため.
 public class SpreadSheetLoad : MonoBehaviour
 {
     private const string URL = "https://sheets.googleapis.com/v4/spreadsheets/1OpXaK6mU510wPBMVo268AhOjKXPyE8RRH5h1RYXy3CA/values/Sample?key=AIzaSyDBTmUnPKAeyHFV_xYO5ZGpbAWkUuDUQUk";
-    private const int SHEET_HORIZONTAL = 8;
+    private const int SHEET_HORIZONTAL = 9;
     private const int SHEET_VERTICAL = 10;
     public CharacterDatabase characterDatabase;
     void Start() {
@@ -56,19 +56,22 @@ public class SpreadSheetLoad : MonoBehaviour
                     case 2: characterDatabase.statusList[i].runSpeed = JsonDataToFloat(jsonData["values"][i + 1][j]);
                     break;
 
-                    case 3: characterDatabase.statusList[i].stamina = JsonDataToFloat(jsonData["values"][i + 1][j]);
-                    break;
-                    
-                    case 4: characterDatabase.statusList[i].overCome = JsonDataToBoolean(jsonData["values"][i + 1][j]);
-                    break;
-                    
-                    case 5: characterDatabase.statusList[i].obstructive = JsonDataToBoolean(jsonData["values"][i + 1][j]);
-                    break;
-                    
-                    case 6: characterDatabase.statusList[i].stealth = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    case 3: characterDatabase.statusList[i].staminaAmount = JsonDataToFloat(jsonData["values"][i + 1][j]);
                     break;
 
-                    case 7: characterDatabase.statusList[i].special = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    case 4: characterDatabase.statusList[i].staminaHealAmount = JsonDataToFloat(jsonData["values"][i + 1][j]);
+                    break;
+                    
+                    case 5: characterDatabase.statusList[i].overCome = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    break;
+                    
+                    case 6: characterDatabase.statusList[i].obstructive = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    break;
+                    
+                    case 7: characterDatabase.statusList[i].stealth = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    break;
+
+                    case 8: characterDatabase.statusList[i].special = JsonDataToBoolean(jsonData["values"][i + 1][j]);
                     break;
                     
                     default:

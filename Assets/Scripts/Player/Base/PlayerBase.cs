@@ -3,8 +3,23 @@ using Photon.Pun;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using System.Collections;
+
 public class PlayerBase : MonoBehaviourPunCallbacks
 {
+    //=========== キャラクターステータス(変動しない) ===========//
+    //----------- float変数 -----------//
+	protected float walkSpeed; // 歩行速度.
+	protected float runSpeed; // 走行速度.
+	protected float staminaAmount; // 体力.
+    protected float staminaHealAmount = 0.2f;
+
+    //---------- bool変数 ----------//
+	protected bool overCome; // 乗り越え.
+	protected bool obstructive; // 邪魔者.
+	protected bool stealth; //ステルス.
+	protected bool special; // 特殊.
+    //=========== キャラクターステータス ===========//
+
     //------ public static変数 ------//
     public static bool isHaveItem = false;   // アイテムを取得したかどうか.
     public static bool isUseItem = false;    // アイテムを使用したかどうか.
@@ -14,13 +29,13 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     //----------- public変数 -----------//
     [Tooltip("キャラクターのステージのスポーン場所")] [FormerlySerializedAs("before")]               public GameObject[] userSpawnPoint;           // キャラクターのステージスポーン場所.
     [Tooltip("スピードアップアイテムのステージスポーン場所")] [FormerlySerializedAs("before")]       public GameObject[] itemSpawnPoint;         // アイテムのステージスポーン場所.
-    public enum CharaState { // ゲームの進行状況.
+    public enum GameState { // ゲームの進行状況.
         ゲーム開始前,
         カウントダウン,
         ゲーム中,
         ゲーム終了
     }
-    public CharaState charaState = CharaState.ゲーム開始前; // ゲーム開始前で初期化.
+    public GameState gameState = GameState.ゲーム開始前; // ゲーム開始前で初期化.
 
     public enum Character {
         Tolass,
@@ -42,35 +57,27 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected Camera playerCamera;           // プレイヤーを追尾するカメラ.
     protected Button_SE SE;
     protected BGM_Script BGM;
-    protected Text countDownText;            // タイマー出力用.
+    protected Text gameTimer;            // タイマー出力用.
     protected GameObject resultPanel;        // リザルトパネル.
     protected Text resultWLText;             // リザルトパネルの勝敗テキスト.
     protected Text resultWinLoseText;        // リザルトの勝敗.
     protected Rigidbody rb;                  // リジッドボディ.
-    protected Slider staminaSlider;          // スタミナゲージ.
+    protected GameObject staminaParent;      // スタミナUIの親.
+    protected Image staminaGuage;            // スタミナゲージ.
 
-    //------ bool変数 ------//
-    protected bool isGameStart_CountDown = true; //ゲームスタートカウントダウンが終了したかどうか.
-    protected bool isOnGui = false;              // GUIを表示しているかどうか.
-    protected bool isGround = true;              // 地面に接地しているかどうか.
-    protected bool isSneak = false;              // スニーク状態かどうか.
-
-    // int変数.
+    //------ int変数 ------//
     protected int isGameStartTimer = 5;
     private int countDown = 5;                   // ゲームスタートまでのカウントダウン
 
-    //=========== キャラクターステータス ===========//
-    //----------- float変数 -----------//
-	protected float walkSpeed; // 歩行速度.
-	protected float runSpeed; // 走行速度.
-	protected float stamina; // 体力.
+    //------ float変数 ------//
+    protected float nowStamina;
 
-    //---------- bool変数 ----------//
-	protected bool overCome; // 乗り越え.
-	protected bool obstructive; // 邪魔者.
-	protected bool stealth; //ステルス.
-	protected bool special; // 特殊.
-    //=========== キャラクターステータス ===========//
+    //------ bool変数 ------//
+    protected bool isGameStarted = true;         //ゲームスタートしたか.
+    protected bool isOnGui = false;              // GUIを表示しているか.
+    protected bool isGround = true;              // 地面に接地しているか.
+    protected bool isSneak = false;              // スニークしているか.
+    private bool isStaminaLoss = false;          // スタミナが切れているか.
 
     /// <summary>
     /// 機能 : プレイヤーの移動制御.
@@ -83,40 +90,64 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
 
         if(inputHorizontal == 0 && inputVertical == 0) {
-            anim.SetFloat("Speed", 0f);                   //プレイヤーが移動してないときは走るアニメーションを止める
+            anim.SetFloat("Speed", 0f); // 移動していないので0.
+            StaminaHeal();
         }
         else{
-            if(Input.GetKey(KeyCode.LeftShift)) {
-                staminaSlider.value -= ((Time.deltaTime / 100) + (stamina / 1000));
-            }
-            //スピードアップアイテムを取得しているときは走る速度を上げる
-            if(isUseItem) {
+            Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
+            Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
+
+            // スタミナが残っていて走っている.
+            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
+                nowStamina -= 0.1f;  // スタミナ減少.
+                if(nowStamina < 0) {
+                    nowStamina = 0;  // スタミナはオーバーフローしない.
+                    isStaminaLoss = true; // スタミナ切れに.
+                }
+
+                MoveType(moveForward, runSpeed, 1.5f);
                 particleSystem.Play();     //パーティクルシステムをスタート
-                anim.SetFloat("DashSpeed", 1.5f); //プレイヤーが移動しているときは走るアニメーションを再生する
-            }else{
+            }else {
+                MoveType(moveForward, walkSpeed, 1.0f);
                 particleSystem.Stop();     //パーティクルシステムをストップ
-                anim.SetFloat("DashSpeed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
+                StaminaHeal();
             }
-            anim.SetFloat("Speed", 1.0f); //プレイヤーが移動しているときは走るアニメーションを再生する
-        }
-        Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
-        Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
-        float nowspeed; // プレイヤーの移動速度
-
-        if(isUseItem) {
-            nowspeed = runSpeed;  // アイテムを使用しているなら走る
-        }
-        else {
-            nowspeed = walkSpeed; // それ以外なら歩く
+            // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする.
+            if (moveForward != Vector3.zero) {
+                transform.rotation = Quaternion.LookRotation(moveForward);
+            }
         }
 
-        // プレイヤーの移動処理
-        rb.velocity = moveForward * nowspeed + new Vector3(0, rb.velocity.y, 0);
-        print(nowspeed);
-        // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする
-        if (moveForward != Vector3.zero) {
-            transform.rotation = Quaternion.LookRotation(moveForward);
+        // 走っているときはスタミナUI表示.
+        if(nowStamina < staminaAmount && !staminaParent.activeSelf) {
+            staminaParent.SetActive(true);
+        }
+
+        staminaGuage.fillAmount = nowStamina / staminaAmount; // 残りのスタミナをUIに反映.
+    }
+
+    private void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
+        rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // プレイヤーの走る処理.
+        anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
+        anim.SetFloat("DashSpeed", animSpeed);
+    }
+
+    private void StaminaHeal() {
+        // スタミナが減っていたら.
+        if(nowStamina < staminaAmount) {
+            if(isStaminaLoss) {
+                nowStamina += staminaHealAmount * 0.3f; // スタミナ回復(スタミナ切れ中は回復量が減少).
+            }else {
+                nowStamina += staminaHealAmount;        // スタミナ回復.
+            }
+
+            // 回復後にスタミナが上限超過したら
+            if(nowStamina >= staminaAmount) {
+                nowStamina = staminaAmount; // スタミナはオーバーフローしない.
+                isStaminaLoss = false; //スタミナ切れ解除.
+                staminaParent.SetActive(false); // スタミナUI非表示.
+            }
         }
     }
 
@@ -170,7 +201,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             SE.Call_SE(6);
         }
         resultPanel.SetActive(true);                  //パネルを表示
-        countDownText.text = ("00:00.000").ToString(); //残り時間を0に上書きし表示
+        gameTimer.text = ("00:00.000").ToString(); //残り時間を0に上書きし表示
         PhotonNetwork.Destroy(gameObject);             //自分を全体から破棄
         PhotonNetwork.Disconnect();                    //ルームから退出
     }
@@ -193,20 +224,22 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// キャラクターのステータスを取得する.
     /// </summary>
     public void StatusGet() {
-        var tmp1 = Character.GetValues(typeof(Character));
-        var tmp2 = (int)character;
+        var tmp1 = Character.GetValues(typeof(Character)); // ScriptableObjectの個数取得.
+        var tmp2 = (int)character; // キャラクター名の列挙体の番号を取得.
         foreach (var value in tmp1) {
             var tmp3 = (int)value;
             if(tmp2 == tmp3) {
                 walkSpeed = characterDatabase.statusList[tmp3].walkSpeed;
                 runSpeed = characterDatabase.statusList[tmp3].runSpeed;
-                stamina = characterDatabase.statusList[tmp3].stamina;
+                staminaAmount = characterDatabase.statusList[tmp3].staminaAmount;
+                staminaHealAmount = characterDatabase.statusList[tmp3].staminaHealAmount;
                 overCome = characterDatabase.statusList[tmp3].overCome;
                 obstructive = characterDatabase.statusList[tmp3].obstructive;
                 stealth = characterDatabase.statusList[tmp3].stealth;
                 special = characterDatabase.statusList[tmp3].special;
             }
         }
+        nowStamina = staminaAmount; // 現状のスタミナに最大スタミナを代入.
     }
 
     ///<summary> UGUI表示 </summary>
@@ -226,7 +259,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public IEnumerator GameStartCountDown() {
         BGM.Call_BGM_Stop(); // BGMを止める.
         SE.Call_SE(3);                          // カウントダウンの音を鳴らす.
-        isGameStart_CountDown = false;
+        isGameStarted = false;
         // 5秒間カウントダウン.
         for(isGameStartTimer = countDown; isGameStartTimer > 0; isGameStartTimer--) {
             isOnGui = true;                     // OnGuiを有効にする.
@@ -237,7 +270,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
         var BGMObject = GameObject.Find("BGM");
         BGMObject.GetComponent<BGM_Script>().Call_BGM(0);
-        charaState = CharaState.ゲーム中;
+        gameState = GameState.ゲーム中;
 
         // アイテム生成ルーチンを動かす.
         if(PhotonNetwork.LocalPlayer.IsMasterClient) {

@@ -11,7 +11,7 @@ public class PlayerChaser : PlayerBase
 {
     //------------ Public変数 ------------//
     [Tooltip("捕まえたキャラクターの表示")]
-    public Text catch_text;
+    public Text catch_text; //捕まえたプレイヤー名を表示するUI.
 
     //----------- Private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
@@ -19,30 +19,30 @@ public class PlayerChaser : PlayerBase
     //----------- 変数宣言終了 -----------//
 
     void Start() {
-
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>();
-        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>();
-        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // タグから CinemaChineManager オブジェクト用 MainCamera を取得
-
-        var DuringUI = GameObject.Find(GAMECANVAS).transform.Find("Panel_DuringGameUI");
-        countDownText = DuringUI.transform.Find("Text_Time").GetComponent<Text>();
-        catch_text.enabled = false;
-
-        resultPanel = GameObject.Find(GAMECANVAS).transform.Find("Panel_ResultList").transform.gameObject;
-        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
-        var resultScoreTable =  resultPanel.transform.Find("Text_ScoreTable").transform.gameObject;
-        resultWLText = resultScoreTable.transform.Find("Score_TextBox").gameObject.GetComponentInChildren<Text>();
-
+        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
+        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
+        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
         particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
 
-        var Target = GetComponent<Target>();
-        Target.enabled = false;
+        var mainCanvas = GameObject.Find(GAMECANVAS);
+
+        var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
+        gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
+        staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
+        staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+
+        var resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
+        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
+
+        var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
+        Target.enabled = false; // 非表示に.
 
         characterDatabase = GameObject.Find("CharacterStatusLoad").GetComponent<CharacterDatabase>();
-
         StatusGet();
+
+        catch_text.enabled = false; // 非表示に.
 
         EscapeCount();
     }
@@ -53,8 +53,8 @@ public class PlayerChaser : PlayerBase
             return;
         }
 
-        switch(charaState) {
-            case CharaState.ゲーム開始前:
+        switch(gameState) {
+            case GameState.ゲーム開始前:
                 // 地面に接している.
                 if(isGround){
                     PlayerMove();
@@ -64,26 +64,26 @@ public class PlayerChaser : PlayerBase
                 /* 【Debug】
                 if(Input.GetKeyDown(KeyCode.Z)) {
                     PlayerSpawn(); // キャラクターのスポーン処理.
-                    charaState = CharaState.カウントダウン;
+                    gameState = GameState.カウントダウン;
                 }*/
 
                 if(PhotonMatchMaker.GameStartFlg) {
                     PlayerSpawn(); // キャラクターのスポーン処理.
-                    charaState = CharaState.カウントダウン;
+                    gameState = GameState.カウントダウン;
                 }
             break;
 
-            case CharaState.カウントダウン:
+            case GameState.カウントダウン:
                 anim.SetFloat("DashSpeed", 0.0f); // アニメーションストップ.
                 anim.SetFloat("Speed", 0.0f);     // アニメーションストップ.
 
                 // カウントダウン.
-                if(isGameStart_CountDown) {
+                if(isGameStarted) {
                     StartCoroutine(GameStartCountDown());
                 }
             break;
 
-            case CharaState.ゲーム中:
+            case GameState.ゲーム中:
                 // 地面に接している.
                 if(isGround){
                     PlayerMove();
@@ -141,23 +141,21 @@ public class PlayerChaser : PlayerBase
         var gameTime = ST.GameTimeCounter();
 
         // テキストへ残り時間を表示
-        countDownText.text = gameTime.gameTimeStr;
+        gameTimer.text = gameTime.gameTimeStr;
 
         // 残り時間が5秒以下なら.
         if(gameTime.gameTimeInt <= 5000) {
-            countDownText.color = Color.red; // 赤色に指定.
+            gameTimer.color = Color.red; // 赤色に指定.
         }
 
         // 時間切れになったら.
         if(gameTime.gameTimeInt < 0){
-            resultWinLoseText.text = "You Lose...";
             resultWLText.text = "全員捕まえられなかった...";
             GameEnd(false);
         }
 
         // 時間切れ前に全員捕まえたら.
         if(players.Length == 0) {
-            resultWinLoseText.text = "You Win!";
             resultWLText.text = "全員捕まえられた！\n" + ("残り時間 : " + gameTime.gameTimeStr);
             GameEnd(true);
         }
