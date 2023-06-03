@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 /*
     2022/12/29 Atsuki Kobayashi
 */
@@ -6,8 +7,9 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
+using ExitGames.Client.Photon;
 
-public class PlayerEscape : PlayerBase {
+public class PlayerEscape : CharacterPerformance {
 
     //----------- protected変数 -----------//
     private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
@@ -17,6 +19,12 @@ public class PlayerEscape : PlayerBase {
     //----------- 変数宣言終了 -----------//
 
     void Start() {
+        // 自分のキャラクターでなければ処理をしない
+        if(!photonView.IsMine) {
+            return;
+        }
+
+        //====== オブジェクトやコンポーネントの取得 ======//
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
@@ -24,12 +32,13 @@ public class PlayerEscape : PlayerBase {
         playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
         particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
 
-        var mainCanvas = GameObject.Find(GAMECANVAS);
+        var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
 
         var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
         gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
         staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
         staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+        staminaParent.SetActive(false);
 
         var resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
         resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
@@ -38,9 +47,11 @@ public class PlayerEscape : PlayerBase {
         Target.enabled = false; // 非表示に.
 
         characterDatabase = GameObject.Find("CharacterStatusLoad").GetComponent<CharacterDatabase>();
-        StatusGet();
 
         offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
+        //====== オブジェクトやコンポーネントの取得 ======//
+
+        StatusGet(); // ステータスの取得.
 
         PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
     }
@@ -78,6 +89,10 @@ public class PlayerEscape : PlayerBase {
 
                 // カウントダウン.
                 if(isGameStarted) {
+                    // キャラクターがナユの場合.
+                    if((int)character == 9) {
+                        StaminaHealBoost(); // スタミナ回復量をブーストする.
+                    }
                     StartCoroutine(GameStartCountDown());
                 }
             break;
@@ -161,12 +176,38 @@ public class PlayerEscape : PlayerBase {
         }
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    {
-        if(PhotonNetwork.LocalPlayer == targetPlayer) {
-            print(targetPlayer);
+    /// <summary>
+    /// ルームのカスタムプロパティが変更された場合.
+    /// </summary>
+    /// <param name="propertiesThatChanged">変更されたカスタムプロパティ</param>
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
+        // 自分でない場合.
+        if(!photonView.IsMine) {
+            return;
         }
-        print(targetPlayer);
+        var i = 0;
+        foreach(var property in propertiesThatChanged){
+            var tmpKey = property.Key.ToString(); // Key.
+            var tmpValue = property.Value; // Value.
+            i++;
+
+            // Keyで照合;
+            switch(tmpKey) {
+                // スタミナの回復量のブースト.
+                case "hb":
+                    staminaHealAmount += float.Parse(tmpValue.ToString());
+                    print("StaminaBoost");
+                break;
+
+                default:
+                    Debug.LogError("想定されていないキー【" + tmpKey + "】です");
+                break;
+
+                //--- 随時追加 ---//
+            }
+        }
+
+        print("ルームプロパティ書き換え回数 : " + i);
     }
 
         //--------------- コリジョン ---------------//
@@ -213,6 +254,16 @@ public class PlayerEscape : PlayerBase {
             isHaveItem = true;
             SE.Call_SE(2);
         }
+    }
+
+    ///<summary> UGUI表示 </summary>
+    void OnGUI(){
+        if(!photonView.IsMine) {
+            return;
+        }
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 200;
+        GUI.Label(new Rect(100, 200, 300, 300), staminaHealAmount.ToString(), style);
     }
     //--------------- ここまでコリジョン ---------------//
 }

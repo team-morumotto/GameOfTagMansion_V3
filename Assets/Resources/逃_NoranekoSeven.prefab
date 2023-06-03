@@ -2371,15 +2371,9 @@ MonoBehaviour:
   - {fileID: 2813249604632921673, guid: fcc8349e9fc3e1a43b07c9ea8e4f7e51, type: 3}
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
-  COUNTDOWN: 5
-  charaState: 0
-  isGameStart_CountDown: 1
-  isOnGui: 0
-  isGround: 1
-  isSneak: 0
-  isInstantedItem: 1
-  walkSpeed: 10
-  runSpeed: 20
+  gameState: 0
+  character: 9
+  characterDatabase: {fileID: 0}
 --- !u!82 &-5122103517203573697
 AudioSource:
   m_ObjectHideFlags: 0

@@ -1123,7 +1123,7 @@ MonoBehaviour:
   - {fileID: 8579874479882662412, guid: e043720249312f94ea21b4b9f6634845, type: 3}
   - {fileID: 1673636152938565024, guid: 9a991fc1eed362e4aafeaeba238bf150, type: 3}
   - {fileID: 8409879509656933100, guid: c7b8ddba195f7d944ae3e00ce9fdd8fa, type: 3}
-  PlayerObject:
+  EscapeObject:
   - {fileID: 4049526037562052016, guid: 0928d055b8079d44a985ad28081d7bb6, type: 3}
   - {fileID: 4185030055977136437, guid: ac0aa98bf183a134d87d1e83b43e1508, type: 3}
   - {fileID: 2829568226418256726, guid: f066a4a933634e74083836036d931413, type: 3}
@@ -13590,6 +13590,54 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1138217484}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1309398330}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1665317841}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1437243931}
+        m_TargetAssemblyTypeName: CameraRotator3rdPersonPov, Assembly-CSharp
+        m_MethodName: TraReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &884609706
 MonoBehaviour:

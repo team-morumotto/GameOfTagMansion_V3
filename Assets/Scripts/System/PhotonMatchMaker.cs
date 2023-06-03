@@ -32,8 +32,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //------------ public ------------//
     private string[] instantedRoom = new string[300];                                                // 生成済みのルームリスト(300個までルームのボタン生成が可能).
     private List<string> roomListName = new List<string>();                                          // ルームリストの各ルームの名前.
-    [FormerlySerializedAs("before")] public GameObject[] OniObject = {null,null,null};	             // 鬼オブジェクト.
-    [FormerlySerializedAs("before")] public GameObject[] PlayerObject = {null,null,null};            // プレイヤーオブジェクト.
+    [FormerlySerializedAs("before")] public GameObject[] OniObject = {null,null,null};	             // 鬼キャラオブジェクト.
+    [FormerlySerializedAs("before")] public GameObject[] EscapeObject = {null,null,null};            // 逃げキャラオブジェクト.
     [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
     [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
     public GameObject BGPanel;
@@ -41,6 +41,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public InputField inputCreateRoomName;                                                           // 作成するルーム名を入力するInputField.
     public InputField inputJoinRoomName;                                                             // 参加する非公開ルーム名を保存するInputField.
     public GameObject cursol;
+    private GameObject player;
 
     //------------ private ------------//
     private RoomList roomList = new RoomList();             // RoomListClassのインスタンスを生成.
@@ -200,7 +201,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause) {
         print("【Debug】サーバー非接続状態 : "+cause);
     }
-    
+
     // ルームから退室した場合.
     public override void OnLeftRoom()
     {
@@ -250,12 +251,12 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
         switch(GoToChooseChara.GetPlayMode()) {
             case 0:
-                    GameObject Escape = PhotonNetwork.Instantiate(PlayerObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
-                    CreateCharacter(Escape);
+                    player = PhotonNetwork.Instantiate(EscapeObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+                    CreateCharacter(player);
                 break;
             case 1:
-                    GameObject Chaser = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
-                    CreateCharacter(Chaser);
+                    player = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
+                    CreateCharacter(player);
                 break;
         }
         GameStartFlg = false;
@@ -267,9 +268,19 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     /// マスターサーバから切断し、Closed_GameSceneをリロードする。
     /// </summary>
     public void GameSceneReload() {
-        isJoinRoom = false;
-        PhotonNetwork.Disconnect();                                         // マスターサーバから切断.
-        SceneManager.LoadScene("Closed_GameScene",LoadSceneMode.Single);    // ゲームシーンに遷移.
+        GameStartFlg = false;   // ゲームスタートフラグを初期化.
+        isJoinRoom = false;     // ルーム参加フラグを初期化.
+        isMenuOn = false;       // メニュー表示フラグを初期化.
+        // 逃げなら.
+        if(GoToChooseChara.GetPlayMode() == 0) {
+            sneakUI.SetActive(true);
+        }else{
+            useItemUI.transform.position = sneakUI.transform.position;
+            sneakUI.SetActive(false);
+        }
+
+        PhotonNetwork.Destroy(player);
+        PhotonNetwork.LeaveRoom();
     }
 
     // ルームを作成する.
@@ -384,25 +395,58 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //--------- InputField ---------//
 
     /// <summary>
-    /// カスタムプロパティを更新する関数
+    /// カスタムプロパティを更新する関数.
     /// </summary>
     /// <param name="_key">変更対象のキーを指定</param>
     /// <param name="_value">代入する値</param>
     /// <param name="_type">0:LocalPlayer、1:CurrentRoomが対象</param>
-    /// <typeparam name="T">原則int,bool型のみで使用/typeparam>
+    /// <typeparam name="T">お好きな型をどうぞ</typeparam>
     /// <returns>default(ダミー)</returns>
     public static T SetCustomProperty<T>(string _key, T _value, int _type) {
+        var hashTable = new ExitGames.Client.Photon.Hashtable();
+        hashTable[_key] = _value;
+
         if(_type == 0) {
-            var hashTable = new ExitGames.Client.Photon.Hashtable();
-            hashTable[_key] = _value;
             PhotonNetwork.LocalPlayer.SetCustomProperties(hashTable);
         }else if(_type == 1) {
-            var hashTable = new ExitGames.Client.Photon.Hashtable();
-            hashTable[_key] = _value;
             PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
-        }else{
-            Debug.LogWarning("SetCustomProperty : unknown type");
+        }else {
+            Debug.LogWarning("変更対象を指定できませんでした");
         }
         return default;
+    }
+
+    /// <summary>
+    /// Bool型のカスタムプロパティを取得する関数.
+    /// </summary>
+    /// <param name="_key">取得対象のキーを指定</param>
+    /// <param name="_type">0:LocalPlayer、1:CurrentRoomが対象</param>
+    /// <returns></returns>
+    public static bool GetCustomBoolean(string _key, int _type) {
+        if(_type == 0) {
+            return (PhotonNetwork.LocalPlayer.CustomProperties[_key]is bool value) ? value : false;
+        }else if(_type == 1) {
+            return (PhotonNetwork.CurrentRoom.CustomProperties[_key]is bool value) ? value : false;
+        }else {
+            Debug.LogWarning("取得対象を指定できませんでした");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// float型のカスタムプロパティを取得する関数.
+    /// </summary>
+    /// <param name="_key">取得対象のキーを指定</param>
+    /// <param name="_type">0:LocalPlayer、1:CurrentRoomが対象</param>
+    /// <returns></returns>
+    public static float GetCustomFLoat(string _key, int _type) {
+        if(_type == 0) {
+            return (PhotonNetwork.LocalPlayer.CustomProperties[_key]is float value) ? value : 0.0f;
+        }else if(_type == 1) {
+            return (PhotonNetwork.CurrentRoom.CustomProperties[_key]is float value) ? value : 0.0f;
+        }else {
+            Debug.LogWarning("取得対象を指定できませんでした");
+            return 0.0f;
+        }
     }
 }

@@ -17,10 +17,13 @@ public class CameraRotator3rdPersonPov : MonoBehaviour
     private Vector3 totalAngle = Vector3.zero;
     private float maxAngle = 40; // y軸上方向の最大角度.
     private float minAngle = -60;// y軸下方向の最大角度.
-    private bool isOnCursol = false; // PC標準のカーソルが表示されているかどうか.
+    private Vector3 firstPos;
+    private Quaternion firstRot;
 
     void Start() {
         Camera = gameObject.GetComponent<Camera>();
+        firstPos = transform.position;
+        firstRot = Quaternion.identity;
     }
 
     void Update() {
@@ -83,5 +86,10 @@ public class CameraRotator3rdPersonPov : MonoBehaviour
                 Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, -angle.x);
             }
         }
+    }
+
+    public void TraReset() {
+        transform.position = firstPos;
+        transform.rotation = firstRot;
     }
 }

@@ -10,8 +10,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     //----------- float変数 -----------//
 	protected float walkSpeed; // 歩行速度.
 	protected float runSpeed; // 走行速度.
-	protected float staminaAmount; // 体力.
-    protected float staminaHealAmount = 0.2f;
+	protected float staminaAmount; // スタミナ.
+    protected float staminaHealAmount; // スタミナ回復量.
 
     //---------- bool変数 ----------//
 	protected bool overCome; // 乗り越え.
@@ -240,19 +240,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             }
         }
         nowStamina = staminaAmount; // 現状のスタミナに最大スタミナを代入.
-    }
-
-    ///<summary> UGUI表示 </summary>
-    private void OnGUI() {
-        if(!photonView.IsMine || !isOnGui) {
-            return;                                                      // 自分でない場合は処理を行わない.
-        }
-
-        var controlStyle = new GUIStyle(GUI.skin.label) { fontSize = 30 };                  // フォントサイズを設定.
-        var rectY = Screen.height/14;
-        // ゲームスタート前のカウントダウンを表示.
-        controlStyle.fontSize = 300;
-        GUI.Label(new Rect(Screen.width/2, rectY, 300, 300), isGameStartTimer.ToString(), controlStyle);
     }
 
     ///<summary>5秒間待ってゲームを開始する</summary>

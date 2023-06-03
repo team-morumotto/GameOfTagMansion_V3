@@ -5645,7 +5645,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2829568226418256726}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
@@ -5660,7 +5660,7 @@ MonoBehaviour:
   - {fileID: 2813249604632921673, guid: fcc8349e9fc3e1a43b07c9ea8e4f7e51, type: 3}
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
-  charaState: 0
+  gameState: 0
   character: 0
   characterDatabase: {fileID: 0}
 --- !u!82 &-8258936174577379280
