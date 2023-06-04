@@ -1165,7 +1165,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75826374}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -21796,11 +21796,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1437243927}
   - component: {fileID: 1437243926}
-  - component: {fileID: 1437243925}
   - component: {fileID: 1437243930}
   - component: {fileID: 1437243929}
   - component: {fileID: 1437243928}
   - component: {fileID: 1437243931}
+  - component: {fileID: 1437243932}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -21808,14 +21808,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1437243925
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437243924}
-  m_Enabled: 1
 --- !u!20 &1437243926
 Camera:
   m_ObjectHideFlags: 0
@@ -21931,9 +21923,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c184e7eeba2ef6347894c2736bc6c05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
+  Camera: {fileID: 1437243926}
   reverseToggle: {fileID: 1861497712}
   rotateSpeed: 2
+--- !u!81 &1437243932
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437243924}
+  m_Enabled: 1
 --- !u!1 &1447795855
 GameObject:
   m_ObjectHideFlags: 0
@@ -23952,7 +23952,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
