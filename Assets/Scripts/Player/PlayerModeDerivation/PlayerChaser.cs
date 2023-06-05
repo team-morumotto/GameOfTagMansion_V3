@@ -19,11 +19,8 @@ public class PlayerChaser : CharacterPerformance
     //----------- 変数宣言終了 -----------//
 
     void Start() {
-        // 自分のキャラクターでなければ処理をしない
-        if(!photonView.IsMine) {
-            return;
-        }
-
+        GetPlayers();
+        if(photonView.IsMine) {
         //====== オブジェクトやコンポーネントの取得 ======//
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -46,11 +43,12 @@ public class PlayerChaser : CharacterPerformance
         var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
         Target.enabled = false; // 非表示に.
 
-        characterDatabase = GameObject.Find("CharacterStatusLoad").GetComponent<CharacterDatabase>();
+        itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
         //====== オブジェクトやコンポーネントの取得 ======//
-        StatusGet();
+        }
+        characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
+        StatusGet(); // ステータスの取得.
 
-        EscapeCount();
         catch_text.enabled = false; // 非表示に.
     }
 
@@ -113,8 +111,63 @@ public class PlayerChaser : CharacterPerformance
             return;
         }
 
-        GetEscapesPos(this.transform.position);
+        GetPlayersPos(this.transform.position);
         SneakEscapes();
+    }
+
+            /// <summary>
+    /// 機能 : プレイヤーの移動制御.
+    /// 引数 : なし.
+    /// 戻り値 : なし.
+    /// </summary>
+    public void PlayerMove() {
+        //プレイヤーの向きを変える
+        var inputHorizontal = Input.GetAxis("Horizontal"); // 入力デバイスの水平軸.
+        var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
+
+        if(inputHorizontal == 0 && inputVertical == 0) {
+            anim.SetFloat("Speed", 0f); // 移動していないので0.
+            StaminaHeal();
+        }
+        else{
+            Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
+            Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
+
+            // スタミナが残っていて走っている.
+            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
+                nowStamina -= 0.1f;  // スタミナ減少.
+                if(nowStamina < 0) {
+                    nowStamina = 0;  // スタミナはオーバーフローしない.
+                    isStaminaLoss = true; // スタミナ切れに.
+                }
+
+                photonView.RPC(nameof(IsRunningChange), RpcTarget.All, true);
+                MoveType(moveForward, runSpeed, 1.5f);
+                particleSystem.Play();     //パーティクルシステムをスタート
+            }else {
+                photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
+                MoveType(moveForward, walkSpeed, 1.0f);
+                particleSystem.Stop();     //パーティクルシステムをストップ
+                StaminaHeal();
+            }
+
+            // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする.
+            if (moveForward != Vector3.zero) {
+                transform.rotation = Quaternion.LookRotation(moveForward);
+            }
+        }
+
+        // 走っているときはスタミナUI表示.
+        if(nowStamina < staminaAmount && !staminaParent.activeSelf) {
+            staminaParent.SetActive(true);
+        }
+
+        staminaGuage.fillAmount = nowStamina / staminaAmount; // 残りのスタミナをUIに反映.
+    }
+
+    [PunRPC]
+    private void IsRunningChange(bool value) {
+        isRunning = value;
     }
 
     /// <summary>
@@ -125,7 +178,6 @@ public class PlayerChaser : CharacterPerformance
         // 逃げが0人でないなら.
         if(players.Length != 0) {
             foreach(var player in players){
-                // 自分以外.
                 bool isHide = (PhotonNetwork.PlayerList[i].CustomProperties["h"]is bool value) ? value : false;
                 // 該当の逃げキャラがしゃがみ状態なら.
                 if(isHide) {
@@ -161,39 +213,12 @@ public class PlayerChaser : CharacterPerformance
         }
 
         // 時間切れ前に全員捕まえたら.
-        if(players.Length == 0) {
+        if(escapeList.Count == 0) {
             resultWLText.text = "全員捕まえられた！\n" + ("残り時間 : " + gameTime.gameTimeStr);
             GameEnd(true);
         }
     }
 
-    /// <summary>
-    /// ルームのカスタムプロパティが変更された場合.
-    /// </summary>
-    /// <param name="propertiesThatChanged">変更されたカスタムプロパティ</param>
-    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
-        // 自分でない場合.
-        if(!photonView.IsMine) {
-            return;
-        }
-        var i = 0;
-        foreach(var property in propertiesThatChanged){
-            var tmpKey = property.Key.ToString(); // Key.
-            var tmpValue = property.Value; // Value.
-            i++;
-
-            // Keyで照合;
-            switch(tmpKey) {
-                default:
-                    Debug.LogError("想定されていないキー【" + tmpKey + "】です");
-                break;
-
-                //--- 随時追加 ---//
-            }
-        }
-
-        print("ルームプロパティ書き換え回数 : " + i);
-    }
     //--------------- コリジョン ---------------//
     private void OnCollisionEnter(Collision collision) {
         // 自分でない場合 or ゲームが開始されていない場合は処理を行わない
@@ -251,8 +276,45 @@ public class PlayerChaser : CharacterPerformance
     }
     //--------------- ここまでコリジョン ---------------//
 
+        ///<summary> UGUI表示 </summary>
+    void OnGUI(){
+        if(!photonView.IsMine) {
+            return;
+        }
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 200;
+        GUI.Label(new Rect(100, 200, 300, 300), staminaHealAmount.ToString(), style);
+    }
 
     //--------------- フォトンのコールバック ---------------//
+    /// <summary>
+    /// ルームのカスタムプロパティが変更された場合.
+    /// </summary>
+    /// <param name="propertiesThatChanged">変更されたカスタムプロパティ</param>
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged) {
+        // 自分でない場合.
+        if(!photonView.IsMine) {
+            return;
+        }
+        var i = 0;
+        foreach(var property in propertiesThatChanged){
+            var tmpKey = property.Key.ToString(); // Key.
+            var tmpValue = property.Value; // Value.
+            i++;
+
+            // Keyで照合;
+            switch(tmpKey) {
+                default:
+                    Debug.LogError("想定されていないキー【" + tmpKey + "】です");
+                break;
+
+                //--- 随時追加 ---//
+            }
+        }
+
+        print("ルームプロパティ書き換え回数 : " + i);
+    }
+
     /// <summary>
     /// ルームにプレイヤーが入室してきたときのコールバック関数.
     /// 引数 : newPlayer.
@@ -261,16 +323,6 @@ public class PlayerChaser : CharacterPerformance
     /// <param name="newPlayer">入室してきたプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Invoke("EscapeCount",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
-    }
-
-    ///<summary> UGUI表示 </summary>
-    void OnGUI(){
-        if(!photonView.IsMine) {
-            return;
-        }
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 200;
-        GUI.Label(new Rect(100, 200, 300, 300), staminaHealAmount.ToString(), style);
+        Invoke("GetPlayers",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
     }
 }

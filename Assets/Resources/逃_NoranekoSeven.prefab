@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBase: {fileID: 0}
 --- !u!82 &1851786657960960566
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2170,7 +2171,7 @@ GameObject:
   - component: {fileID: 4610172989104973632}
   m_Layer: 0
   m_Name: "\u9003_NoranekoSeven"
-  m_TagString: Nige
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2361,6 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -2374,6 +2376,9 @@ MonoBehaviour:
   gameState: 0
   character: 9
   characterDatabase: {fileID: 0}
+  itemDatabase: {fileID: 0}
+  isRunning: 0
+  playerList: []
 --- !u!82 &-5122103517203573697
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4576,6 +4581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBase: {fileID: 0}
 --- !u!82 &1828604629145897198
 AudioSource:
   m_ObjectHideFlags: 0

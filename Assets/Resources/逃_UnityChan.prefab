@@ -776,6 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBase: {fileID: 0}
 --- !u!1 &992845485163834582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,7 +3299,7 @@ GameObject:
   - component: {fileID: -1550850623745262376}
   m_Layer: 0
   m_Name: "\u9003_UnityChan"
-  m_TagString: Nige
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3474,6 +3475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -3485,8 +3487,10 @@ MonoBehaviour:
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   gameState: 0
-  character: 0
+  character: 1
   characterDatabase: {fileID: 0}
+  itemDatabase: {fileID: 0}
+  isRunning: 0
 --- !u!82 &8502407851292141370
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3857,6 +3861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBase: {fileID: 0}
 --- !u!54 &5441692897091886540
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6992,6 +6997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBase: {fileID: 0}
 --- !u!54 &4683066056632329521
 Rigidbody:
   m_ObjectHideFlags: 0

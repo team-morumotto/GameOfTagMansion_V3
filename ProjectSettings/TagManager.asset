@@ -6,14 +6,12 @@ TagManager:
   tags:
   - MainCameraManager
   - Wall
-  - Oni
   - PlayerInputManager
   - Item
   - Floor
   - NavPoint
   - NavNigeru
   - NavOni
-  - Nige
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,5 @@ public class CharacterStatus : ScriptableObject
 	public float staminaAmount; // スタミナ.
 	public float staminaHealAmount; // スタミナ回復量.
 	public bool overCome; // 乗り越え.
-	public bool obstructive; // 邪魔者.
-	public bool stealth; //ステルス.
-	public bool special; // 特殊.
+	public bool floating; // 浮遊.
 }

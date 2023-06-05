@@ -12,7 +12,7 @@ using LitJson; // ジャグ配列を扱うため.
 public class SpreadSheetLoad : MonoBehaviour
 {
     private const string URL = "https://sheets.googleapis.com/v4/spreadsheets/1OpXaK6mU510wPBMVo268AhOjKXPyE8RRH5h1RYXy3CA/values/Sample?key=AIzaSyDBTmUnPKAeyHFV_xYO5ZGpbAWkUuDUQUk";
-    private const int SHEET_HORIZONTAL = 9;
+    private const int SHEET_HORIZONTAL = 7;
     private const int SHEET_VERTICAL = 10;
     public CharacterDatabase characterDatabase;
     void Start() {
@@ -65,13 +65,7 @@ public class SpreadSheetLoad : MonoBehaviour
                     case 5: characterDatabase.statusList[i].overCome = JsonDataToBoolean(jsonData["values"][i + 1][j]);
                     break;
                     
-                    case 6: characterDatabase.statusList[i].obstructive = JsonDataToBoolean(jsonData["values"][i + 1][j]);
-                    break;
-                    
-                    case 7: characterDatabase.statusList[i].stealth = JsonDataToBoolean(jsonData["values"][i + 1][j]);
-                    break;
-
-                    case 8: characterDatabase.statusList[i].special = JsonDataToBoolean(jsonData["values"][i + 1][j]);
+                    case 6: characterDatabase.statusList[i].floating = JsonDataToBoolean(jsonData["values"][i + 1][j]);
                     break;
                     
                     default:

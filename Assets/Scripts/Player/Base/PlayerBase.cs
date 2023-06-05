@@ -3,6 +3,7 @@ using Photon.Pun;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerBase : MonoBehaviourPunCallbacks
 {
@@ -15,9 +16,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     //---------- bool変数 ----------//
 	protected bool overCome; // 乗り越え.
-	protected bool obstructive; // 邪魔者.
-	protected bool stealth; //ステルス.
-	protected bool special; // 特殊.
+	public bool floating; // 浮遊.
     //=========== キャラクターステータス ===========//
 
     //------ public static変数 ------//
@@ -51,6 +50,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
     public Character character;
     public CharacterDatabase characterDatabase;
+    public ItemDatabase itemDatabase;
     //---------- protected変数----------//
     protected Animator anim;                 // アニメーション.
     protected ParticleSystem particleSystem; // パーティクルシステム.
@@ -64,6 +64,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
+    protected List<Sprite> itemImageList = new List<Sprite>();
 
     //------ int変数 ------//
     protected int isGameStartTimer = 5;
@@ -77,63 +78,16 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isOnGui = false;              // GUIを表示しているか.
     protected bool isGround = true;              // 地面に接地しているか.
     protected bool isSneak = false;              // スニークしているか.
-    private bool isStaminaLoss = false;          // スタミナが切れているか.
+    protected bool isStaminaLoss = false;          // スタミナが切れているか.
+    public bool isRunning = false;            // 走っているか.
 
-    /// <summary>
-    /// 機能 : プレイヤーの移動制御.
-    /// 引数 : なし.
-    /// 戻り値 : なし.
-    /// </summary>
-    public void PlayerMove() {
-        //プレイヤーの向きを変える
-        var inputHorizontal = Input.GetAxis("Horizontal"); // 入力デバイスの水平軸.
-        var inputVertical = Input.GetAxis("Vertical");     // 入力デバイスの垂直軸.
-
-        if(inputHorizontal == 0 && inputVertical == 0) {
-            anim.SetFloat("Speed", 0f); // 移動していないので0.
-            StaminaHeal();
-        }
-        else{
-            Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
-            Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
-
-            // スタミナが残っていて走っている.
-            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
-                nowStamina -= 0.1f;  // スタミナ減少.
-                if(nowStamina < 0) {
-                    nowStamina = 0;  // スタミナはオーバーフローしない.
-                    isStaminaLoss = true; // スタミナ切れに.
-                }
-
-                MoveType(moveForward, runSpeed, 1.5f);
-                particleSystem.Play();     //パーティクルシステムをスタート
-            }else {
-                MoveType(moveForward, walkSpeed, 1.0f);
-                particleSystem.Stop();     //パーティクルシステムをストップ
-                StaminaHeal();
-            }
-
-            // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする.
-            if (moveForward != Vector3.zero) {
-                transform.rotation = Quaternion.LookRotation(moveForward);
-            }
-        }
-
-        // 走っているときはスタミナUI表示.
-        if(nowStamina < staminaAmount && !staminaParent.activeSelf) {
-            staminaParent.SetActive(true);
-        }
-
-        staminaGuage.fillAmount = nowStamina / staminaAmount; // 残りのスタミナをUIに反映.
-    }
-
-    private void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
+    protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
         rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // プレイヤーの走る処理.
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
         anim.SetFloat("DashSpeed", animSpeed);
     }
 
-    private void StaminaHeal() {
+    protected void StaminaHeal() {
         // スタミナが減っていたら.
         if(nowStamina < staminaAmount) {
             if(isStaminaLoss) {
@@ -234,9 +188,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 staminaAmount = characterDatabase.statusList[tmp3].staminaAmount;
                 staminaHealAmount = characterDatabase.statusList[tmp3].staminaHealAmount;
                 overCome = characterDatabase.statusList[tmp3].overCome;
-                obstructive = characterDatabase.statusList[tmp3].obstructive;
-                stealth = characterDatabase.statusList[tmp3].stealth;
-                special = characterDatabase.statusList[tmp3].special;
+                floating = characterDatabase.statusList[tmp3].floating;
             }
         }
         nowStamina = staminaAmount; // 現状のスタミナに最大スタミナを代入.

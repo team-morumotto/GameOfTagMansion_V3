@@ -4,6 +4,8 @@
 */
 
 using UnityEngine;
+using System.Collections.Generic;
+using Photon.Pun;
 
 public class CharacterPerformance : PlayerBase
 {
@@ -19,25 +21,44 @@ public class CharacterPerformance : PlayerBase
         staminaHealAmount += HealBoostAmount;
     }
 
+    public static List<PlayerBase> playerBase = new List<PlayerBase>();
+    protected List<GameObject> escapeList = new List<GameObject>();
+    private List<GameObject> playerList = new List<GameObject>();
     /// <summary>
-    /// ルーム内の逃げキャラを取得する.
+    /// ルーム内の全キャラを取得する.
     /// </summary>
-    protected GameObject[] players;
-    protected void EscapeCount() {
-        players = GameObject.FindGameObjectsWithTag("Nige");
+    protected void GetPlayers() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        playerList = new List<GameObject>(); // キャラクターリストの初期化.
+        escapeList = new List<GameObject>(); // 逃げキャラリストの初期化.
+
+        if(players != null) {
+            foreach(var player in players) {
+                // 取得したオブジェクトが自分でない場合.
+                if(player != this.gameObject) {
+                    playerList.Add(player);
+                    var tmp1 = player.GetComponent<PlayerBase>();
+                    playerBase.Add(tmp1);
+                }
+
+                if(player.GetComponent<PlayerEscape>()) {
+                    escapeList.Add(player);
+                }
+            }
+        }
     }
 
     private float detectionRange = 10.0f;
     /// <summary>
-    /// 鬼と逃げとの相対位置を計算し、一定範囲内なら反応する.
+    /// ほかキャラ相対位置を計算し、一定範囲内なら反応する.
     /// </summary>
-    /// <param name="chaserPos">鬼の位置</param>
-    protected void GetEscapesPos(Vector3 chaserPos) {
-        // 逃げキャラの数分繰り返し.
-        for(int i = 0; i < players.Length; i++) {
-            var tmpDistance = (players[i].transform.position - chaserPos).magnitude; // 
+    /// <param name="minePos">自分の位置</param>
+    protected void GetPlayersPos(Vector3 minePos) {
+        foreach(var players in playerList) {
+            var tmpDistance = (players.transform.position - minePos).magnitude; // 自分とほかキャラの相対位置を計算.
             if(tmpDistance < detectionRange) {
-                print("【" + players[i] + "】が探知範囲内です");
+                print("【" + players + "】が探知範囲内です");
             }
         }
     }
