@@ -4,24 +4,13 @@ using Photon.Pun;
 
 public class SpeedUpItem : MonoBehaviourPunCallbacks
 {
+    public ParticleSystem particle;
     void Start() {
         StartCoroutine(Destroy());
     }
 
     void Update(){
         transform.Rotate(0,1,0);           // 回転させる.
-    }
-
-    void OnTriggerEnter(Collider collision){
-        // 自分でない場合.
-        if(!photonView.IsMine) {
-            return;
-        }
-
-        // 触れたオブジェクトのタグがNigeかOniの場合.
-        if(collision.gameObject.tag == "Nige" || collision.gameObject.tag == "Oni"){
-            PhotonNetwork.Destroy(gameObject); // このオブジェクトを消す.
-        }
     }
 
     // 生成してから10秒後に消す.

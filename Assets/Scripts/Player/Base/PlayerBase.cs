@@ -51,6 +51,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public Character character;
     public CharacterDatabase characterDatabase;
     public ItemDatabase itemDatabase;
+    public  int characterNumber;
     //---------- protected変数----------//
     protected Animator anim;                 // アニメーション.
     protected ParticleSystem particleSystem; // パーティクルシステム.
@@ -65,6 +66,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
     protected List<Sprite> itemImageList = new List<Sprite>();
+    protected GameObject instancedObstruct;
 
     //------ int変数 ------//
     protected int isGameStartTimer = 5;

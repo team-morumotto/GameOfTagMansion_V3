@@ -12,6 +12,9 @@ TagManager:
   - NavPoint
   - NavNigeru
   - NavOni
+  - Oni
+  - Nigeru
+  - Obstruct
   layers:
   - Default
   - TransparentFX

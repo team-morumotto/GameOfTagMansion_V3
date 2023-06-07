@@ -1,5 +1,5 @@
 /*
-    2022/12/29 Atsuki Kobayashi
+    Created by Atsuki Kobayashi
 */
 using UnityEngine;
 using Photon.Pun;
@@ -56,6 +56,13 @@ public class PlayerChaser : CharacterPerformance
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
             return;
+        }
+
+        // Tolassの場合.
+        if(characterNumber == 0) {
+            if(Input.GetKeyDown(KeyCode.G)) {
+                instancedObstruct = PhotonNetwork.Instantiate("FrontObstructItem", transform.position + transform.forward * 2.0f , transform.rotation);
+            }
         }
 
         switch(gameState) {
@@ -263,15 +270,15 @@ public class PlayerChaser : CharacterPerformance
         }
     }
 
-    private void OnTriggerEnter(Collider collider) {
-        // 自分でない場合
-        if(!photonView.IsMine) {
-            return;
-        }
+        int isHit = 0;
 
-        if(collider.gameObject.tag == "Item") {
-            isHaveItem = true;      // アイテムを保持.
-            SE.Call_SE(2);
+    void OnTriggerEnter(Collider collider) {
+        if(instancedObstruct != collider.gameObject) {
+            if(collider.CompareTag("Obstruct")) {
+                isHit++;
+                Destroy(collider.gameObject);
+                SE.Call_SE(7);
+            }
         }
     }
     //--------------- ここまでコリジョン ---------------//
@@ -283,7 +290,7 @@ public class PlayerChaser : CharacterPerformance
         }
         GUIStyle style = new GUIStyle();
         style.fontSize = 200;
-        GUI.Label(new Rect(100, 200, 300, 300), staminaHealAmount.ToString(), style);
+        GUI.Label(new Rect(100, 200, 300, 300), isHit.ToString(), style);
     }
 
     //--------------- フォトンのコールバック ---------------//

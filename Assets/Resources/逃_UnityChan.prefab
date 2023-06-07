@@ -3487,9 +3487,10 @@ MonoBehaviour:
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   gameState: 0
-  character: 1
+  character: 0
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  characterNumber: 0
   isRunning: 0
 --- !u!82 &8502407851292141370
 AudioSource:

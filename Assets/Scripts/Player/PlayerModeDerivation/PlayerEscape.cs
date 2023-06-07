@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 /*
-    2022/12/29 Atsuki Kobayashi
+    Created by Atsuki Kobayashi
 */
 using UnityEngine;
 using Photon.Pun;
@@ -52,12 +51,21 @@ public class PlayerEscape : CharacterPerformance {
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         StatusGet(); // ステータスの取得.
+
+        characterNumber = (int)character; // キャラクターの番号.
     }
 
     void Update () {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
             return;
+        }
+
+        // Tolassの場合.
+        if(characterNumber == 0) {
+            if(Input.GetKeyDown(KeyCode.G)) {
+                instancedObstruct = PhotonNetwork.Instantiate("BackObstructItem", transform.position + -transform.forward * 2.0f , transform.rotation);
+            }
         }
 
         switch(gameState) {
@@ -87,8 +95,8 @@ public class PlayerEscape : CharacterPerformance {
 
                 // カウントダウン.
                 if(isGameStarted) {
-                    // キャラクターがナユの場合.
-                    if((int)character == 9) {
+                    // Nayuの場合.
+                    if(characterNumber == 9) {
                         StaminaHealBoost(); // スタミナ回復量をブーストする.
                     }
                     StartCoroutine(GameStartCountDown());
@@ -106,11 +114,6 @@ public class PlayerEscape : CharacterPerformance {
                 CharaPositionReset();
             break;
         }
-    }
-
-    [PunRPC]
-    private void IsRunningChange(bool value) {
-        isRunning = value;
     }
 
     //定期処理
@@ -177,6 +180,11 @@ public class PlayerEscape : CharacterPerformance {
         }
 
         staminaGuage.fillAmount = nowStamina / staminaAmount; // 残りのスタミナをUIに反映.
+    }
+
+    [PunRPC]
+    private void IsRunningChange(bool value) {
+        isRunning = value;
     }
 
     /// <summary>
@@ -262,15 +270,15 @@ public class PlayerEscape : CharacterPerformance {
         }
     }
 
-    void OnTriggerEnter(Collider collider) {
-        if(!photonView.IsMine) {
-            return;
-        }
+    int isHit = 0;
 
-        if(collider.gameObject.tag == "Item") {
-            // スピードアップ状態を発動
-            isHaveItem = true;
-            SE.Call_SE(2);
+    void OnTriggerEnter(Collider collider) {
+        if(instancedObstruct != collider.gameObject) {
+            if(collider.CompareTag("Obstruct")) {
+                isHit++;
+                Destroy(collider.gameObject);
+                SE.Call_SE(7);
+            }
         }
     }
     //--------------- ここまでコリジョン ---------------//
@@ -282,7 +290,7 @@ public class PlayerEscape : CharacterPerformance {
         }
         GUIStyle style = new GUIStyle();
         style.fontSize = 200;
-        GUI.Label(new Rect(100, 200, 300, 300), staminaHealAmount.ToString(), style);
+        GUI.Label(new Rect(100, 200, 300, 300), isHit.ToString(), style);
     }
 
     //--------------- フォトンのコールバック ---------------//

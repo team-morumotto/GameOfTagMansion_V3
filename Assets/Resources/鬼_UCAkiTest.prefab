@@ -2277,8 +2277,8 @@ MonoBehaviour:
   character: 0
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  characterNumber: 0
   isRunning: 0
-  playerList: []
   catch_text: {fileID: 1816362596516665635, guid: a82f47e2a8615fa43bf3d7ed15e97601, type: 3}
 --- !u!82 &8579874479882662415
 AudioSource:
