@@ -237,4 +237,46 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         isUseItem = false;
         isHaveItem = false;
     }
+
+    public enum ItemName{
+        invincibleStar, //無敵スター
+        locationShuffle, //位置入れ替え
+        abilityBlock, //アビリティ封印
+        movementBinding, //移動封印
+        drink, //小回復
+        poteto, //中回復
+        hamburger, //大回復
+        disposableGrapnelGun, //使い捨てグラップルガン
+    }; 
+    private List<ItemName>[] haveItem = new List<ItemName>[2];
+    /// <summary>
+    /// アイテム関連の処理.
+    /// </summary>
+    void ItemUse(){
+        // アイテムを持っているなら.
+        if(Input.GetKey(KeyCode.I)){
+
+            if(isHaveItem){
+                ItemName tmp = haveItem[0][0]; // アイテム名を取得.
+                switch(tmp){
+                    case ItemName.invincibleStar:
+                        // 無敵スターを使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.locationShuffle:
+                        // 位置入れ替えを使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.abilityBlock:
+                        // アビリティ封印を使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.movementBinding:
+                        // 移動封印を使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+               }
+            }
+        }
+    }
 }
