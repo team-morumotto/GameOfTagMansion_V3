@@ -249,6 +249,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         disposableGrapnelGun, //使い捨てグラップルガン
     }; 
     private List<ItemName>[] haveItem = new List<ItemName>[2];
+    protected bool isUseAbility = true; 
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
@@ -269,14 +270,34 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                         break;
                     case ItemName.abilityBlock:
                         // アビリティ封印を使用する.
+                        isUseAbility = false;
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.movementBinding:
                         // 移動封印を使用する.
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
+                    case ItemName.drink:
+                        // 小回復を使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.poteto:
+                        // 中回復を使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.hamburger:
+                        // 大回復を使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
+                    case ItemName.disposableGrapnelGun:
+                        // 使い捨てグラップルガンを使用する.
+                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        break;
                }
             }
         }
+    }
+    protected void ItemGet(ItemName itemName){
+        haveItem[0].Add(itemName);
     }
 }
