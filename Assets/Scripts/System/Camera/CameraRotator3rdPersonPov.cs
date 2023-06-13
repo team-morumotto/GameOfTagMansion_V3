@@ -27,64 +27,44 @@ public class CameraRotator3rdPersonPov : MonoBehaviour
     }
 
     void Update() {
-        if(playerObject) {
-            if(!reverseToggle.isOn) {
-                /*
-                if(Input.GetKeyDown(KeyCode.Escape)) {
-                    if(Cursor.visible) {
-                        Cursor.visible = false; // ゲームウィンドウ選択中はカーソルが非表示.
-                    }else if(!Cursor.visible) {
-                        Cursor.visible = true; // ゲームウィンドウ選択中はカーソルが表示.
-                    }
-                }*/
+        if(!playerObject) {
+            Debug.LogError("Not Set PlayerObject.");
+        }
 
-                /*
-                    カメラの移動向きを指定.
-                */
-                // Vector3でX,Y方向の回転の度合いを定義.
-                Vector3 angle = new Vector3(Input.GetAxis("Mouse X") * rotateSpeed,Input.GetAxis("Mouse Y") * rotateSpeed, 0);
+        if(!reverseToggle.isOn) {
+            // カメラの移動向きを指定.
+            // Vector3でX,Y方向の回転の度合いを定義.
+            Vector3 angle = new Vector3(Input.GetAxis("Mouse X") * rotateSpeed,Input.GetAxis("Mouse Y") * rotateSpeed, 0);
 
-                if(angle != Vector3.zero) {
-                    totalAngle += angle;
-                    if(totalAngle.y > maxAngle) {
-                        totalAngle.y = maxAngle;
-                    }else if(totalAngle.y < minAngle) {
-                        totalAngle.y = minAngle;
-                    }else{
-                        Camera.transform.RotateAround(playerObject.transform.position, transform.right, -angle.y);
-                    }
+            if(angle != Vector3.zero) {
+                totalAngle += angle;
+                if(totalAngle.y > maxAngle) {
+                    totalAngle.y = maxAngle;
+                }else if(totalAngle.y < minAngle) {
+                    totalAngle.y = minAngle;
+                }else{
+                    Camera.transform.RotateAround(playerObject.transform.position, transform.right, -angle.y);
                 }
-
-                Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, angle.x);
-            }else{
-                /*
-                if(Input.GetKeyDown(KeyCode.Escape)) {
-                    if(Cursor.visible) {
-                        Cursor.visible = false; // ゲームウィンドウ選択中はカーソルが非表示.
-                    }else if(!Cursor.visible) {
-                        Cursor.visible = true; // ゲームウィンドウ選択中はカーソルが表示.
-                    }
-                }*/
-
-                /*
-                    カメラの移動向きを指定.
-                */
-                // Vector3でX,Y方向の回転の度合いを定義.
-                Vector3 angle = new Vector3(Input.GetAxis("Mouse X") * rotateSpeed,Input.GetAxis("Mouse Y") * rotateSpeed, 0);
-
-                if(angle != Vector3.zero) {
-                    totalAngle += angle;
-                    if(totalAngle.y > maxAngle) {
-                        totalAngle.y = maxAngle;
-                    }else if(totalAngle.y < minAngle) {
-                        totalAngle.y = minAngle;
-                    }else{
-                        Camera.transform.RotateAround(playerObject.transform.position, transform.right, angle.y);
-                    }
-                }
-
-                Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, -angle.x);
             }
+
+            Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, angle.x);
+        }else{
+            // カメラの移動向きを指定.
+            // Vector3でX,Y方向の回転の度合いを定義.
+            Vector3 angle = new Vector3(Input.GetAxis("Mouse X") * rotateSpeed,Input.GetAxis("Mouse Y") * rotateSpeed, 0);
+
+            if(angle != Vector3.zero) {
+                totalAngle += angle;
+                if(totalAngle.y > maxAngle) {
+                    totalAngle.y = maxAngle;
+                }else if(totalAngle.y < minAngle) {
+                    totalAngle.y = minAngle;
+                }else{
+                    Camera.transform.RotateAround(playerObject.transform.position, transform.right, angle.y);
+                }
+            }
+
+            Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, -angle.x);
         }
     }
 

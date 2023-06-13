@@ -7,48 +7,59 @@ using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Cinemachine;
 
 public class PlayerChaser : CharacterPerformance
 {
-    //------------ Public変数 ------------//
     [Tooltip("捕まえたキャラクターの表示")]
-    public Text catch_text; //捕まえたプレイヤー名を表示するUI.
+    [SerializeField]
+    Text catch_text; //捕まえたプレイヤー名を表示するUI.
+
+    [Tooltip("カメラが注視するオブジェクト")]
+    [SerializeField]
+    public Transform lookat;
 
     //----------- Private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
+    private CinemachineFreeLook cf; // CinemaCHineFreeLook.
     //----------- 変数宣言終了 -----------//
 
     void Start() {
         GetPlayers();
         if(photonView.IsMine) {
-        //====== オブジェクトやコンポーネントの取得 ======//
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
-        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
-        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
-        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
-        particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
+            //====== オブジェクトやコンポーネントの取得 ======//
+            rb = GetComponent<Rigidbody>();
+            anim = GetComponent<Animator>();
+            SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
+            BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
+            playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
 
-        var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
+            var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
 
-        var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
-        gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
-        staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
-        staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
-        staminaParent.SetActive(false);
+            var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
+            gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
+            staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
+            staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+            staminaParent.SetActive(false);
 
-        var resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
-        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
+            var resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
+            resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
 
-        var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
-        Target.enabled = false; // 非表示に.
+            var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
+            Target.enabled = false; // 非表示に.
 
-        itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
-        //====== オブジェクトやコンポーネントの取得 ======//
+            itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
+
+            var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
+            cf.enabled = true;
+            cf.Follow = this.transform;
+            cf.LookAt = this.lookat;
+            //====== オブジェクトやコンポーネントの取得 ======//
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         StatusGet(); // ステータスの取得.
 
+        characterNumber = (int)character; // キャラクターの番号.
         catch_text.enabled = false; // 非表示に.
     }
 
@@ -61,15 +72,23 @@ public class PlayerChaser : CharacterPerformance
         // Tolassの場合.
         if(characterNumber == 0) {
             if(Input.GetKeyDown(KeyCode.G)) {
-                instancedObstruct = PhotonNetwork.Instantiate("FrontObstructItem", transform.position + transform.forward * 2.0f , transform.rotation);
+                photonView.RPC(nameof(FireObstruct), RpcTarget.All);
+            }
+        }
+
+        if(characterNumber == 2) {
+            if(Input.GetKeyDown(KeyCode.H)) {
+                MikagamiKoyomiAbility();
             }
         }
 
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接している.
-                if(isGround){
-                    PlayerMove();
+                if(!isStan) {
+                    if(isGround){
+                        PlayerMove();
+                    }
                 }
                 PlayNumber();
 
@@ -92,7 +111,7 @@ public class PlayerChaser : CharacterPerformance
                 // カウントダウン.
                 if(isGameStarted) {
                     // キャラクターがナユの場合自分のみ回復力ブースト.
-                    if((int)character == 9) {
+                    if(characterNumber == 9) {
                         staminaHealAmount += HealBoostAmount;
                     }
                     StartCoroutine(GameStartCountDown());
@@ -149,12 +168,10 @@ public class PlayerChaser : CharacterPerformance
                 }
 
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, true);
-                MoveType(moveForward, runSpeed, 1.5f);
-                particleSystem.Play();     //パーティクルシステムをスタート
+                MoveType(moveForward , runSpeed, 1.5f);
             }else {
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
-                MoveType(moveForward, walkSpeed, 1.0f);
-                particleSystem.Stop();     //パーティクルシステムをストップ
+                MoveType(moveForward, walkSpeed, 1.5f);
                 StaminaHeal();
             }
 
@@ -175,6 +192,11 @@ public class PlayerChaser : CharacterPerformance
     [PunRPC]
     private void IsRunningChange(bool value) {
         isRunning = value;
+    }
+
+    [PunRPC]
+    private void FireObstruct() {
+        Instantiate(obstructItem, transform.position + new Vector3(0, 0, 2), transform.rotation); // リストに追加.
     }
 
     /// <summary>
@@ -273,12 +295,17 @@ public class PlayerChaser : CharacterPerformance
         int isHit = 0;
 
     void OnTriggerEnter(Collider collider) {
-        if(instancedObstruct != collider.gameObject) {
-            if(collider.CompareTag("Obstruct")) {
-                isHit++;
-                Destroy(collider.gameObject);
-                SE.Call_SE(7);
+        // 当たったオブジェクトが障害物なら.
+        if(collider.CompareTag("Obstruct")) {
+            // すでにスタンしているなら処理しない.
+            if(isStan) {
+                return;
             }
+
+            // 自分で生成した障害物でないなら.
+            isHit++;
+            Destroy(collider.gameObject); // 破壊.
+            HitObstruct();
         }
     }
     //--------------- ここまでコリジョン ---------------//

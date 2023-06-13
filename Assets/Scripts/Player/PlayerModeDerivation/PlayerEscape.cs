@@ -7,14 +7,17 @@ using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Cinemachine;
 
 public class PlayerEscape : CharacterPerformance {
-
-    //----------- protected変数 -----------//
-    private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
+    [Tooltip("カメラが注視するオブジェクト")]
+    [SerializeField]
+    public Transform lookat;
     //----------- Private変数 -----------//
+    private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
     private ScreenTimer ST = new ScreenTimer(); // プレイヤーの機能をまとめたクラス.
     private float sneakSpeed = 2.5f;   // スニーク状態のスピード.
+
     //----------- 変数宣言終了 -----------//
 
     void Start() {
@@ -26,7 +29,6 @@ public class PlayerEscape : CharacterPerformance {
             SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
             BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
             playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
-            particleSystem = playerCamera.transform.Find("Particle System").gameObject.GetComponent<ParticleSystem>();
 
             var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
 
@@ -47,6 +49,12 @@ public class PlayerEscape : CharacterPerformance {
             offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
 
             PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
+
+            var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
+            cf.enabled = true;
+            cf.Follow = this.transform;
+            cf.LookAt = this.lookat;
+
             //====== オブジェクトやコンポーネントの取得 ======//
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
@@ -55,28 +63,39 @@ public class PlayerEscape : CharacterPerformance {
         characterNumber = (int)character; // キャラクターの番号.
     }
 
+    string fps = "";
+
     void Update () {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
             return;
         }
 
+        fps = (1.0f / Time.deltaTime).ToString();
+
         // Tolassの場合.
         if(characterNumber == 0) {
             if(Input.GetKeyDown(KeyCode.G)) {
-                instancedObstruct = PhotonNetwork.Instantiate("BackObstructItem", transform.position + -transform.forward * 2.0f , transform.rotation);
+                photonView.RPC(nameof(FireObstruct), RpcTarget.All);
+            }
+        }
+
+        if(characterNumber == 2) {
+            if(Input.GetKeyDown(KeyCode.H)) {
+                MikagamiKoyomiAbility();
             }
         }
 
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接している.
-                if(isGround){
-                    PlayerMove();
+                if(!isStan) {
+                    if(isGround){
+                        PlayerMove();
+                    }
                 }
                 Sneak();
                 PlayNumber();
-                UseItem();
 
                 /*if(Input.GetKeyDown(KeyCode.Z)) {
                     PlayerSpawn(); // キャラクターのスポーン処理.
@@ -160,11 +179,9 @@ public class PlayerEscape : CharacterPerformance {
 
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, true);
                 MoveType(moveForward, runSpeed, 1.5f);
-                particleSystem.Play();     //パーティクルシステムをスタート
             }else {
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
                 MoveType(moveForward, walkSpeed, 1.0f);
-                particleSystem.Stop();     //パーティクルシステムをストップ
                 StaminaHeal();
             }
 
@@ -185,6 +202,18 @@ public class PlayerEscape : CharacterPerformance {
     [PunRPC]
     private void IsRunningChange(bool value) {
         isRunning = value;
+    }
+
+    [PunRPC]
+    private void FireObstruct(PhotonMessageInfo info) {
+        if(info.Sender.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) {
+            instanceObstructItem = Instantiate(obstructItem, transform.position + (-transform.forward * 2), transform.rotation); // リストに追加.
+            #if UNITY_EDITOR
+                print("自分が生成した");
+            #endif
+        }else {
+            Instantiate(obstructItem, transform.position + (-transform.forward * 2), transform.rotation); // リストに追加.
+        }
     }
 
     /// <summary>
@@ -270,14 +299,22 @@ public class PlayerEscape : CharacterPerformance {
         }
     }
 
-    int isHit = 0;
+    int isHit = 0; // デバッグ用.
 
     void OnTriggerEnter(Collider collider) {
-        if(instancedObstruct != collider.gameObject) {
-            if(collider.CompareTag("Obstruct")) {
+        // 当たったオブジェクトが障害物なら.
+        if(collider.CompareTag("Obstruct")) {
+            if(instanceObstructItem != collider.gameObject) {
+                // すでにスタンしているなら処理しない.
+                if(isStan) {
+                    print("スタン済み");
+                    return;
+                }
+
+                // 自分で生成した障害物でないなら.
                 isHit++;
-                Destroy(collider.gameObject);
-                SE.Call_SE(7);
+                Destroy(collider.gameObject); // 破壊.
+                HitObstruct();
             }
         }
     }
@@ -289,8 +326,11 @@ public class PlayerEscape : CharacterPerformance {
             return;
         }
         GUIStyle style = new GUIStyle();
-        style.fontSize = 200;
-        GUI.Label(new Rect(100, 200, 300, 300), isHit.ToString(), style);
+        style.fontSize = 100;
+        GUI.Label(new Rect(100, 100, 300, 300), "velocity:" + rb.velocity.ToString(), style);
+        GUI.Label(new Rect(100, 200, 300, 300), "deltaTime:" + Time.deltaTime.ToString(), style);
+        GUI.Label(new Rect(100, 300, 300, 300), "flameLate:" + fps.ToString(), style);
+        GUI.Label(new Rect(100, 400, 300, 300), "isHit:" + isHit.ToString(), style);
     }
 
     //--------------- フォトンのコールバック ---------------//
@@ -303,11 +343,9 @@ public class PlayerEscape : CharacterPerformance {
         if(!photonView.IsMine) {
             return;
         }
-        var i = 0;
         foreach(var property in propertiesThatChanged){
             var tmpKey = property.Key.ToString(); // Key.
             var tmpValue = property.Value; // Value.
-            i++;
 
             // Keyで照合;
             switch(tmpKey) {
@@ -325,7 +363,7 @@ public class PlayerEscape : CharacterPerformance {
             }
         }
 
-        print("ルームプロパティ書き換え回数 : " + i);
+        print("ルームプロパティ書き換え");
     }
 
     /// <summary>

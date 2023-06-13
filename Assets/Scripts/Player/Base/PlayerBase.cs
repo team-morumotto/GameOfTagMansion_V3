@@ -16,18 +16,24 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     //---------- bool変数 ----------//
 	protected bool overCome; // 乗り越え.
-	public bool floating; // 浮遊.
     //=========== キャラクターステータス ===========//
 
     //------ public static変数 ------//
+    public static List<PlayerBase> playerBase = new List<PlayerBase>(); // ほかクライアントのキャラのPlayerBaseコンポーネントリスト.
     public static bool isHaveItem = false;   // アイテムを取得したかどうか.
     public static bool isUseItem = false;    // アイテムを使用したかどうか.
     //------------ 定数 ------------//
     public const string GAMECANVAS = "/Canvas_Main"; // Canvas_Mainの取得.
 
     //----------- public変数 -----------//
-    [Tooltip("キャラクターのステージのスポーン場所")] [FormerlySerializedAs("before")]               public GameObject[] userSpawnPoint;           // キャラクターのステージスポーン場所.
-    [Tooltip("スピードアップアイテムのステージスポーン場所")] [FormerlySerializedAs("before")]       public GameObject[] itemSpawnPoint;         // アイテムのステージスポーン場所.
+    [Tooltip("キャラクターのステージのスポーン場所")]
+    [FormerlySerializedAs("before")]
+    public GameObject[] userSpawnPoint;           // キャラクターのステージスポーン場所.
+
+    [Tooltip("スピードアップアイテムのステージスポーン場所")]
+    [FormerlySerializedAs("before")]
+    public GameObject[] itemSpawnPoint;         // アイテムのステージスポーン場所.
+
     public enum GameState { // ゲームの進行状況.
         ゲーム開始前,
         カウントダウン,
@@ -51,22 +57,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public Character character;
     public CharacterDatabase characterDatabase;
     public ItemDatabase itemDatabase;
-    public  int characterNumber;
+    public GameObject obstructItem;
+    public int characterNumber;
+    public bool floating; // 浮遊.
     //---------- protected変数----------//
     protected Animator anim;                 // アニメーション.
-    protected ParticleSystem particleSystem; // パーティクルシステム.
     protected Camera playerCamera;           // プレイヤーを追尾するカメラ.
     protected Button_SE SE;
     protected BGM_Script BGM;
-    protected Text gameTimer;            // タイマー出力用.
+    protected Text gameTimer;                // タイマー出力用.
     protected GameObject resultPanel;        // リザルトパネル.
     protected Text resultWLText;             // リザルトパネルの勝敗テキスト.
     protected Text resultWinLoseText;        // リザルトの勝敗.
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
-    protected List<Sprite> itemImageList = new List<Sprite>();
-    protected GameObject instancedObstruct;
+    protected GameObject instancedObstruct;  // 障害物.
+    protected List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
+    protected List<GameObject> playerList = new List<GameObject>(); // ルーム内のプレイヤーのリスト.
+    protected GameObject instanceObstructItem; // 生成した障害物.
 
     //------ int変数 ------//
     protected int isGameStartTimer = 5;
@@ -81,10 +90,18 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isGround = true;              // 地面に接地しているか.
     protected bool isSneak = false;              // スニークしているか.
     protected bool isStaminaLoss = false;          // スタミナが切れているか.
+    protected bool isStan = false;               // スタンしているか.
     public bool isRunning = false;            // 走っているか.
 
+    /// <summary>
+    /// プレイヤーの移動処理.
+    /// 状況によって移動速度を変える.
+    /// </summary>
+    /// <param name="moveForward">移動方向</param>
+    /// <param name="moveSpeed">移動速度</param>
+    /// <param name="animSpeed">アニメーション速度</param>
     protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
-        rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // プレイヤーの走る処理.
+        rb.velocity = moveForward * moveSpeed * Time.deltaTime * 10 * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
         anim.SetFloat("DashSpeed", animSpeed);
     }
@@ -238,6 +255,31 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         isHaveItem = false;
     }
 
+    /// <summary>
+    /// ルーム内の全キャラを取得する.
+    /// </summary>
+    protected void GetPlayers() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        playerList = new List<GameObject>(); // キャラクターリストの初期化.
+        escapeList = new List<GameObject>(); // 逃げキャラリストの初期化.
+
+        if(players != null) {
+            foreach(var player in players) {
+                // 取得したキャラクターが自分でない場合.
+                if(player != this.gameObject) {
+                    playerList.Add(player);
+                    var tmp1 = player.GetComponent<PlayerBase>();
+                    playerBase.Add(tmp1);
+                }
+
+                if(player.GetComponent<PlayerEscape>()) {
+                    escapeList.Add(player);
+                }
+            }
+        }
+    }
+
     public enum ItemName{
         invincibleStar, //無敵スター
         locationShuffle, //位置入れ替え
@@ -247,16 +289,15 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         poteto, //中回復
         hamburger, //大回復
         disposableGrapnelGun, //使い捨てグラップルガン
-    }; 
+    }
     private List<ItemName>[] haveItem = new List<ItemName>[2];
-    protected bool isUseAbility = true; 
+    protected bool isUseAbility = true;
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
     void ItemUse(){
-        // アイテムを持っているなら.
         if(Input.GetKey(KeyCode.I)){
-
+            // アイテムを持っているなら.
             if(isHaveItem){
                 ItemName tmp = haveItem[0][0]; // アイテム名を取得.
                 switch(tmp){
@@ -293,7 +334,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                         // 使い捨てグラップルガンを使用する.
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
-               }
+                }
             }
         }
     }

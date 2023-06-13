@@ -2278,6 +2278,7 @@ MonoBehaviour:
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
   characterNumber: 0
+  obstructItem: {fileID: 8333294537088516929, guid: dc6d1bc9b3483fc4aa43c338c140bc61, type: 3}
   isRunning: 0
   catch_text: {fileID: 1816362596516665635, guid: a82f47e2a8615fa43bf3d7ed15e97601, type: 3}
 --- !u!82 &8579874479882662415

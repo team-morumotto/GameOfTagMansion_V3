@@ -16,9 +16,9 @@ public class ObstructItem : MonoBehaviourPunCallbacks
 
     void Update() {
         if(isFront) {
-            transform.position += (transform.forward / 60) * moveSpeed;
+            transform.position += transform.forward * Time.deltaTime  * moveSpeed * moveSpeed;
         }else{
-            transform.position += (-transform.forward / 60) * moveSpeed;
+            transform.position += -transform.forward * Time.deltaTime * moveSpeed * moveSpeed;
         }
     }
 
@@ -26,8 +26,18 @@ public class ObstructItem : MonoBehaviourPunCallbacks
 		Instantiate(obstructParticle, transform.position, transform.rotation);
 	}
 
+    /// <summary>
+    /// 5秒後削除.
+    /// </summary>
     IEnumerator Destroy() {
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(5.0f);
         Destroy(this.gameObject);
+    }
+
+    void OnTriggerEnter(Collider collider) {
+        print("aa");
+        if(collider.CompareTag("Wall")){
+            Destroy(this.gameObject);
+        }
     }
 }

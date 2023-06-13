@@ -11647,7 +11647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
+  m_SynchronizeScale: 1
   m_UseLocal: 0
 --- !u!114 &8409879509656933099
 MonoBehaviour:
@@ -11719,11 +11719,12 @@ MonoBehaviour:
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   gameState: 0
-  character: 0
+  character: 2
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  characterNumber: 0
+  obstructItem: {fileID: 0}
   isRunning: 0
-  playerList: []
   catch_text: {fileID: 1816362596516665635, guid: a82f47e2a8615fa43bf3d7ed15e97601, type: 3}
 --- !u!82 &8409879509656933101
 AudioSource:
