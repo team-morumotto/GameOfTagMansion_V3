@@ -3458,6 +3458,9 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: DashSpeed
+  - Type: 4
+    SynchronizeType: 0
+    Name: Stan
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -3475,7 +3478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -3487,13 +3489,16 @@ MonoBehaviour:
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   gameState: 0
-  character: 0
+  character: 1
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  characterNumber: 0
   obstructItem: {fileID: 8333294537088516929, guid: 3b6e249a004a6cc44a19921984a36c30, type: 3}
-  staminaParent: {fileID: 0}
-  staminaGuage: {fileID: 0}
+  characterNumber: 0
+  floating: 0
+  playerList: []
+  escapeList: []
+  escapeTargetList: []
+  chaserTarget: {fileID: 0}
   isRunning: 0
   lookat: {fileID: 8179242313304045502}
 --- !u!82 &8502407851292141370

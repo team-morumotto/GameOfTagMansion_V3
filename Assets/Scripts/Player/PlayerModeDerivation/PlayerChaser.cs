@@ -25,8 +25,8 @@ public class PlayerChaser : CharacterPerformance
     //----------- 変数宣言終了 -----------//
 
     void Start() {
-        GetPlayers();
         if(photonView.IsMine) {
+            GetPlayers();
             //====== オブジェクトやコンポーネントの取得 ======//
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
@@ -46,7 +46,7 @@ public class PlayerChaser : CharacterPerformance
             resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
 
             var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
-            Target.enabled = false; // 非表示に.
+            Target.enabled = false; // 自分のカーソルを非表示に.
 
             itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
 
@@ -54,14 +54,18 @@ public class PlayerChaser : CharacterPerformance
             cf.enabled = true;
             cf.Follow = this.transform;
             cf.LookAt = this.lookat;
+
+            characterNumber = (int)character; // キャラクターの番号.
+            ChaserAbilitySet();
             //====== オブジェクトやコンポーネントの取得 ======//
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
-        StatusGet(); // ステータスの取得.
+        GetStatus(); // ステータスの取得.
 
-        characterNumber = (int)character; // キャラクターの番号.
         catch_text.enabled = false; // 非表示に.
     }
+
+    string fps = "";
 
     void Update() {
         // 自分のキャラクターでなければ処理をしない
@@ -69,16 +73,25 @@ public class PlayerChaser : CharacterPerformance
             return;
         }
 
+        fps = (1.0f / Time.deltaTime).ToString();
+
+        if(Input.GetKeyDown(KeyCode.I)) {
+            if(performance != null) {
+                if(!isUseAvility) {
+                    abilityUseAmount--; // 使用可能回数-1.
+                    print("能力使用");
+                    isUseAvility = true;
+                    performance();
+                }
+            }else{
+                Debug.LogError("能力がセットされていません");
+            }
+        }
+
         // Tolassの場合.
         if(characterNumber == 0) {
             if(Input.GetKeyDown(KeyCode.G)) {
                 photonView.RPC(nameof(FireObstruct), RpcTarget.All);
-            }
-        }
-
-        if(characterNumber == 2) {
-            if(Input.GetKeyDown(KeyCode.H)) {
-                MikagamiKoyomiAbility();
             }
         }
 
@@ -137,7 +150,7 @@ public class PlayerChaser : CharacterPerformance
             return;
         }
 
-        GetPlayersPos(this.transform.position);
+        GetPlayersPos();
         SneakEscapes();
     }
 
@@ -171,7 +184,7 @@ public class PlayerChaser : CharacterPerformance
                 MoveType(moveForward , runSpeed, 1.5f);
             }else {
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
-                MoveType(moveForward, walkSpeed, 1.5f);
+                MoveType(moveForward, walkSpeed, 1.0f);
                 StaminaHeal();
             }
 
@@ -292,20 +305,23 @@ public class PlayerChaser : CharacterPerformance
         }
     }
 
-        int isHit = 0;
+    int isHit = 0; // デバッグ用.
 
     void OnTriggerEnter(Collider collider) {
         // 当たったオブジェクトが障害物なら.
         if(collider.CompareTag("Obstruct")) {
-            // すでにスタンしているなら処理しない.
-            if(isStan) {
-                return;
-            }
+            if(instanceObstructItem != collider.gameObject) {
+                // すでにスタンしているなら処理しない.
+                if(isStan) {
+                    print("スタン済み");
+                    return;
+                }
 
-            // 自分で生成した障害物でないなら.
-            isHit++;
-            Destroy(collider.gameObject); // 破壊.
-            HitObstruct();
+                // 自分で生成した障害物でないなら.
+                isHit++;
+                Destroy(collider.gameObject); // 破壊.
+                HitObstruct();
+            }
         }
     }
     //--------------- ここまでコリジョン ---------------//
@@ -316,8 +332,11 @@ public class PlayerChaser : CharacterPerformance
             return;
         }
         GUIStyle style = new GUIStyle();
-        style.fontSize = 200;
-        GUI.Label(new Rect(100, 200, 300, 300), isHit.ToString(), style);
+        style.fontSize = 100;
+        GUI.Label(new Rect(100, 100, 300, 300), "velocity:" + rb.velocity.ToString(), style);
+        GUI.Label(new Rect(100, 200, 300, 300), "deltaTime:" + Time.deltaTime.ToString(), style);
+        GUI.Label(new Rect(100, 300, 300, 300), "flameLate:" + fps.ToString(), style);
+        GUI.Label(new Rect(100, 400, 300, 300), "isHit:" + isHit.ToString(), style);
     }
 
     //--------------- フォトンのコールバック ---------------//
@@ -330,23 +349,24 @@ public class PlayerChaser : CharacterPerformance
         if(!photonView.IsMine) {
             return;
         }
-        var i = 0;
+
         foreach(var property in propertiesThatChanged){
             var tmpKey = property.Key.ToString(); // Key.
             var tmpValue = property.Value; // Value.
-            i++;
 
             // Keyで照合;
             switch(tmpKey) {
+                case "et": TargetShow(true); break; // 逃げのカーソルを表示.
+                case "ct": TargetShow(false); break; // 鬼のカーソルを表示.
+
+                //--- 随時追加 ---//
                 default:
                     Debug.LogError("想定されていないキー【" + tmpKey + "】です");
                 break;
-
-                //--- 随時追加 ---//
             }
         }
 
-        print("ルームプロパティ書き換え回数 : " + i);
+        print("ルームプロパティ書き換え");
     }
 
     /// <summary>
@@ -356,6 +376,15 @@ public class PlayerChaser : CharacterPerformance
     /// </summary>
     /// <param name="newPlayer">入室してきたプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Invoke("GetPlayers",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
+    }
+
+    /// <summary>
+    /// ルームからプレイヤーが退出した時.
+    /// </summary>
+    /// <param name="otherPlayer">退出したプレイヤー</param>
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Invoke("GetPlayers",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
     }

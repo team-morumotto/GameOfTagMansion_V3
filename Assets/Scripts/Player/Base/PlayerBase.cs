@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.Serialization;
@@ -19,7 +20,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     //=========== キャラクターステータス ===========//
 
     //------ public static変数 ------//
-    public static List<PlayerBase> playerBase = new List<PlayerBase>(); // ほかクライアントのキャラのPlayerBaseコンポーネントリスト.
     public static bool isHaveItem = false;   // アイテムを取得したかどうか.
     public static bool isUseItem = false;    // アイテムを使用したかどうか.
     //------------ 定数 ------------//
@@ -72,14 +72,16 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
-    protected GameObject instancedObstruct;  // 障害物.
-    protected List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
-    protected List<GameObject> playerList = new List<GameObject>(); // ルーム内のプレイヤーのリスト.
+    public List<GameObject> playerList = new List<GameObject>(); // ルーム内の自分を除くキャラのリスト.
+    public List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
+    public List<Target> escapeTargetList = new List<Target>(); // ルーム内の逃げキャラのカーソルのリスト.
+    public Target chaserTarget; // ルーム内の鬼キャラのカーソル.
     protected GameObject instanceObstructItem; // 生成した障害物.
 
     //------ int変数 ------//
     protected int isGameStartTimer = 5;
-    private int countDown = 5;                   // ゲームスタートまでのカウントダウン
+    protected int abilityUseAmount = 3; // 固有能力の使用可能回数(試験的に三回).
+    private int countDown = 5;          // ゲームスタートまでのカウントダウン
 
     //------ float変数 ------//
     protected float nowStamina;
@@ -89,9 +91,10 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isOnGui = false;              // GUIを表示しているか.
     protected bool isGround = true;              // 地面に接地しているか.
     protected bool isSneak = false;              // スニークしているか.
-    protected bool isStaminaLoss = false;          // スタミナが切れているか.
+    protected bool isStaminaLoss = false;        // スタミナが切れているか.
     protected bool isStan = false;               // スタンしているか.
-    public bool isRunning = false;            // 走っているか.
+    protected bool isUseAvility = false;         // 固有能力をはつどうしているか.
+    public bool isRunning = false;               // 走っているか.
 
     /// <summary>
     /// プレイヤーの移動処理.
@@ -101,7 +104,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <param name="moveSpeed">移動速度</param>
     /// <param name="animSpeed">アニメーション速度</param>
     protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
-        rb.velocity = moveForward * moveSpeed * Time.deltaTime * 10 * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
+        rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
         anim.SetFloat("DashSpeed", animSpeed);
     }
@@ -196,7 +199,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// キャラクターのステータスを取得する.
     /// </summary>
-    public void StatusGet() {
+    public void GetStatus() {
         var tmp1 = Character.GetValues(typeof(Character)); // ScriptableObjectの個数取得.
         var tmp2 = (int)character; // キャラクター名の列挙体の番号を取得.
         foreach (var value in tmp1) {
@@ -256,25 +259,43 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ルーム内の全キャラを取得する.
+    /// ルーム内のキャラクターのオブジェクトやコンポーネントの取得.
     /// </summary>
     protected void GetPlayers() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        playerList = new List<GameObject>(); // キャラクターリストの初期化.
-        escapeList = new List<GameObject>(); // 逃げキャラリストの初期化.
+        playerList = new List<GameObject>();   // 初期化.
+        escapeList = new List<GameObject>();   // 初期化.
+        escapeTargetList = new List<Target>(); // 初期化.
+        chaserTarget = null;                   // 初期化.
 
-        if(players != null) {
-            foreach(var player in players) {
-                // 取得したキャラクターが自分でない場合.
-                if(player != this.gameObject) {
-                    playerList.Add(player);
-                    var tmp1 = player.GetComponent<PlayerBase>();
-                    playerBase.Add(tmp1);
-                }
+        // nullなら処理しない.
+        if(players == null) {
+            print("Not Player");
+            return;
+        }
+
+        foreach(var player in players) {
+            // 取得したキャラクターが自分でない場合.
+            if(player != this.gameObject) {
+                playerList.Add(player); // 追加.
 
                 if(player.GetComponent<PlayerEscape>()) {
-                    escapeList.Add(player);
+                    escapeList.Add(player); // 追加.
+                    var tmp2 = player.GetComponent<Target>();
+                    escapeTargetList.Add(tmp2); // 追加.
+                    // 鬼なら.
+                    if(GoToChooseChara.GetPlayMode() == 1) {
+                        tmp2.enabled = false;
+                    }
+
+                }else if(player.GetComponent<PlayerChaser>()) {
+                    var tmp2 = player.GetComponent<Target>();
+                    chaserTarget = tmp2; // 鬼キャラは一人固定なので一意。
+
+                    if(GoToChooseChara.GetPlayMode() == 0) {
+                        chaserTarget.enabled = false;
+                    }
                 }
             }
         }
@@ -291,7 +312,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         disposableGrapnelGun, //使い捨てグラップルガン
     }
     private List<ItemName>[] haveItem = new List<ItemName>[2];
-    protected bool isUseAbility = true;
+    protected bool isCanUseAbility = true;
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
@@ -311,7 +332,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                         break;
                     case ItemName.abilityBlock:
                         // アビリティ封印を使用する.
-                        isUseAbility = false;
+                        isCanUseAbility = false;
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.movementBinding:

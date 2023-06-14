@@ -2262,7 +2262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fe364845598b14d8dca857c420037f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -2274,13 +2273,19 @@ MonoBehaviour:
   - {fileID: 6288599514123557680, guid: f65f86b85316c6040b83328001301eef, type: 3}
   - {fileID: 2760543032436770666, guid: 812d368f60d3c7c41a8d580109db4af7, type: 3}
   gameState: 0
-  character: 0
+  character: 1
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  characterNumber: 0
   obstructItem: {fileID: 8333294537088516929, guid: dc6d1bc9b3483fc4aa43c338c140bc61, type: 3}
+  characterNumber: 0
+  floating: 0
+  playerList: []
+  escapeList: []
+  escapeTargetList: []
+  chaserTarget: {fileID: 0}
   isRunning: 0
   catch_text: {fileID: 1816362596516665635, guid: a82f47e2a8615fa43bf3d7ed15e97601, type: 3}
+  lookat: {fileID: 5177874875797237472}
 --- !u!82 &8579874479882662415
 AudioSource:
   m_ObjectHideFlags: 0

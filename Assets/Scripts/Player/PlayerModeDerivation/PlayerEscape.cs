@@ -21,8 +21,8 @@ public class PlayerEscape : CharacterPerformance {
     //----------- 変数宣言終了 -----------//
 
     void Start() {
-        GetPlayers();
         if(photonView.IsMine) {
+            GetPlayers();
             //====== オブジェクトやコンポーネントの取得 ======//
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
@@ -42,7 +42,7 @@ public class PlayerEscape : CharacterPerformance {
             resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
 
             var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
-            Target.enabled = false; // 非表示に.
+            Target.enabled = false; // 自分のカーソルを非表示に.
 
             itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
 
@@ -55,12 +55,13 @@ public class PlayerEscape : CharacterPerformance {
             cf.Follow = this.transform;
             cf.LookAt = this.lookat;
 
+            characterNumber = (int)character; // キャラクターの番号.
+            EscapeAbilitySet();
+
             //====== オブジェクトやコンポーネントの取得 ======//
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
-        StatusGet(); // ステータスの取得.
-
-        characterNumber = (int)character; // キャラクターの番号.
+        GetStatus(); // ステータスの取得.
     }
 
     string fps = "";
@@ -73,16 +74,23 @@ public class PlayerEscape : CharacterPerformance {
 
         fps = (1.0f / Time.deltaTime).ToString();
 
+        if(Input.GetKeyDown(KeyCode.I)) {
+            if(performance != null) {
+                if(!isUseAvility) {
+                    print("能力使用");
+                    abilityUseAmount--; // 使用可能回数-1.
+                    isUseAvility = true; // 使用中.
+                    performance();
+                }
+            }else{
+                Debug.LogError("能力がセットされていません");
+            }
+        }
+
         // Tolassの場合.
         if(characterNumber == 0) {
             if(Input.GetKeyDown(KeyCode.G)) {
                 photonView.RPC(nameof(FireObstruct), RpcTarget.All);
-            }
-        }
-
-        if(characterNumber == 2) {
-            if(Input.GetKeyDown(KeyCode.H)) {
-                MikagamiKoyomiAbility();
             }
         }
 
@@ -92,15 +100,10 @@ public class PlayerEscape : CharacterPerformance {
                 if(!isStan) {
                     if(isGround){
                         PlayerMove();
+                        Sneak();
                     }
                 }
-                Sneak();
                 PlayNumber();
-
-                /*if(Input.GetKeyDown(KeyCode.Z)) {
-                    PlayerSpawn(); // キャラクターのスポーン処理.
-                    gameState = GameState.カウントダウン;
-                }*/
 
                 if(PhotonMatchMaker.GameStartFlg) {
                     PlayerSpawn(); // キャラクターのスポーン処理.
@@ -343,6 +346,7 @@ public class PlayerEscape : CharacterPerformance {
         if(!photonView.IsMine) {
             return;
         }
+
         foreach(var property in propertiesThatChanged){
             var tmpKey = property.Key.ToString(); // Key.
             var tmpValue = property.Value; // Value.
@@ -354,12 +358,13 @@ public class PlayerEscape : CharacterPerformance {
                     staminaHealAmount += float.Parse(tmpValue.ToString());
                     print("StaminaBoost");
                 break;
+                case "et": TargetShow(true); break; // 逃げのカーソルを表示.
+                case "ct": TargetShow(false); break; // 鬼のカーソルを表示.
 
+                //--- 随時追加 ---//
                 default:
                     Debug.LogError("想定されていないキー【" + tmpKey + "】です");
                 break;
-
-                //--- 随時追加 ---//
             }
         }
 
@@ -368,12 +373,21 @@ public class PlayerEscape : CharacterPerformance {
 
     /// <summary>
     /// ルームにプレイヤーが入室してきたときのコールバック関数.
-    /// 引数 : newPlayer.
-    /// 戻り値 : なし.
     /// </summary>
     /// <param name="newPlayer">入室してきたプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        print("enter");
+        Invoke("GetPlayers",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
+    }
+
+    /// <summary>
+    /// ルームからプレイヤーが退出した時.
+    /// </summary>
+    /// <param name="otherPlayer">退出したプレイヤー</param>
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        print("left");
         Invoke("GetPlayers",1.0f); // 入室直後はキャラクターが生成されていないため遅延させる.
     }
 }
