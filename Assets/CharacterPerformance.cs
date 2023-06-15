@@ -5,46 +5,14 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class CharacterPerformance : PlayerBase
+public class CharacterPerformance : MonoBehaviour
 {
-    protected delegate void Performance();
-    protected Performance performance;
-
-    protected void EscapeAbilitySet() {
-        switch(characterNumber) {
-            case 0: return;
-            case 1: performance = FookShot; break;
-            case 2: performance = CharacterScaleChange; break;
-            case 3: break;
-            case 4: performance = EscapeTargetShow; break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
-            case 9: performance = StaminaHealBoost; break;
-        }
+    public void HitObstruct() {
+        // StartCoroutine(Stan());
     }
-
-    protected void ChaserAbilitySet() {
-        switch(characterNumber) {
-            case 0: return;
-            case 1: 
-            case 2: performance = CharacterScaleChange; break;
-            case 3: break;
-            case 4: performance = ChaserTargetShow; break;
-            case 5: break;
-            case 6: performance = GetPlayersPos; break;
-            case 7: break;
-            case 8: break;
-            case 9: performance = StaminaHealBoost; break;
-        }
-    }
-
-    protected void HitObstruct() {
-        StartCoroutine(Stan());
-    }
-
+/*
     /// <summary>
     /// 10秒スタン
     /// </summary>
@@ -59,7 +27,7 @@ public class CharacterPerformance : PlayerBase
         print("スタン後");
     }
 
-    protected void FookShot() {
+    public void FookShot() {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
         RaycastHit hit;
 
@@ -102,7 +70,7 @@ public class CharacterPerformance : PlayerBase
     /// <summary>
     /// 水鏡こよみの固有能力.
     /// </summary>
-    protected void CharacterScaleChange(){
+    public void CharacterScaleChange(){
         // 発動可能か.
         StartCoroutine(Cor());
     }
@@ -114,6 +82,8 @@ public class CharacterPerformance : PlayerBase
         // 発動終了.
         isUseAvility = false;
     }
+
+    
 
     /// <summary>
     /// スケールを急激に変更する.
@@ -132,22 +102,22 @@ public class CharacterPerformance : PlayerBase
             transform.localScale = dd;
             yield return null; // 1フレーム遅延.
         }
-    }
+    }*/
 
     /// <summary>
     /// イージング.
     /// https://easings.net/ja#easeInElastic
     /// </summary>
-    protected float easeOutElastic(float x, float addValue){
+    public float easeOutElastic(float x, float addValue){
         float c4 = (Mathf.PI * 2) / 3;
         return x == 0? 0: x == 1? 1: Mathf.Pow(2, -10 * x) * Mathf.Sin((x * 10f - 0.75f) * c4) + addValue;
     }
 
-    protected void EscapeTargetShow() {
+    public void EscapeTargetShow() {
         PhotonMatchMaker.SetCustomProperty("et", true, 1);
     }
 
-    protected void ChaserTargetShow() {
+    public void ChaserTargetShow() {
         PhotonMatchMaker.SetCustomProperty("ct", true, 1);
     }
 
@@ -155,8 +125,8 @@ public class CharacterPerformance : PlayerBase
     /// ルーム内のキャラクターのカーソルを表示.
     /// </summary>
     /// <param name="isEscape">呼び出し側が逃げキャラかどうか</param>
-
-    protected IEnumerator TargetShow(bool isEscape) {
+/*
+    public IEnumerator TargetShow(bool isEscape) {
         if(isEscape) {
             chaserTarget.enabled = true;
             yield return new WaitForSeconds(10.0f);
@@ -171,13 +141,13 @@ public class CharacterPerformance : PlayerBase
             }
         }
     }
-
+*/
     private float detectionRange = 10.0f; // 探知範囲.
     /// <summary>
     /// 自分とほかキャラとの相対位置を計算し、一定範囲内なら反応する.
     /// ※ミュリシア(鬼)の固有性能.
     /// </summary>
-    protected void GetPlayersPos() {
+    public void GetPlayersPos(List<GameObject> playerList) {
         foreach(var players in playerList) {
             var tmpDistance = (players.transform.position - transform.position).magnitude; // 自分とほかキャラの相対位置を計算.
             if(tmpDistance < detectionRange) {
@@ -186,12 +156,13 @@ public class CharacterPerformance : PlayerBase
         }
     }
 
-    protected float HealBoostAmount = 3f;
+    public float HealBoostAmount = 3f;
     /// <summary>
     /// ルームに参加している逃げキャラ全員の体力回復速度常時ブースト.
     /// ※ナユの固有性能
     /// </summary>
-    protected void StaminaHealBoost() {
+    public void StaminaHealBoost() {
+        print("使用検知");
         PhotonMatchMaker.SetCustomProperty("hb", HealBoostAmount, 1);
     }
 
