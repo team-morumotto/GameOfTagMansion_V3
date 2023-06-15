@@ -317,7 +317,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         disposableGrapnelGun, //使い捨てグラップルガン
     }
     private List<ItemName>[] haveItem = new List<ItemName>[2];
-    protected bool isCanUseAbility = true;
+    protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
+    protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
+    protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
@@ -329,36 +331,44 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 switch(tmp){
                     case ItemName.invincibleStar:
                         // 無敵スターを使用する.
+                        isInvincible = true;
+                        ChangeFlg(isInvincible, 10.0f);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.locationShuffle:
-                        // 位置入れ替えを使用する.
+                        // 位置入れ替えを使用する. まだできてない
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.abilityBlock:
-                        // アビリティ封印を使用する.
+                        // アビリティ封印を使用する. 現在自分にしかけしかけられない
                         isCanUseAbility = false;
+                        ChangeFlg(isCanUseAbility, 10.0f);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.movementBinding:
-                        // 移動封印を使用する.
+                        // 移動封印を使用する. 現在自分にしかけしかけられない
+                        isCanUseMovement = false;
+                        ChangeFlg(isCanUseMovement, 5.0f);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
 
                     case ItemName.drink:
                         // 小回復を使用する.
+                        InstanceStaminaHeal(10);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.poteto:
                         // 中回復を使用する.
+                        InstanceStaminaHeal(30);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.hamburger:
                         // 大回復を使用する.
+                        InstanceStaminaHeal(50);
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                     case ItemName.disposableGrapnelGun:
-                        // 使い捨てグラップルガンを使用する.
+                        // 使い捨てグラップルガンを使用する.  まだできてない
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
                 }
@@ -368,5 +378,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected void ItemGet(ItemName itemName){
         haveItem[0].Add(itemName);
     }
+
+    protected float amplification = 0; // アイテム効果を増幅するような効果がキャラにあるときに%分代入してください
+
+    ///<summary>
+    ///回復する割合を%で指定すると最大スタミナに合わせて回復する
+    ///</summary>
+    protected void InstanceStaminaHeal(float healparsent){
+        var healamount = (staminaAmount/100)*(healparsent+amplification);
+        nowStamina += healamount;
+    }
     
+    /// <summary>
+    /// 与えられたフラグの値入れ替え.
+    /// </summary>
+    /// <param name="flg">フラグ</param>
+    /// <param name="delay"></param>
+    /// <returns></returns>
+    protected IEnumerator ChangeFlg(bool flg, float delay) {
+        yield return new WaitForSeconds(delay);
+        yield return flg = !flg;
+    }
 }
