@@ -138,7 +138,7 @@ public class EscapeNayu : PlayerEscape
 
         if(inputHorizontal == 0 && inputVertical == 0) {
             anim.SetFloat("Speed", 0f); // 移動していないので0.
-            StaminaHeal();
+            RegenerativeStaminaHeal();
         }
         else{
             Vector3 cameraForward = Vector3.Scale(playerCamera.transform.forward, new Vector3(1, 0, 1)).normalized;// カメラの向きを取得
@@ -157,7 +157,7 @@ public class EscapeNayu : PlayerEscape
             }else {
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
                 MoveType(moveForward, walkSpeed, 1.0f);
-                StaminaHeal();
+                RegenerativeStaminaHeal();
             }
 
             // カメラの向きが0でなければプレイヤーの向きをカメラの向きにする.

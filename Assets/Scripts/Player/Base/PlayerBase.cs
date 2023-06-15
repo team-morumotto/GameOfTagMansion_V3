@@ -113,7 +113,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         anim.SetFloat("DashSpeed", animSpeed);
     }
 
-    protected void StaminaHeal() {
+    protected void RegenerativeStaminaHeal() {
         // スタミナが減っていたら.
         if(nowStamina < staminaAmount) {
             if(isStaminaLoss) {
@@ -344,6 +344,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                         // 移動封印を使用する.
                         haveItem[0].RemoveAt(0); // アイテムを消費.
                         break;
+
                     case ItemName.drink:
                         // 小回復を使用する.
                         haveItem[0].RemoveAt(0); // アイテムを消費.
@@ -367,4 +368,5 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected void ItemGet(ItemName itemName){
         haveItem[0].Add(itemName);
     }
+    
 }
