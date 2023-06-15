@@ -297,6 +297,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                     var tmp2 = player.GetComponent<Target>();
                     chaserTarget = tmp2; // 鬼キャラは一人固定なので一意。
 
+                    // 逃げなら.
                     if(GoToChooseChara.GetPlayMode() == 0) {
                         chaserTarget.enabled = false;
                     }
