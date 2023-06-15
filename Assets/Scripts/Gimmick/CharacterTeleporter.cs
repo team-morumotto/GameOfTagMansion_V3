@@ -8,7 +8,6 @@ public class CharacterTeleporter : MonoBehaviour
     private GameObject FloatingFloor; // テレポータ―の上の浮いてる床部分
     private float PerlinNoisetime; // time加算用
     private float FloatingFloorY; // 浮いてる床の高さ
-    private PivotColliderController PCC = new PivotColliderController(); // PvitColliderControllerの
 
     void Start()
     {
@@ -38,12 +37,11 @@ public class CharacterTeleporter : MonoBehaviour
         return Mathf.PerlinNoise(t, 0) + floatingfloorY;
     }
 
-    //oniかnigeが触れたらTeleportPoint(テレポート先)に移動する
+    // キャラクターが触れたらTeleportPoint(テレポート先)に移動する
     void OnCollisionStay(Collision collision)
     {
-        if(collision.gameObject.tag == "Oni"||collision.gameObject.tag == "Nige"){
+        if(collision.gameObject.CompareTag("Player")){
             collision.gameObject.transform.position = TeleportPoint.GetComponent<CharacterTeleporter>().RespownPoint.transform.position;
-            PCC.CameraReset();
             GameObject.Find("Obj_SE").GetComponent<Button_SE>().Call_SE(1);
         }
     }

@@ -14,12 +14,26 @@ using System.Collections.Generic;
 using UnityEngine.Serialization;
 using System;
 using ExitGames.Client.Photon;
+using Cinemachine;
 
 public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 {
     //------------ 定数 ------------//
     private const string GAMECANVAS = "Canvas_Main";
     //------------ static ------------//
+    public static bool GameStartFlg = false;                                                         // ゲーム開始フラグ.
+    public static bool isMenuOn{get; set;}   // ゲームロビーでメニューを表示しているかどうか.
+
+    //------------ public ------------//
+    [FormerlySerializedAs("before")] public GameObject[] OniObject = {null,null,null};	             // 鬼キャラオブジェクト.
+    [FormerlySerializedAs("before")] public GameObject[] EscapeObject = {null,null,null};            // 逃げキャラオブジェクト.
+    [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
+    [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
+    [Tooltip("ゲーム中のパネルの背景")] public GameObject BGPanel;
+    [Tooltip("ルームリストのスクロール")] public Transform roomScroll;                                                                     // ルームリストのスクロールビュー.
+    public InputField inputCreateRoomName;                                                           // 作成するルーム名を入力するInputField.
+    public InputField inputJoinRoomName;                                                             // 参加する非公開ルーム名を保存するInputField.
+    public GameObject cursol;
     public GameObject gameDuringPanel;                                                               // ゲーム中のUIパネル.
     public GameObject gameLobbyPanel;                                                                // ゲーム中のボタンUIパネル.
     public GameObject gameErrorPanel;                                                                // ルームの作成/参加に失敗した際のエラー表示パネル.
@@ -27,56 +41,39 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         本来は別のスクリプトで管理するべきなので今後変更予定.*/
     public GameObject sneakUI;
     public GameObject useItemUI;
-    public static bool GameStartFlg = false;                                                         // ゲーム開始フラグ.
-
-    //------------ public ------------//
-    private string[] instantedRoom = new string[300];                                                // 生成済みのルームリスト(300個までルームのボタン生成が可能).
-    private List<string> roomListName = new List<string>();                                          // ルームリストの各ルームの名前.
-    [FormerlySerializedAs("before")] public GameObject[] OniObject = {null,null,null};	             // 鬼キャラオブジェクト.
-    [FormerlySerializedAs("before")] public GameObject[] EscapeObject = {null,null,null};            // 逃げキャラオブジェクト.
-    [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
-    [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
-    public GameObject BGPanel;
-    public Transform roomScroll;                                                                     // ルームリストのスクロールビュー.
-    public InputField inputCreateRoomName;                                                           // 作成するルーム名を入力するInputField.
-    public InputField inputJoinRoomName;                                                             // 参加する非公開ルーム名を保存するInputField.
-    public GameObject cursol;
-    private GameObject player;
+    public VirtualCameraManager vcm;
 
     //------------ private ------------//
     private RoomList roomList = new RoomList();             // RoomListClassのインスタンスを生成.
+    private List<string> roomListName = new List<string>();                                          // ルームリストの各ルームの名前.
+    private GameObject player;
 
-    // bool型変数
-    public static bool isMenuOn{get; set;}   // ゲームロビーでメニューを表示しているかどうか.
-    private bool isConnect = true;                          // マスターサーバーに接続したか.
+    //------ bool型変数 ------//
+    private bool isConnect = false;                          // マスターサーバーに接続したか.
     private bool isJoinRoom = false;                        // ルームに参加したかどうか.
     private bool isVisible = false;                         // 作成したルームが非公開可どうか.
 
-    // string型変数
+    //------ string型変数 ------//
     private string createRoomName = "";                     // 作成するルーム名を保存する変数.
     private string joinRoomName = "";                       // 参加するルーム名を保存する変数.
+    private string[] instantedRoom = new string[300];       // 生成済みのルームリスト(300個までルームのボタン生成が可能).
 
-    // ValueTuple変数
+    //------ ValueTuple変数 ------//
     ValueTuple<List<string>, List<int>, List<int>, List<bool>> roomData = new ValueTuple<List<string>, List<int>, List<int>, List<bool>>(); // RoomListクラスで更新されるルームのパラメータを格納する変数.
 
     void Start() {
-        isConnect = true;       // フォトン接続フラグを初期化.
+        isConnect = false;       // フォトン接続フラグを初期化.
         GameStartFlg = false;   // ゲームスタートフラグを初期化.
         isJoinRoom = false;     // ルーム参加フラグを初期化.
         isMenuOn = false;       // メニュー表示フラグを初期化.
-        // 逃げなら.
-        if(GoToChooseChara.GetPlayMode() == 0) {
-            sneakUI.SetActive(true);
-        }else{
-            useItemUI.transform.position = sneakUI.transform.position;
-            sneakUI.SetActive(false);
-        }
+
+        Application.targetFrameRate = 60; // フレームレートを60固定.
     }
 
     void Update() {
         // 使用するキャラクターが選択された段階でフォトンに接続する関数を1回のみ動かす
-        if(GoToChooseChara.GetIsEdit() && isConnect) {
-            isConnect = false;
+        if(GoToChooseChara.GetIsEdit() && !isConnect) {
+            isConnect = true;
             PhotonNetwork.ConnectUsingSettings();	// フォトンに接続.
             print("Connecting");
         }
@@ -102,19 +99,27 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     // ゲームスタートができるかどうか.
     private bool GameStartError() {
-        var chasers = GameObject.FindGameObjectsWithTag("Oni");
-        var walningText = gameLobbyPanel.transform.Find("Text_Caution").GetComponent<Text>();
-        // 鬼が1人かつルームの人数がルームの最大参加人数と同じなら.
-        if(PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers) {
-            if(chasers.Length == 1){
-                walningText.text = "";
-                return true;
-            }else{
-                walningText.text = "【注意】鬼の数が一人ではありません。";
-                return false;
+        var chasers = GameObject.FindGameObjectsWithTag("Player");
+        int chaserCnt = 0;
+        foreach(var chaser in chasers) {
+            if(chaser.GetComponent<PlayerChaser>()) {
+                chaserCnt++;
             }
-        }else{
+        }
+
+        var walningText = gameLobbyPanel.transform.Find("Text_Caution").GetComponent<Text>();
+        // ルームの人数がルームの最大参加人数と同じなら.
+        if(PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers) {
             walningText.text = "【注意】ルームの参加人数が足りません。";
+            return false;
+        }
+
+        // 鬼が1人なら.
+        if(chaserCnt == 1){
+            walningText.text = "";
+            return true;
+        }else{
+            walningText.text = "【注意】鬼の数が一人ではありません。";
             return false;
         }
     }
@@ -128,17 +133,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             isMenuOn = true;
             gameLobbyPanel.SetActive(true);
         }
-    }
-
-    /// <summary>
-    /// 機能 : 生成したキャラクターに追従カメラを設定する
-    /// 仮引数：CinemachineFreeLookコンポーネント,メインカメラ,生成したキャラクター
-    /// 戻り値：なし
-    /// </summary>
-    private void CreateCharacter(GameObject Character) {
-        PivotColliderController.m_end = Character.transform.Find("LookAtObject").transform;                                     // プレイヤーのtransform.
-        PivotColliderController.cameraPos = Character.transform.Find("Reset_CameraPosition").transform;                         // プレイヤーカメラのリセット位置オブジェクト.
-        CameraRotator3rdPersonPov.playerObject = Character.transform.Find("LookAtObject").gameObject;                           // プレイヤーのオブジェクト.
     }
 
     /// <summary>
@@ -252,11 +246,11 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         switch(GoToChooseChara.GetPlayMode()) {
             case 0:
                     player = PhotonNetwork.Instantiate(EscapeObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
-                    CreateCharacter(player);
+                    sneakUI.SetActive(true);
                 break;
             case 1:
                     player = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
-                    CreateCharacter(player);
+                    sneakUI.SetActive(false);
                 break;
         }
         GameStartFlg = false;
@@ -265,22 +259,15 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     //----------- ボタン -----------//
     /// <summary>
-    /// マスターサーバから切断し、Closed_GameSceneをリロードする。
+    /// ルームを出る.
     /// </summary>
-    public void GameSceneReload() {
+    public void LeaveRoom() {
         GameStartFlg = false;   // ゲームスタートフラグを初期化.
         isJoinRoom = false;     // ルーム参加フラグを初期化.
         isMenuOn = false;       // メニュー表示フラグを初期化.
-        // 逃げなら.
-        if(GoToChooseChara.GetPlayMode() == 0) {
-            sneakUI.SetActive(true);
-        }else{
-            useItemUI.transform.position = sneakUI.transform.position;
-            sneakUI.SetActive(false);
-        }
-
         PhotonNetwork.Destroy(player);
         PhotonNetwork.LeaveRoom();
+        vcm.TraReset();
     }
 
     // ルームを作成する.

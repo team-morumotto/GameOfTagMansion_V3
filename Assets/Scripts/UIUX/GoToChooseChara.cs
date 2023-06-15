@@ -22,7 +22,6 @@ public class GoToChooseChara : MonoBehaviour {
             instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        Application.targetFrameRate = 60;
     }
 
     //------- ゲッター -------//
