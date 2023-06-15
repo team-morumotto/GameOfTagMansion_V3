@@ -96,6 +96,10 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isUseAvility = false;         // 固有能力をはつどうしているか.
     public bool isRunning = false;               // 走っているか.
 
+    protected virtual void Performance() {
+        // キャラクタースクリプト内で上書きする.
+    }
+
     /// <summary>
     /// プレイヤーの移動処理.
     /// 状況によって移動速度を変える.
