@@ -1,19 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.UI;
 using Photon.Pun;
 
-public class EscapeNayu : PlayerEscape
+public class ChaserNayu : PlayerChaser
 {
-    [Tooltip("カメラが注視するオブジェクト")]
-    [SerializeField]
-    public Transform lookat;
-    //----------- Private変数 -----------//
-    private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
-    private float sneakSpeed = 2.5f;   // スニーク状態のスピード.
-
-    //----------- 変数宣言終了 -----------//
-    void Start() {
+    private float HealBoostAmount = 2.0f;
+    void Start()
+    {
         if(photonView.IsMine) {
             GetPlayers();
             //====== オブジェクトやコンポーネントの取得 ======//
@@ -29,6 +23,7 @@ public class EscapeNayu : PlayerEscape
             gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
             staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
             staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+            catch_text = DuringUI.transform.Find("Text_PlayerCatch").GetComponent<Text>();
             staminaParent.SetActive(false);
 
             var resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
@@ -39,24 +34,19 @@ public class EscapeNayu : PlayerEscape
 
             itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
 
-            offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
-
-            PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
-
             var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
             cf.enabled = true;
             cf.Follow = this.transform;
             cf.LookAt = this.lookat;
 
             characterNumber = (int)character; // キャラクターの番号.
-
             //====== オブジェクトやコンポーネントの取得 ======//
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
     }
 
-    void Update () {
+    void Update() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
             return;
@@ -64,13 +54,16 @@ public class EscapeNayu : PlayerEscape
 
         fps = (1.0f / Time.deltaTime).ToString();
 
+        if(Input.GetKeyDown(KeyCode.F)) {
+            catch_text.enabled = true;
+        }
+
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接している.
                 if(!isStan) {
                     if(isGround){
                         PlayerMove();
-                        Sneak();
                     }
                 }
                 PlayNumber();
@@ -87,9 +80,12 @@ public class EscapeNayu : PlayerEscape
 
                 // カウントダウン.
                 if(isGameStarted) {
-                    Performance();
-                }
+                    // キャラクターがナユの場合自分のみ回復力ブースト.
+                    if(characterNumber == 9) {
+                        staminaHealAmount += HealBoostAmount;
+                    }
                     StartCoroutine(GameStartCountDown());
+                }
             break;
 
             case GameState.ゲーム中:
@@ -97,9 +93,8 @@ public class EscapeNayu : PlayerEscape
                 if(isGround){
                     PlayerMove();
                 }
-                GameTimer();
-                Sneak();
                 UseItem();
+                GameTimer();
                 CharaPositionReset();
             break;
         }
@@ -112,18 +107,7 @@ public class EscapeNayu : PlayerEscape
             return;
         }
 
-        if(gameState == GameState.ゲーム中) {
-            var a = (PhotonNetwork.LocalPlayer.CustomProperties["c"] is bool value) ? value : false; // 捕まったかどうかのプレイヤーカスタムプロパティを取得.
-            if(a) {
-                resultWLText.text = "捕まった！";
-                GameEnd(false); // ゲーム終了.
-            }
-        }
-    }
-
-    protected override void Performance()
-    {
-        cp.StaminaHealBoost(); // スタミナ回復量をブーストする.
+        // GetPlayersPos();
     }
 
     /// <summary>
@@ -153,7 +137,7 @@ public class EscapeNayu : PlayerEscape
                 }
 
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, true);
-                MoveType(moveForward, runSpeed, 1.5f);
+                MoveType(moveForward , runSpeed, 1.5f);
             }else {
                 photonView.RPC(nameof(IsRunningChange), RpcTarget.All, false);
                 MoveType(moveForward, walkSpeed, 1.0f);
