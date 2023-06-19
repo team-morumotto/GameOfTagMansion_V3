@@ -1,8 +1,8 @@
 /*
-    2022/12/29 Atsuki Kobayashi
+*   2022/12/29 Atsuki Kobayashi
 
-    --参考サイト--https://enia.hatenablog.com/entry/unity/introduction/20
-                --https://zenn.dev/o8que/books/bdcb9af27bdd7d
+*   --参考サイト--https://enia.hatenablog.com/entry/unity/introduction/20
+*   --https://zenn.dev/o8que/books/bdcb9af27bdd7d
 */
 
 using UnityEngine;
@@ -25,8 +25,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public static bool isMenuOn{get; set;}   // ゲームロビーでメニューを表示しているかどうか.
 
     //------------ public ------------//
-    [FormerlySerializedAs("before")] public GameObject[] OniObject = {null,null,null};	             // 鬼キャラオブジェクト.
-    [FormerlySerializedAs("before")] public GameObject[] EscapeObject = {null,null,null};            // 逃げキャラオブジェクト.
+    [FormerlySerializedAs("before")] public GameObject[] CharacterObject = {null,null,null,null,null,null,null,null,null,null,};
     [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
     [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
     [Tooltip("ゲーム中のパネルの背景")] public GameObject BGPanel;
@@ -51,7 +50,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //------ bool型変数 ------//
     private bool isConnect = false;                          // マスターサーバーに接続したか.
     private bool isJoinRoom = false;                        // ルームに参加したかどうか.
-    private bool isVisible = false;                         // 作成したルームが非公開可どうか.
 
     //------ string型変数 ------//
     private string createRoomName = "";                     // 作成するルーム名を保存する変数.
@@ -59,7 +57,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     private string[] instantedRoom = new string[300];       // 生成済みのルームリスト(300個までルームのボタン生成が可能).
 
     //------ ValueTuple変数 ------//
-    ValueTuple<List<string>, List<int>, List<int>, List<bool>> roomData = new ValueTuple<List<string>, List<int>, List<int>, List<bool>>(); // RoomListクラスで更新されるルームのパラメータを格納する変数.
+    ValueTuple<List<string>, List<int>, List<int>> roomData = new ValueTuple<List<string>, List<int>, List<int>>(); // RoomListクラスで更新されるルームのパラメータを格納する変数.
 
     void Start() {
         isConnect = false;       // フォトン接続フラグを初期化.
@@ -99,10 +97,10 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     // ゲームスタートができるかどうか.
     private bool GameStartError() {
-        var chasers = GameObject.FindGameObjectsWithTag("Player");
+        var players = GameObject.FindGameObjectsWithTag("Player");
         int chaserCnt = 0;
-        foreach(var chaser in chasers) {
-            if(chaser.GetComponent<PlayerChaser>()) {
+        foreach(var tmp in players) {
+            if(tmp.GetComponent<PlayerChaser>()) {
                 chaserCnt++;
             }
         }
@@ -175,7 +173,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> changedRoomList) {
         print("【Debug】 : OnRoomListUpdate");
 
-        roomData = new ValueTuple<List<string>, List<int>, List<int>, List<bool>>();                   // roomDataを初期化.
+        roomData = new ValueTuple<List<string>, List<int>, List<int>>();                   // roomDataを初期化.
         roomData = roomList.Update(changedRoomList);                            // 更新されたルームの一覧を更新.
     }
 
@@ -230,29 +228,21 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         gameDuringPanel.SetActive(true);
         gameLobbyPanel.SetActive(false); // ゲームメニューを非表示.
 
-        // ルーム作成時のトグルがtrueなら.
-        if(isVisible) {
-            PhotonNetwork.CurrentRoom.IsVisible = false; // ルームを非公開に.
-        }
-
         float x = UnityEngine.Random.Range(SpawnPoint[0].transform.position.x, SpawnPoint[1].transform.position.x);
         float y = UnityEngine.Random.Range(SpawnPoint[0].transform.position.y, SpawnPoint[1].transform.position.y);
         float z = UnityEngine.Random.Range(SpawnPoint[0].transform.position.z, SpawnPoint[1].transform.position.z);
         Vector3 spawnPos = new Vector3(x, y, z);                                                                        // プレイヤーの生成位置をLobby内のランダムな位置に決定.
 
-        SetCustomProperty("gs", 1, 0);
         SetCustomProperty("h", false, 0);
 
-        switch(GoToChooseChara.GetPlayMode()) {
-            case 0:
-                    player = PhotonNetwork.Instantiate(EscapeObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
-                    sneakUI.SetActive(true);
-                break;
-            case 1:
-                    player = PhotonNetwork.Instantiate(OniObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 鬼キャラを生成.
-                    sneakUI.SetActive(false);
-                break;
+        player = PhotonNetwork.Instantiate(CharacterObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+
+        if(GoToChooseChara.GetPlayMode() == 0) {
+            sneakUI.SetActive(true);
+        }else {
+            sneakUI.SetActive(false);
         }
+
         GameStartFlg = false;
     }
     //-------------------- フォトンのコールバック関数 --------------------//
@@ -276,15 +266,11 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             return;
         }
         var tmpObj = GameObject.Find(GAMECANVAS).transform.Find("Panel_CreateRoom");
-        var Toggle = tmpObj.transform.Find("Toggle_PrivateMode").GetComponent<Toggle>();
-        isVisible = Toggle.isOn;
 
         RoomOptions roomOptions = new RoomOptions();	                // RoomOptionをインスタンス化.
         roomOptions.MaxPlayers = (byte)RoomPlayerSet.GamePlayers;       // ルームの最大人数を設定.
 
         PhotonNetwork.CreateRoom(createRoomName, roomOptions);	        // ルームを作成.
-
-        SetCustomProperty("gs", 1, 0);
 
         PanelBlind(panel);
     }
@@ -308,7 +294,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         roomListName = roomData.Item1;        // 更新されたルームの名前を取得.
         var roomMemberCount = roomData.Item2; // 更新されたルームの人数を取得.
         var roomMaxPlayers = roomData.Item3;  // 更新されたルームの最大参加人数を取得.
-        var roomIsVisible = roomData.Item4;   // 更新されたルームの公開状況を取得.
 
         if(roomListName.Count > 0) {
             for(int i = 0; i < roomListName.Count; i++) {
@@ -335,19 +320,14 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
                         goto NEXT;
                     }
 
-                    if(roomIsVisible[i] == false) {
-                        print("【Debug】 : ルームが非公開なのでボタンの生成をしません");
-                        goto NEXT;
-                    }else {
-                        for(int j = 0; j < instantedRoom.Length; j++) {
-                            if(instantedRoom[j] == null || instantedRoom[j] == "") {
-                                GameObject Room = Instantiate(Instant, roomScroll);             // ルーム参加ボタンを生成.
-                                Room.GetComponentInChildren<Text>().text = roomListName[i];     // ルーム参加ボタンのテキストをルーム名にする.
-                                Room.name = roomListName[i];                                    // ルーム参加ボタンのオブジェクト名をルーム名にする.
-                                instantedRoom[j] = roomListName[i];                             // 生成されたルームのボタンををリストに追加.
-                                print("[Debug] : " + roomListName[i] + "のボタンを生成しました");
-                                break;
-                            }
+                    for(int j = 0; j < instantedRoom.Length; j++) {
+                        if(instantedRoom[j] == null || instantedRoom[j] == "") {
+                            GameObject Room = Instantiate(Instant, roomScroll);             // ルーム参加ボタンを生成.
+                            Room.GetComponentInChildren<Text>().text = roomListName[i];     // ルーム参加ボタンのテキストをルーム名にする.
+                            Room.name = roomListName[i];                                    // ルーム参加ボタンのオブジェクト名をルーム名にする.
+                            instantedRoom[j] = roomListName[i];                             // 生成されたルームのボタンををリストに追加.
+                            print("[Debug] : " + roomListName[i] + "のボタンを生成しました");
+                            break;
                         }
                     }
                 }

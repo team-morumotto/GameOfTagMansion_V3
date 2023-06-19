@@ -13,9 +13,8 @@ public class RoomList : IEnumerable<RoomInfo>
     public List<string> roomNameText = new List<string>();
     public List<int> roomMemberCount = new List<int>();
     public List<int> roomMaxPlayers = new List<int>();
-    public List<bool> roomIsVisible = new List<bool>();
 
-    public (List<string> rnt, List<int> rmc, List<int> rmp, List<bool> riv) Update(List<RoomInfo> changedRoomList) {
+    public (List<string> rnt, List<int> rmc, List<int> rmp) Update(List<RoomInfo> changedRoomList) {
         foreach (var info in changedRoomList) {
             if (!info.RemovedFromList) {
                 dictionary[info.Name] = info;
@@ -25,9 +24,8 @@ public class RoomList : IEnumerable<RoomInfo>
             roomNameText.Add(info.Name);
             roomMemberCount.Add(info.PlayerCount);
             roomMaxPlayers.Add(info.MaxPlayers);
-            roomIsVisible.Add(info.IsVisible);
         }
-        return (roomNameText, roomMemberCount, roomMaxPlayers, roomIsVisible);
+        return (roomNameText, roomMemberCount, roomMaxPlayers);
     }
 
     public void Clear() {
