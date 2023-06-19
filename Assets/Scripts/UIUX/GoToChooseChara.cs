@@ -40,10 +40,10 @@ public class GoToChooseChara : MonoBehaviour {
     //------- ゲッター -------//
 
     //------- ボタン -------//
+
     /// <summary>
     /// 逃げか鬼かを選択する.
     /// 仮引数 : 0 = 逃げ, 1 = 鬼.
-    /// 戻り値 : なし.
     /// </summary>
     public void SetPlayMode(int setPlayMode) {
         PlayMode = setPlayMode;
@@ -51,8 +51,8 @@ public class GoToChooseChara : MonoBehaviour {
 
     /// <summary>
     /// キャラクターを選択する.
-    /// 仮引数 : 0 = おおとり, 1 = のらねこ, 2 = こよみ.
-    /// 戻り値 : なし.
+    /// 仮引数は左から0、1、2...
+    /// 仮引数 : トラス、リルモア、水鏡こよみ、NoranekoSeven、シャーロ、ミュリシア、ウェンルイ、ミーシェ、朝霞やのは、ナユ.
     /// </summary>
     public void setCharacters(int setCharacters) {
         Characters = setCharacters;

@@ -1,10 +1,12 @@
-using System.ComponentModel.Design.Serialization;
 /*
     プレイヤーの足がFloorタグの付いたオブジェクトに触れたら足音を鳴らす.
 */
 
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel.Design.Serialization;
 
 public class Player_LegSE : MonoBehaviourPunCallbacks
 {
@@ -13,6 +15,19 @@ public class Player_LegSE : MonoBehaviourPunCallbacks
     void Start() {
         audioSource = GetComponent<AudioSource>(); // AudioSource取得.
         playerBase = transform.root.GetComponent<PlayerBase>(); // 最上位親オブジェクトのPlayerBaseを取得.
+        StartCoroutine(GetPlayerBase());
+    }
+
+    private IEnumerator GetPlayerBase() {
+        while(true) {
+            yield return null;
+
+            if(null != playerBase) {
+                break;
+            }else{
+                playerBase = transform.root.GetComponent<PlayerBase>(); // 最上位親オブジェクトのPlayerBaseを取得.
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider collider) {

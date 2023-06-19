@@ -62,7 +62,7 @@ namespace Smile_waya {
                     if (isInit) {
                         // 00:00.000のString形式でReturnする
                         return (countTime[0].ToString("00") + ":" + countTime[1].ToString("00") + "." + countTime[2].ToString("000"),
-                            svTimeCountDown);
+                                svTimeCountDown);
                     }
                     else {
                         isInit = true;

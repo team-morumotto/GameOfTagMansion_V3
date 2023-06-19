@@ -3,7 +3,7 @@ using UnityEngine;
 public class BGM_Script : MonoBehaviour
 {
     public AudioClip[] ClipBGM;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     void Start()
     {
@@ -15,9 +15,5 @@ public class BGM_Script : MonoBehaviour
         audioSource.Stop();
         audioSource.clip = ClipBGM[BGMnumber];
         audioSource.Play();
-    }
-
-    public void Call_BGM_Stop() {
-        audioSource.Stop();
     }
 }
