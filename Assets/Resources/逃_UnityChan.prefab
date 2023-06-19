@@ -3479,6 +3479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b325ddf2e64aa243803ffb23320121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -3495,12 +3496,13 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   obstructItem: {fileID: 8333294537088516929, guid: 3b6e249a004a6cc44a19921984a36c30, type: 3}
   characterNumber: 0
-  floating: 0
+  resultPanel: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
   isRunning: 0
+  lookat: {fileID: 0}
 --- !u!114 &-5633023524762969515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3513,6 +3515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c854cbebe4fb9478b919491b5c1696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floating: 0
   userSpawnPoint:
   - {fileID: 2006202919550750644, guid: a06c2e022a5cd5f48bf168c1e2bf5efd, type: 3}
   - {fileID: 3187383138411752098, guid: 448e19f97a4995b4cad07ebfdc84cebe, type: 3}
@@ -3529,7 +3532,7 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   obstructItem: {fileID: 8333294537088516929, guid: 3b6e249a004a6cc44a19921984a36c30, type: 3}
   characterNumber: 0
-  floating: 0
+  resultPanel: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
