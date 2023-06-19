@@ -1114,14 +1114,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a13e70d4ac7784cbf60ebc4aab814f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OniObject:
-  - {fileID: 8579874479882662412, guid: e043720249312f94ea21b4b9f6634845, type: 3}
-  - {fileID: 1673636152938565024, guid: 9a991fc1eed362e4aafeaeba238bf150, type: 3}
-  - {fileID: 8409879509656933100, guid: c7b8ddba195f7d944ae3e00ce9fdd8fa, type: 3}
-  EscapeObject:
-  - {fileID: 4049526037562052016, guid: 0928d055b8079d44a985ad28081d7bb6, type: 3}
-  - {fileID: 4185030055977136437, guid: ac0aa98bf183a134d87d1e83b43e1508, type: 3}
-  - {fileID: 2829568226418256726, guid: f066a4a933634e74083836036d931413, type: 3}
+  CharacterObject:
+  - {fileID: 8624856633637818927, guid: a5fcbe88faa2dac45b88743dd18a1c1f, type: 3}
+  - {fileID: 4731225321923646155, guid: 2ab8130f17714ad42b43f30a9bd9af89, type: 3}
+  - {fileID: 7779620834549025411, guid: 85425d1bc3a4ec64992b8933666da2fe, type: 3}
+  - {fileID: 7288766834422409984, guid: 0c80a55ec3d65cb459e301e4608927a9, type: 3}
+  - {fileID: 3891797744631244900, guid: c991297ee8148414aae8905b0e94f393, type: 3}
+  - {fileID: 1661507874408323074, guid: ee8854f243eb8b4438d317e527824c4b, type: 3}
+  - {fileID: 7185649694992703367, guid: c6247f29e90940241b384babe73c5f0a, type: 3}
+  - {fileID: 2469571247317656285, guid: 61b3ee3e4ab204745aac362709ddd630, type: 3}
+  - {fileID: 4099265264315631409, guid: 2370cb353c20cd44eaf8c8d0c2bddc29, type: 3}
+  - {fileID: 5811208590596517989, guid: 7abfd691d30bcbd4da90640a6d0ada9a, type: 3}
   SpawnPoint:
   - {fileID: 304977904}
   - {fileID: 1663067556}
@@ -22828,7 +22831,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30BF\u30A4\u30C8\u30EB\u306B\u623B\u308B"
+  m_Text: "\u30BF\u30A4\u30C8\u30EB\u306B\u3082\u3069\u308B"
 --- !u!222 &1467020072
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24465,6 +24468,7 @@ MonoBehaviour:
   ClipBGM:
   - {fileID: 8300000, guid: 2b1dbb9ba7dae614b9cfd8a368a8973c, type: 3}
   - {fileID: 8300000, guid: e382b3f55bcbc4b4e84f863f4d072275, type: 3}
+  audioSource: {fileID: 0}
 --- !u!1 &1598127814
 GameObject:
   m_ObjectHideFlags: 0
