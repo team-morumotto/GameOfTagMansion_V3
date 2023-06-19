@@ -17,6 +17,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     //---------- bool変数 ----------//
 	protected bool overCome; // 乗り越え.
+    public bool floating; // 浮遊.
     //=========== キャラクターステータス ===========//
 
     //------ public static変数 ------//
@@ -57,62 +58,63 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public Character character;
     public CharacterDatabase characterDatabase;
     public ItemDatabase itemDatabase;
-    public GameObject obstructItem;
     public int characterNumber;
-    public bool floating; // 浮遊.
     //---------- protected変数----------//
-    protected Animator anim;                 // アニメーション.
+    public Animator anim;                 // アニメーション.
     protected Camera playerCamera;           // プレイヤーを追尾するカメラ.
     protected Button_SE SE;
     protected BGM_Script BGM;
     protected Text gameTimer;                // タイマー出力用.
-    protected GameObject resultPanel;        // リザルトパネル.
-    protected Text resultWLText;             // リザルトパネルの勝敗テキスト.
+    public GameObject resultPanel;        // リザルトパネル.
     protected Text resultWinLoseText;        // リザルトの勝敗.
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
     public List<GameObject> playerList = new List<GameObject>(); // ルーム内の自分を除くキャラのリスト.
     public List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
-    public List<Target> escapeTargetList = new List<Target>(); // ルーム内の逃げキャラのカーソルのリスト.
-    public Target chaserTarget; // ルーム内の鬼キャラのカーソル.
-    protected GameObject instanceObstructItem; // 生成した障害物.
+    public List<Target> escapeTargetList = new List<Target>(); // ルーム内の逃げキャラのTargetコンポーネントのリスト.
+    public Target chaserTarget; // ルーム内の鬼キャラのターゲットコンポーネント.
 
     //------ int変数 ------//
     protected int isGameStartTimer = 5;
     protected int abilityUseAmount = 3; // 固有能力の使用可能回数(試験的に三回).
-    private int countDown = 5;          // ゲームスタートまでのカウントダウン
+    private int countDownSeconds = 5;          // ゲームスタートまでのカウントダウン
+    protected int isHit = 0; // デバッグ用.
 
     //------ float変数 ------//
     protected float nowStamina;
 
     //------ bool変数 ------//
-    protected bool isGameStarted = true;         //ゲームスタートしたか.
+    protected bool isGameStarted = false;         //ゲームスタートしたか.
     protected bool isOnGui = false;              // GUIを表示しているか.
     protected bool isGround = true;              // 地面に接地しているか.
     protected bool isSneak = false;              // スニークしているか.
     protected bool isStaminaLoss = false;        // スタミナが切れているか.
     protected bool isStan = false;               // スタンしているか.
-    protected bool isUseAvility = false;         // 固有能力をはつどうしているか.
+    protected bool isUseAvility = false;         // 固有能力を発動しているか.
     public bool isRunning = false;               // 走っているか.
 
-    protected virtual void Performance() {
-        // キャラクタースクリプト内で上書きする.
-    }
+    //------ string変数 ------//
+    protected string fps = "";
 
     /// <summary>
     /// プレイヤーの移動処理.
-    /// 状況によって移動速度を変える.
     /// </summary>
     /// <param name="moveForward">移動方向</param>
     /// <param name="moveSpeed">移動速度</param>
     /// <param name="animSpeed">アニメーション速度</param>
     protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
+        //print("f" + moveForward);
+        // print(moveSpeed);
         rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
+        // print("vel" + rb.velocity);
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
         anim.SetFloat("DashSpeed", animSpeed);
     }
 
+    /// <summary>
+    /// 一定時間ごとにスタミナ回復.
+    /// </summary>
     protected void RegenerativeStaminaHeal() {
         // スタミナが減っていたら.
         if(nowStamina < staminaAmount) {
@@ -122,7 +124,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 nowStamina += staminaHealAmount;        // スタミナ回復.
             }
 
-            // 回復後にスタミナが上限超過したら
+            // 回復後にスタミナが上限超過したら.
             if(nowStamina >= staminaAmount) {
                 nowStamina = staminaAmount; // スタミナはオーバーフローしない.
                 isStaminaLoss = false; //スタミナ切れ解除.
@@ -222,28 +224,29 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     ///<summary>5秒間待ってゲームを開始する</summary>
     public IEnumerator GameStartCountDown() {
-        BGM.Call_BGM_Stop(); // BGMを止める.
-        SE.Call_SE(3);                          // カウントダウンの音を鳴らす.
-        isGameStarted = false;
-        // 5秒間カウントダウン.
-        for(isGameStartTimer = countDown; isGameStartTimer > 0; isGameStartTimer--) {
-            isOnGui = true;                     // OnGuiを有効にする.
+        BGM.audioSource.Stop();             // BGMを止める.
+        isOnGui = true;                     // OnGuiを有効にする.
+
+        int i = countDownSeconds;           // カウントダウン秒数を入れる.
+        while(i > 0) {
+            SE.Call_SE(3);                          // カウントダウンの音を鳴らす.
             yield return new WaitForSeconds(1f);
+            i--;
         }
 
-        isOnGui = false;                        // OnGuiを無効にする.
+        isGameStarted = true;
+        isOnGui = false;                    // OnGuiを無効にする.
 
-        var BGMObject = GameObject.Find("BGM");
-        BGMObject.GetComponent<BGM_Script>().Call_BGM(0);
+        BGM.Call_BGM(0);
         gameState = GameState.ゲーム中;
 
-        // アイテム生成ルーチンを動かす.
+        // 自分がマスタークライアントなら.
         if(PhotonNetwork.LocalPlayer.IsMasterClient) {
             StartCoroutine(ItemSpawn());
         }
     }
 
-    ///<summary>自分がマスタークライアントならば、指定の座標にアイテムを出現させる</summary>
+    ///<summary>指定の座標にアイテムを出現させる</summary>
     public IEnumerator ItemSpawn() {
         while(true) {
             for(int i = 0; i < itemSpawnPoint.Length ; i++) {
@@ -265,7 +268,11 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// ルーム内のキャラクターのオブジェクトやコンポーネントの取得.
     /// </summary>
-    protected void GetPlayers() {
+    protected IEnumerator GetPlayers(float delay) {
+        print("players");
+
+        yield return new WaitForSeconds(delay); //
+        print("Players");
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         playerList = new List<GameObject>();   // 初期化.
@@ -276,7 +283,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         // nullなら処理しない.
         if(players == null) {
             print("Not Player");
-            return;
+            yield break;
         }
 
         foreach(var player in players) {
@@ -304,7 +311,48 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 }
             }
         }
+
+        print("players");
     }
+
+    /// <summary>
+    /// 与えられたフラグの値入れ替え.
+    /// </summary>
+    /// <param name="flg">フラグ</param>
+    /// <param name="delay"></param>
+    /// <returns></returns>
+    protected IEnumerator ChangeFlg(bool flg, float delay) {
+        yield return new WaitForSeconds(delay);
+        yield return flg = !flg;
+    }
+
+    /// <summary>
+    /// 3秒スタン
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator Stan() {
+        print("スタン中");
+        isStan = true;
+        anim.SetBool("Stan", true); // スタンアニメーション.
+        yield return new WaitForSeconds(3.0f);
+        isStan = false;
+        anim.SetBool("Stan", false); // スタンアニメーション.
+        print("スタン後");
+    }
+
+    /*/// <summary>
+    /// UGUI表示[デバッグ用]
+    /// </summary>
+    void OnGUI() {
+        if(!photonView.IsMine) {
+            return;
+        }
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 100;
+        GUI.Label(new Rect(100, 100, 300, 300), "velocity:" + rb.velocity.ToString(), style);
+        GUI.Label(new Rect(100, 200, 300, 300), "deltaTime:" + Time.deltaTime.ToString(), style);
+        GUI.Label(new Rect(100, 400, 300, 300), "isHit:" + isHit.ToString(), style);
+    }*/
 
     public enum ItemName{
         invincibleStar, //無敵スター
@@ -316,7 +364,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         hamburger, //大回復
         disposableGrapnelGun, //使い捨てグラップルガン
     }
-    private List<ItemName>[] haveItem = new List<ItemName>[2];
+    public List<ItemName>[] haveItem = new List<ItemName>[2];
     protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
     protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
     protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
@@ -379,24 +427,41 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         haveItem[0].Add(itemName);
     }
 
-    protected float amplification = 0; // アイテム効果を増幅するような効果がキャラにあるときに%分代入してください
+    protected float amplification = 0; // アイテムの効果量の増幅値.
 
     ///<summary>
-    ///回復する割合を%で指定すると最大スタミナに合わせて回復する
+    /// 回復する割合を%で指定すると最大スタミナに合わせて回復する.
     ///</summary>
     protected void InstanceStaminaHeal(float healparsent){
         var healamount = (staminaAmount/100)*(healparsent+amplification);
         nowStamina += healamount;
     }
-    
+
+    //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに) ------//
     /// <summary>
-    /// 与えられたフラグの値入れ替え.
+    /// ルーム内のキャラクターのカーソルを表示.
     /// </summary>
-    /// <param name="flg">フラグ</param>
-    /// <param name="delay"></param>
-    /// <returns></returns>
-    protected IEnumerator ChangeFlg(bool flg, float delay) {
-        yield return new WaitForSeconds(delay);
-        yield return flg = !flg;
+    /// <param name="isEscape">呼び出し側が逃げキャラかどうか</param>
+    protected IEnumerator TargetShow(bool isEscape) {
+        print("TargetShow");
+        if(photonView.IsMine) {
+            if(isEscape) {
+                chaserTarget.enabled = true;
+                print("chaserTrue");
+                yield return new WaitForSeconds(10.0f);
+                chaserTarget.enabled = false;
+                PhotonMatchMaker.SetCustomProperty("ct", false, 1);
+            }else{
+                print("EscapeTrue");
+                foreach(var targets in escapeTargetList) {
+                    targets.enabled = true;
+                }
+                yield return new WaitForSeconds(10.0f);
+                foreach(var targets in escapeTargetList) {
+                    targets.enabled = false;
+                }
+                PhotonMatchMaker.SetCustomProperty("et", false, 1);
+            }
+        }
     }
 }
