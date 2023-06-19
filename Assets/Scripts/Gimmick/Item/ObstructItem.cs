@@ -22,10 +22,6 @@ public class ObstructItem : MonoBehaviourPunCallbacks
         }
     }
 
-    void OnDestroy() {
-		Instantiate(obstructParticle, transform.position, transform.rotation);
-	}
-
     /// <summary>
     /// 5秒後削除.
     /// </summary>
@@ -35,8 +31,8 @@ public class ObstructItem : MonoBehaviourPunCallbacks
     }
 
     void OnTriggerEnter(Collider collider) {
-        print("aa");
-        if(collider.CompareTag("Wall")){
+        if(collider.CompareTag("Wall") || collider.CompareTag("Player")){
+            Instantiate(obstructParticle, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }
