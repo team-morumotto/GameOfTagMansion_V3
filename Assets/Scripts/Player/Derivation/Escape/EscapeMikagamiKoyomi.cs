@@ -12,7 +12,7 @@ public class EscapeMikagamiKoyomi : PlayerEscape
 {
     private float nowAbilityTime = 0.0f; // 能力発動の経過時間.
     private float maxAbilityTime = 1.0f; // 能力の効果時間.
-    private float scaleChangeAvirityTime = 2.0f; // 小さくなる能力の効果時間.
+    private float scaleChangeAvirityTime = 20.0f; // 小さくなる能力の効果時間.
     private float reductionAmount = 0.5f; // 縮小後のサイズ.
     private float expansionAmount = 1.0f; // 拡大後のサイズ.
     void Start() {
@@ -31,7 +31,8 @@ public class EscapeMikagamiKoyomi : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && !isUseAvility && !isCoolTime) {
+            isUseAvility = true;
             StartCoroutine(CharacterScaleChange());
         }
         BaseUpdate();
@@ -41,8 +42,8 @@ public class EscapeMikagamiKoyomi : PlayerEscape
         yield return ScaleChange(reductionAmount);
         yield return Delay(scaleChangeAvirityTime);
         yield return ScaleChange(expansionAmount);
+        StartCoroutine(AvillityCoolTime(20.0f));
         // 発動終了.
-        isUseAvility = false;
     }
 
     [PunRPC]

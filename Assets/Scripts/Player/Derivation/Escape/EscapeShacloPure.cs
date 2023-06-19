@@ -21,7 +21,8 @@ public class EscapeShacloPure : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
+            abilityUseAmount--;
             ChaserTargetShow();
         }
         BaseUpdate();

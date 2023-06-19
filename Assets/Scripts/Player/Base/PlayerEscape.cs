@@ -24,18 +24,6 @@ public class PlayerEscape : PlayerBase {
     private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
     private float sneakSpeed = 2.5f;   // スニーク状態のスピード.
 
-    /*if(Input.GetKeyDown(KeyCode.I)) {
-        if(performance != null) {
-            if(!isUseAvility) {
-                print("能力使用");
-                abilityUseAmount--; // 使用可能回数-1.
-                isUseAvility = true; // 使用中.
-            }
-        }else{
-            Debug.LogError("能力がセットされていません");
-        }
-    }*/
-
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {

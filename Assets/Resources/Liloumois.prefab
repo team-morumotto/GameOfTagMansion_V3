@@ -109,19 +109,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[6].Name
-      value: Sneak
-      objectReference: {fileID: 0}
-    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[6].Type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[7].Name
       value: DashSpeed
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-      propertyPath: m_SynchronizeParameters.Array.data[7].Type
+      propertyPath: m_SynchronizeParameters.Array.data[6].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[7].Name
+      value: Sneak
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[7].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
@@ -132,32 +132,48 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: Fly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Name
+      value: VRCEmote
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[1].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[2].SynchronizeType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[3].SynchronizeType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[6].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[7].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5430314082611086557, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_Controller

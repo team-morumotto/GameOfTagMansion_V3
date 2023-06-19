@@ -23,7 +23,8 @@ public class ChaserShacloPure : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
+            abilityUseAmount--;
             EscapeTargetShow();
         }
         BaseUpdate();

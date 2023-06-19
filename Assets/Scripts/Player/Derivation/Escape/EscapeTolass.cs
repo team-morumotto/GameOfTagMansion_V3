@@ -13,8 +13,7 @@ public class EscapeTolass : PlayerEscape
             if(GoToChooseChara.GetPlayMode() == 1) {
                 photonView.RPC(nameof(TolassES), RpcTarget.AllBuffered);
             }
-            Init(); // オブジェクトやコンポーネントの取得.
-            StartCoroutine(GetPlayers(1.0f));
+            Init(); // 初期化処理.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
@@ -24,7 +23,8 @@ public class EscapeTolass : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
+            abilityUseAmount--;
             photonView.RPC(nameof(FireObstruct), RpcTarget.All);
         }
         BaseUpdate();

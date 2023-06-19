@@ -36,7 +36,8 @@ public class ChaserMikagamiKoyomi : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && !isUseAvility && !isCoolTime) {
+            isUseAvility = true;
             CharacterScaleChange();
         }
         BaseUpdate();
@@ -46,8 +47,9 @@ public class ChaserMikagamiKoyomi : PlayerChaser
         yield return ScaleChange(reductionAmount);
         yield return Delay(scaleChangeAvirityTime);
         yield return ScaleChange(expansionAmount);
-        // 発動終了.
         isUseAvility = false;
+        StartCoroutine(AvillityCoolTime(10.0f));
+        // 発動終了.
     }
 
     [PunRPC]

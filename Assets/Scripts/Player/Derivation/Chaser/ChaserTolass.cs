@@ -20,9 +20,7 @@ public class ChaserTolass : PlayerChaser
             if(GoToChooseChara.GetPlayMode() == 0) {
                 photonView.RPC(nameof(TolassCS), RpcTarget.AllBuffered);
             }
-            //====== オブジェクトやコンポーネントの取得 ======//
-            Init();
-            StartCoroutine(GetPlayers(2.0f));
+            Init(); // 初期化処理.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
@@ -32,7 +30,8 @@ public class ChaserTolass : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
+            abilityUseAmount--;
             photonView.RPC(nameof(FireObstruct), RpcTarget.All);
         }
         BaseUpdate();

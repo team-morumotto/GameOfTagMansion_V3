@@ -30,18 +30,6 @@ public class PlayerChaser : PlayerBase
     private ScreenTimer ST = new ScreenTimer();
     //----------- 変数宣言終了 -----------//
 
-    /*if(Input.GetKeyDown(KeyCode.I)) {
-        if(performance != null) {
-            if(!isUseAvility) {
-                abilityUseAmount--; // 使用可能回数-1.
-                print("能力使用");
-                isUseAvility = true;
-            }
-        }else{
-            Debug.LogError("能力がセットされていません");
-        }
-    }*/
-
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {

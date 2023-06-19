@@ -92,6 +92,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isStaminaLoss = false;        // スタミナが切れているか.
     protected bool isStan = false;               // スタンしているか.
     protected bool isUseAvility = false;         // 固有能力を発動しているか.
+    protected bool isCoolTime = false;           // 固有能力発動後のクールタイム中か.
     public bool isRunning = false;               // 走っているか.
 
     //------ string変数 ------//
@@ -319,11 +320,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// 与えられたフラグの値入れ替え.
     /// </summary>
     /// <param name="flg">フラグ</param>
-    /// <param name="delay"></param>
-    /// <returns></returns>
+    /// <param name="delay">遅延時間</param>
+    /// <returns>反転したbool値</returns>
     protected IEnumerator ChangeFlg(bool flg, float delay) {
         yield return new WaitForSeconds(delay);
         yield return flg = !flg;
+    }
+
+    /// <summary>
+    /// 固有性能のクールタイム.
+    /// </summary>
+    /// <param name="delay">遅延時間</param>
+    protected IEnumerator AvillityCoolTime(float delay) {
+        isCoolTime = true; // クールタイム中.
+        var nowTime = 0.0f;
+        while(delay > nowTime) {
+            yield return null;
+            nowTime += Time.deltaTime;
+        }
+        isCoolTime = false; // クールタイム解除.
     }
 
     /// <summary>
@@ -339,20 +354,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         anim.SetBool("Stan", false); // スタンアニメーション.
         print("スタン後");
     }
-
-    /*/// <summary>
-    /// UGUI表示[デバッグ用]
-    /// </summary>
-    void OnGUI() {
-        if(!photonView.IsMine) {
-            return;
-        }
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 100;
-        GUI.Label(new Rect(100, 100, 300, 300), "velocity:" + rb.velocity.ToString(), style);
-        GUI.Label(new Rect(100, 200, 300, 300), "deltaTime:" + Time.deltaTime.ToString(), style);
-        GUI.Label(new Rect(100, 400, 300, 300), "isHit:" + isHit.ToString(), style);
-    }*/
 
     public enum ItemName{
         invincibleStar, //無敵スター
@@ -437,31 +438,79 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         nowStamina += healamount;
     }
 
-    //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに) ------//
+    //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに.) ------//
+    // 使用キャラ:シャーロ
     /// <summary>
     /// ルーム内のキャラクターのカーソルを表示.
     /// </summary>
     /// <param name="isEscape">呼び出し側が逃げキャラかどうか</param>
     protected IEnumerator TargetShow(bool isEscape) {
-        print("TargetShow");
         if(photonView.IsMine) {
-            if(isEscape) {
-                chaserTarget.enabled = true;
-                print("chaserTrue");
-                yield return new WaitForSeconds(10.0f);
-                chaserTarget.enabled = false;
-                PhotonMatchMaker.SetCustomProperty("ct", false, 1);
-            }else{
-                print("EscapeTrue");
-                foreach(var targets in escapeTargetList) {
-                    targets.enabled = true;
+            // クールタイム中の場合は処理しない。
+            if(!isCoolTime) {
+                if(isEscape) {
+                    chaserTarget.enabled = true;
+                    yield return new WaitForSeconds(10.0f);
+                    chaserTarget.enabled = false;
+                    PhotonMatchMaker.SetCustomProperty("ct", false, 1);
+                }else{
+                    foreach(var targets in escapeTargetList) {
+                        targets.enabled = true;
+                    }
+                    yield return new WaitForSeconds(10.0f);
+                    foreach(var targets in escapeTargetList) {
+                        targets.enabled = false;
+                    }
+                    PhotonMatchMaker.SetCustomProperty("et", false, 1);
                 }
-                yield return new WaitForSeconds(10.0f);
-                foreach(var targets in escapeTargetList) {
-                    targets.enabled = false;
-                }
-                PhotonMatchMaker.SetCustomProperty("et", false, 1);
             }
         }
+    }
+
+    // 使用キャラ:リルモア
+    private float relativeDistance;
+    private float HitDistance = 1.0f;
+    private float speed = 30.0f; // 移動速度
+    /// <summary>
+    /// カメラの中心直線上にレイを飛ばし、当たったオブジェクトを取得する.
+    /// </summary>
+    protected void HookShot() {
+        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit)) {
+            StartCoroutine(LinearMove(hit.point));
+        }else {
+            anim.SetBool("HookShot", false);
+        }
+    }
+
+    /// <summary>
+    /// 特定の位置に直線に向かう.
+    /// </summary>
+    /// <param name="targetPos">目標の位置</param>
+    private IEnumerator LinearMove(Vector3 targetPos) {
+        rb.useGravity = false;
+        do {
+            print("relative");
+            var tmp = targetPos - transform.position;
+            Vector3 direction = tmp.normalized; // 目標位置への方向ベクトルを計算
+            relativeDistance = tmp.magnitude;
+            float distance = speed * Time.deltaTime; // 目標位置への移動量を計算
+            transform.position += direction * distance; // 目標位置に向かって移動
+
+            //ベクトルの大きさが0.01以上の時に向きを変える処理をする
+            if (relativeDistance > 0.01f) {
+                transform.rotation = Quaternion.LookRotation(direction); //向きを変更する
+            }
+
+            yield return null; // 1フレーム遅延.
+        } while(relativeDistance > HitDistance);
+
+        anim.SetBool("HookShot", false);
+        rb.useGravity = true;
+        isUseAvility = false; // 発動終了.
+
+        StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム.
     }
 }
