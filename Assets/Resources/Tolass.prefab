@@ -69,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -133,6 +133,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: HookShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
@@ -507,14 +515,16 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   lookat: {fileID: 8393682996223326627}
-  obstructItem: {fileID: 6252318758161352710, guid: 6c12ac18ac63ec5419d756f78defeaac, type: 3}
+  obstructItem: {fileID: 6237512017513054898, guid: 3d1ae80c29cee42e2bbfdaaacd81e3f6, type: 3}
 --- !u!114 &8051680368648037076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,13 +554,15 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   catch_text: {fileID: 0}
   lookat: {fileID: 8393682996223326627}
   RedCube: {fileID: 1741196377504123459}
-  obstructItem: {fileID: 7773671298470379004, guid: a9208a0122d35cb43b3176f33d1735da, type: 3}
+  obstructItem: {fileID: 3238743353331741567, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}
