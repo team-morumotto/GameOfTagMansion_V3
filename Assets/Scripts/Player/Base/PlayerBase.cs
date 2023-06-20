@@ -59,24 +59,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public CharacterDatabase characterDatabase;
     public ItemDatabase itemDatabase;
     public int characterNumber;
-    //---------- protected変数----------//
     public Animator anim;                 // アニメーション.
-    protected Camera playerCamera;           // プレイヤーを追尾するカメラ.
-    protected Button_SE SE;
-    protected BGM_Script BGM;
-    protected Text gameTimer;                // タイマー出力用.
-    public GameObject resultPanel;        // リザルトパネル.
-    protected Text resultWinLoseText;        // リザルトの勝敗.
-    protected Rigidbody rb;                  // リジッドボディ.
-    protected GameObject staminaParent;      // スタミナUIの親.
-    protected Image staminaGuage;            // スタミナゲージ.
+    public static Camera playerCamera;           // プレイヤーを追尾するカメラ.
+    public Image SeenBy;                     // 相手に位置を見られているかのアイコン.
     public List<GameObject> playerList = new List<GameObject>(); // ルーム内の自分を除くキャラのリスト.
     public List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
     public List<Target> escapeTargetList = new List<Target>(); // ルーム内の逃げキャラのTargetコンポーネントのリスト.
     public Target chaserTarget; // ルーム内の鬼キャラのターゲットコンポーネント.
+    //---------- protected変数----------//
+    protected Button_SE SE;
+    protected BGM_Script BGM;
+    protected Text gameTimer;                // タイマー出力用.
+    public GameObject resultPanel;           // リザルトパネル.
+    protected Text resultWinLoseText;        // リザルトの勝敗.
+    protected Rigidbody rb;                  // リジッドボディ.
+    protected GameObject staminaParent;      // スタミナUIの親.
+    protected Image staminaGuage;            // スタミナゲージ.
+    public Text avilityRiminingAmount;    // 固有能力の残り使用可能回数.
 
     //------ int変数 ------//
-    protected int isGameStartTimer = 5;
     protected int abilityUseAmount = 3; // 固有能力の使用可能回数(試験的に三回).
     private int countDownSeconds = 5;          // ゲームスタートまでのカウントダウン
     protected int isHit = 0; // デバッグ用.
@@ -436,6 +437,15 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected void InstanceStaminaHeal(float healparsent){
         var healamount = (staminaAmount/100)*(healparsent+amplification);
         nowStamina += healamount;
+    }
+
+    /// <summary>
+    /// 回数制限性の固有性能の残り使用可能回数の更新.
+    /// </summary>
+    protected void avilityRiminingUpdate() {
+        abilityUseAmount--;
+        print(abilityUseAmount);
+        avilityRiminingAmount.text = abilityUseAmount.ToString();
     }
 
     //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに.) ------//

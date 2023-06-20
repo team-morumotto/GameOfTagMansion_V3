@@ -32,7 +32,7 @@ public class ObstructItem : MonoBehaviourPunCallbacks
 
     void OnTriggerEnter(Collider collider) {
         if(collider.CompareTag("Wall") || collider.CompareTag("Player")){
-            Instantiate(obstructParticle, transform.position, transform.rotation);
+            // Instantiate(obstructParticle, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }
