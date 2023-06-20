@@ -4,6 +4,9 @@
 ### お願いします。          waya ###
 ####################################
 
+# Metafileは同期しないとファイルが壊れる
+!/[Aa]ssets/**/*.meta
+
 # Plugin Files
 # Liltoonは https://github.com/lilxyzw/lilToon/releases よりDLをお願いします。
 # UTS2は https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/releases よりDLをお願いします。
