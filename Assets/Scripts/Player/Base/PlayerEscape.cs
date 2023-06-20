@@ -24,6 +24,52 @@ public class PlayerEscape : PlayerBase {
     private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
     private float sneakSpeed = 2.5f;   // スニーク状態のスピード.
 
+    protected void Init() {
+        StartCoroutine(GetPlayers(1.0f));
+        //====== オブジェクトやコンポーネントの取得 ======//
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
+        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
+        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
+
+        var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
+
+        var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
+        gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
+        staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
+        staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+        SeenBy = DuringUI.transform.Find("Image_SeenBy").GetComponent<Image>();
+
+        var recastParent = DuringUI.transform.Find("Group_Recast").gameObject;
+        avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+        avilityRiminingAmount.text = abilityUseAmount.ToString();
+
+        SeenBy.color = new Color(255, 255, 255, 0); // 非表示に.
+        staminaParent.SetActive(false);
+
+        resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
+        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
+
+        var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
+        Target.enabled = false; // 自分のカーソルを非表示に.
+
+        itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
+
+        offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
+
+        PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
+
+        var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
+        cf.enabled = true;
+        cf.Follow = this.transform;
+        cf.LookAt = this.lookat;
+
+        characterNumber = (int)character; // キャラクターの番号.
+
+        //====== オブジェクトやコンポーネントの取得 ======//
+    }
+
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
@@ -66,45 +112,6 @@ public class PlayerEscape : PlayerBase {
                 CharaPositionReset();
             break;
         }
-    }
-
-    protected void Init() {
-            StartCoroutine(GetPlayers(1.0f));
-            //====== オブジェクトやコンポーネントの取得 ======//
-            rb = GetComponent<Rigidbody>();
-            anim = GetComponent<Animator>();
-            SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
-            BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
-            playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
-
-            var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
-
-            var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
-            gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
-            staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
-            staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
-            staminaParent.SetActive(false);
-
-            resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
-            resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
-
-            var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
-            Target.enabled = false; // 自分のカーソルを非表示に.
-
-            itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
-
-            offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
-
-            PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
-
-            var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
-            cf.enabled = true;
-            cf.Follow = this.transform;
-            cf.LookAt = this.lookat;
-
-            characterNumber = (int)character; // キャラクターの番号.
-
-            //====== オブジェクトやコンポーネントの取得 ======//
     }
 
     /// <summary>
@@ -250,6 +257,11 @@ public class PlayerEscape : PlayerBase {
             Destroy(collider.gameObject); // 破壊.
             StartCoroutine(Stan());
         }
+
+        // 当たったオブジェクトがアイテムボックスなら.
+        if(collider.CompareTag("ItemBox")) {
+            
+        }
     }
     //--------------- ここまでコリジョン ---------------//
 
@@ -273,12 +285,14 @@ public class PlayerEscape : PlayerBase {
                 // スタミナの回復量のブースト.
                 case "hb":
                     staminaHealAmount += float.Parse(tmpValue.ToString());
-                    print("StaminaBoost");
+                    print("StaminaHealBoostRoom");
                 break;
                 case "et":
                     if((bool)tmpValue) {
                         print("aa");
-                        print("見られている");
+                        SeenBy.color = new Color(255, 255, 255, 255);
+                    }else {
+                        SeenBy.color = new Color(255, 255, 255, 0);
                     }
                 break;
                 case "ct":
