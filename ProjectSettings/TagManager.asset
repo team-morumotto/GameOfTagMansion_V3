@@ -15,6 +15,7 @@ TagManager:
   - Oni
   - Nigeru
   - Obstruct
+  - ItemBox
   layers:
   - Default
   - TransparentFX

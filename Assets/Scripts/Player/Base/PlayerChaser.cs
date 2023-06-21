@@ -30,6 +30,45 @@ public class PlayerChaser : PlayerBase
     private ScreenTimer ST = new ScreenTimer();
     //----------- 変数宣言終了 -----------//
 
+    protected void Init() {
+        StartCoroutine(GetPlayers(1.0f));
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
+        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
+        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
+
+        var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
+
+        var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
+        gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
+        staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
+        staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+        var recastParent = DuringUI.transform.Find("Group_Recast").gameObject;
+        avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+        avilityRiminingAmount.text = abilityUseAmount.ToString();
+        catch_text = DuringUI.transform.Find("Text_PlayerCatch").GetComponent<Text>();
+        SeenBy = DuringUI.transform.Find("Image_SeenBy").GetComponent<Image>();
+        SeenBy.color = new Color(255, 255, 255, 0); // 非表示に.
+        staminaParent.SetActive(false);
+
+        resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
+        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
+
+        var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
+        Target.enabled = false; // 自分のカーソルを非表示に.
+
+        itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
+
+        var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
+        cf.enabled = true;
+        cf.Follow = this.transform;
+        cf.LookAt = this.lookat;
+
+        characterNumber = (int)character; // キャラクターの番号.
+        //====== オブジェクトやコンポーネントの取得 ======//
+    }
+
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
@@ -117,40 +156,6 @@ public class PlayerChaser : PlayerBase
         }
 
         staminaGuage.fillAmount = nowStamina / staminaAmount; // 残りのスタミナをUIに反映.
-    }
-
-    protected void Init() {
-        StartCoroutine(GetPlayers(1.0f));
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
-        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
-        BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
-        playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
-
-        var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
-
-        var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
-        gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
-        staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
-        staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
-        catch_text = DuringUI.transform.Find("Text_PlayerCatch").GetComponent<Text>();
-        staminaParent.SetActive(false);
-
-        resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
-        resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
-
-        var Target = GetComponent<Target>(); // 位置カーソルコンポーネント取得.
-        Target.enabled = false; // 自分のカーソルを非表示に.
-
-        itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
-
-        var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
-        cf.enabled = true;
-        cf.Follow = this.transform;
-        cf.LookAt = this.lookat;
-
-        characterNumber = (int)character; // キャラクターの番号.
-        //====== オブジェクトやコンポーネントの取得 ======//
     }
 
     /// <summary>
@@ -269,8 +274,9 @@ public class PlayerChaser : PlayerBase
                 break; // 逃げのカーソルを表示.
                 case "ct":
                     if((bool)tmpValue) {
-                        print("ct");
-                        print("見られている");
+                        SeenBy.color = new Color(255, 255, 255, 255);
+                    }else {
+                        SeenBy.color = new Color(255, 255, 255, 0);
                     }
                 break;
                 //--- 随時追加 ---//

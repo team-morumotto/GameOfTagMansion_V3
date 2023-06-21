@@ -24,7 +24,7 @@ public class EscapeTolass : PlayerEscape
             return;
         }
         if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
-            abilityUseAmount--;
+            avilityRiminingUpdate();
             photonView.RPC(nameof(FireObstruct), RpcTarget.All);
         }
         BaseUpdate();

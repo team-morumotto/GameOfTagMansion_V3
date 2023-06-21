@@ -22,7 +22,7 @@ public class EscapeShacloPure : PlayerEscape
             return;
         }
         if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
-            abilityUseAmount--;
+            avilityRiminingUpdate();
             ChaserTargetShow();
         }
         BaseUpdate();

@@ -23,7 +23,8 @@ public class ChaserWenrui : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
+            avilityRiminingUpdate();
             // 固有性能はここから使用する.
         }
         BaseUpdate();

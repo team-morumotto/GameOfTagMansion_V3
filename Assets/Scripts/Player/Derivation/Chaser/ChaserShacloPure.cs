@@ -24,7 +24,7 @@ public class ChaserShacloPure : PlayerChaser
             return;
         }
         if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
-            abilityUseAmount--;
+            avilityRiminingUpdate();
             EscapeTargetShow();
         }
         BaseUpdate();

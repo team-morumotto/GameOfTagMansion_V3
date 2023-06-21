@@ -7,9 +7,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1262794346544509313, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2703452429268849300, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2703452429268849300, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -84,6 +88,14 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2703452429268849300, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: HookShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2703452429268849300, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2703452429268849300, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
@@ -117,6 +129,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3996091520181492326, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061480254483934126, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6184014798933395630, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
@@ -179,9 +195,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449942086, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449942308, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7266086504449942396, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: m_Name
       value: NORANEKOSEVEN
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449942396, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945056, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945064, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945066, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945070, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945072, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945074, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945078, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945080, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945084, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266086504449945086, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7373474948065546860, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
       propertyPath: sceneViewId
