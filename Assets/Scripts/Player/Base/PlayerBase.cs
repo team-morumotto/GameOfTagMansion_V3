@@ -366,77 +366,93 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         hamburger, //大回復
         disposableGrapnelGun, //使い捨てグラップルガン
     }
-    public List<ItemName>[] haveItem = new List<ItemName>[2];
+    public List<ItemName> haveItem = new List<ItemName>(); // 所持アイテム記録用のリスト
     protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
     protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
     protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
+    protected bool isAddhaveItem = false; //これがtrueならアイテムを二個保持できる(キャラクター用)
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
     void ItemUse(){
-        if(Input.GetKey(KeyCode.I)){
-            // アイテムを持っているなら.
-            if(isHaveItem){
-                ItemName tmp = haveItem[0][0]; // アイテム名を取得.
+        if(Input.GetKey(KeyCode.P)){
+            // アイテムを持っていないなら処理しない.
+            if(haveItem.Count == 0)return;
+                ItemName tmp = haveItem[0]; // アイテム名を取得.
                 switch(tmp){
                     case ItemName.invincibleStar:
                         // 無敵スターを使用する.
                         isInvincible = true;
                         ChangeFlg(isInvincible, 10.0f);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.;
                         break;
                     case ItemName.locationShuffle:
                         // 位置入れ替えを使用する. まだできてない
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.;
                         break;
                     case ItemName.abilityBlock:
                         // アビリティ封印を使用する. 現在自分にしかけしかけられない
                         isCanUseAbility = false;
                         ChangeFlg(isCanUseAbility, 10.0f);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.;
                         break;
                     case ItemName.movementBinding:
                         // 移動封印を使用する. 現在自分にしかけしかけられない
                         isCanUseMovement = false;
                         ChangeFlg(isCanUseMovement, 5.0f);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.
                         break;
-
                     case ItemName.drink:
                         // 小回復を使用する.
                         InstanceStaminaHeal(10);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.
                         break;
                     case ItemName.poteto:
                         // 中回復を使用する.
                         InstanceStaminaHeal(30);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.
                         break;
                     case ItemName.hamburger:
                         // 大回復を使用する.
                         InstanceStaminaHeal(50);
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.
                         break;
                     case ItemName.disposableGrapnelGun:
                         // 使い捨てグラップルガンを使用する.  まだできてない
-                        haveItem[0].RemoveAt(0); // アイテムを消費.
+                        haveItem.Remove(0); // アイテムを消費.
                         break;
                 }
-            }
         }
     }
-    protected void ItemGet(ItemName itemName){
-        haveItem[0].Add(itemName);
+    /// <summary>
+    ///アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
+    /// </summary>
+    public void ItemGet(ItemName itemName){
+        //ない時は無条件で追加
+        if(haveItem.Count == 0){
+            haveItem.Add(itemName);
+            return;
+        }
+        //二個目のアイテムを持てるキャラなら
+        else if(haveItem.Count == 1&&isAddhaveItem){ //
+            haveItem.Add(itemName);
+            return;
+        }
+
     }
 
-    protected float amplification = 0; // アイテムの効果量の増幅値.
+    protected float amplification = 0; // アイテムの効果量の増幅効果があるキャラが使用する変数
 
     ///<summary>
     /// 回復する割合を%で指定すると最大スタミナに合わせて回復する.
     ///</summary>
     protected void InstanceStaminaHeal(float healparsent){
-        var healamount = (staminaAmount/100)*(healparsent+amplification);
-        nowStamina += healamount;
+        //回復したらスタミナがどのぐらいになるのか計算
+        var healamount = (nowStamina/staminaAmount)+(healparsent+amplification/healparsent);
+        //回復量が最大スタミナを超えたら最大スタミナにする
+        if(healamount > staminaAmount)nowStamina = staminaAmount;
+        //回復量が最大スタミナを超えなかったら回復後の値を代入
+        else nowStamina = healamount;
     }
 
     /// <summary>
