@@ -80,3 +80,47 @@ UserSettings/*
 .vsconfig
 .editorconfig
 .vscode/
+
+####################################
+### 公開対策用Git Ignoreファイル ###
+### 流用は可能ですが、随時書換を ###
+### お願いします。          waya ###
+####################################
+
+# Plugin Files - Plugins
+# Liltoonは https://github.com/lilxyzw/lilToon/releases よりDLをお願いします。
+# UTS2は https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/releases よりDLをお願いします。
+/[Aa]ssets/[Pp]lugins/DynamicBone/
+/[Aa]ssets/[Pp]lugins/[Hh]ierarchy 2/
+/[Aa]ssets/[Pp]lugins/[Ll]il[Tt]oon/
+/[Aa]ssets/[Pp]lugins/Oyasumisan_glasses/
+/[Aa]ssets/[Pp]lugins/[Pp]hoton/
+/[Aa]ssets/[Pp]lugins/[Tt]oon/
+
+# Resource Files - 追加アセット
+# 著作権・規約の関係で除外
+# 目のアイコンは https://icooon-mono.com/14764-%e7%9b%ae%e3%81%ae%e3%81%ae%e7%84%a1%e6%96%99%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b37/ よりDLをお願いします。
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/48 Particle Effect Pack/
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/Controller Icons Pack (by NullSave)/
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/Keyboard Keys & Mouse Sprites/
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/Pixel Play/
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/SkySeries Freebie/
+/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/PiyoPiyoEffects/
+
+# Resource Files - 直下のmetaファイル以外かつ著作権的に問題があるものを除外
+!/[Aa]ssets/[Rr]esources/**/*.meta
+/[Aa]ssets/[Rr]esources/**/*.[Ff][Bb][Xx]
+/[Aa]ssets/[Rr]esources/**/*.[Aa][Nn][Ii][Mm]
+/[Aa]ssets/[Rr]esources/**/*.[Cc][Oo][Nn][Tt][Rr][Oo][Ll][Ll][Ee][Rr]
+/[Aa]ssets/[Rr]esources/**/*.[Mm][Aa][Tt]
+/[Aa]ssets/[Rr]esources/**/*.[Jj][Pp][Gg]
+/[Aa]ssets/[Rr]esources/**/*.[Jj][Pp][Ee][Gg]
+/[Aa]ssets/[Rr]esources/**/*.[Pp][Nn][Gg]
+/[Aa]ssets/[Rr]esources/**/*.[Pp][Ss][Dd]
+/[Aa]ssets/[Rr]esources/**/*.[Oo][Gg][Gg]
+/[Aa]ssets/[Rr]esources/**/*.[Mm][Pp]3
+/[Aa]ssets/[Rr]esources/**/*.[Ww][Aa][Vv]
+/[Aa]ssets/[Rr]esources/**/*.[Mm][Aa][Ss][Kk]
+/[Aa]ssets/[Rr]esources/**/*.[Tt][Tt][Ff]
+/[Aa]ssets/[Rr]esources/**/*.[Aa][Ss][Ss][Ee][Tt]
+/[Aa]ssets/[Rr]esources/[Ii]cons/IcoonMono/*.[Pp][Nn][Gg]
