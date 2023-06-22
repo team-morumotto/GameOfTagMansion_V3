@@ -18,17 +18,25 @@ public class NewItemScript : MonoBehaviour
     {
         //まわす
         rotateObject.transform.Rotate(rotateSpeed);
+        ItemLookCamera();
+        
+
+    }
+    ///<sammary>
+    ///ビルボードみたいにカメラに向ける
+    ///</sammary>
+    void ItemLookCamera(){
         //カメラに向ける
         var c = Camera.main.transform.position;
         var p = transform.position;
         c.y = p.y;
         transform.LookAt(2 * p - c);
-
     }
     ///<sammary>
     ///プレイヤーがアイテムを取得したときの処理
     ///</sammary>
-    void onCollisionEnter(Collision collision){
+    void OnCollisionEnter(Collision collision){
+        Debug.Log("アイテムとれたよ");
         //プレイヤー以外は無視
         if (collision.gameObject.tag != "Player")return;
         //アイテムの列挙型の最大値を取得
@@ -38,6 +46,8 @@ public class NewItemScript : MonoBehaviour
         //アイテムの名前を取得
         PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), b);
         collision.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
+        Debug.Log("アイテムとれたよ");
+        Destroy(this.gameObject);
         
     }
 }
