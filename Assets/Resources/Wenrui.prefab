@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -85,6 +85,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: HookShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
@@ -180,18 +188,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 233895418050456972, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
   m_PrefabInstance: {fileID: 855436711805183279}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7185649694992703221 stripped
+--- !u!1 &7185649694992703227 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7523141663109610458, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7523141663109610452, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
   m_PrefabInstance: {fileID: 855436711805183279}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &8432712329173364320
+--- !u!54 &7047397060743377639
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703221}
+  m_GameObject: {fileID: 7185649694992703227}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -201,13 +209,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &7674925530906479185
+--- !u!136 &3320182954505122188
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703221}
+  m_GameObject: {fileID: 7185649694992703227}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -215,13 +223,13 @@ CapsuleCollider:
   m_Height: 0.1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!82 &7814968372533531790
+--- !u!82 &5962853856893990344
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703221}
+  m_GameObject: {fileID: 7185649694992703227}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -311,31 +319,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &858911804473106992
+--- !u!114 &3485056765030147839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703221}
+  m_GameObject: {fileID: 7185649694992703227}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerBase: {fileID: 0}
---- !u!1 &7185649694992703309 stripped
+--- !u!1 &7185649694992703347 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7523141663109610082, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7523141663109610076, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
   m_PrefabInstance: {fileID: 855436711805183279}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &4402889433540873013
+--- !u!54 &1819038102706222848
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703309}
+  m_GameObject: {fileID: 7185649694992703347}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -345,13 +353,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &4325254323622158944
+--- !u!136 &1643477812614258483
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703309}
+  m_GameObject: {fileID: 7185649694992703347}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -359,13 +367,13 @@ CapsuleCollider:
   m_Height: 0.1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!82 &5686582326477777268
+--- !u!82 &2045890085563604682
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703309}
+  m_GameObject: {fileID: 7185649694992703347}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -455,13 +463,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5489531309588130787
+--- !u!114 &1684208032358213079
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185649694992703309}
+  m_GameObject: {fileID: 7185649694992703347}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22014fa1700e1b24d99133403d468f90, type: 3}
@@ -502,12 +510,15 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 640049411942303907}
 --- !u!114 &1219066978667193250
 MonoBehaviour:
@@ -538,12 +549,15 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 640049411942303907}
   RedCube: {fileID: 7256507755491556163}
