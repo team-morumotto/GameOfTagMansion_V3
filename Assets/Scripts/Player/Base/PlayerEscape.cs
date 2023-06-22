@@ -245,6 +245,11 @@ public class PlayerEscape : PlayerBase {
     }
 
     void OnTriggerEnter(Collider collider) {
+        // 当たったオブジェクトがアイテムボックスなら.
+        if(collider.CompareTag("ItemBox")) {
+
+        }
+
         // 当たったオブジェクトが障害物なら.
         if(collider.CompareTag("Obstruct")) {
             // すでにスタンしているなら処理しない.
@@ -252,15 +257,13 @@ public class PlayerEscape : PlayerBase {
                 print("スタン済み");
                 return;
             }
-            // 自分で生成した障害物でないなら.
             isHit++;
             Destroy(collider.gameObject); // 破壊.
             StartCoroutine(Stan());
         }
 
-        // 当たったオブジェクトがアイテムボックスなら.
-        if(collider.CompareTag("ItemBox")) {
-            
+        if(collider.CompareTag("Bill")) {
+            StartCoroutine(Stan());
         }
     }
     //--------------- ここまでコリジョン ---------------//
