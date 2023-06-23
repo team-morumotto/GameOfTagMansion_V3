@@ -86,6 +86,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected float nowStamina;
 
     //------ bool変数 ------//
+    public bool isRunning = false;               // 走っているか.
     protected bool isGameStarted = false;         //ゲームスタートしたか.
     protected bool isOnGui = false;              // GUIを表示しているか.
     protected bool isGround = true;              // 地面に接地しているか.
@@ -94,7 +95,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isStan = false;               // スタンしているか.
     protected bool isUseAvility = false;         // 固有能力を発動しているか.
     protected bool isCoolTime = false;           // 固有能力発動後のクールタイム中か.
-    public bool isRunning = false;               // 走っているか.
+    protected bool isSlow = false;                 // 移動速度が低下しているか.
 
     //------ string変数 ------//
     protected string fps = "";

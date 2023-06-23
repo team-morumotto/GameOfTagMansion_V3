@@ -65,7 +65,9 @@ public class EscapeWenrui : PlayerEscape
                     return;
                 }
             }
-            StartCoroutine(Stan());
+
+            isSlow = true; // 移動速度低下状態に.
+            ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
         }
     }
 
@@ -105,6 +107,10 @@ public class EscapeWenrui : PlayerEscape
             }
             deltaTime += Time.deltaTime;
             yield return null;
+        }
+
+        foreach(var bill in billList) {
+            Destroy(bill); // 展開した御札を破棄.
         }
 
         // 発動終了.

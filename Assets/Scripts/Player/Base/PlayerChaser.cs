@@ -44,7 +44,8 @@ public class PlayerChaser : PlayerBase
         gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
         staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
         staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
-        var recastParent = DuringUI.transform.Find("Group_Recast").gameObject;
+
+        var recastParent = DuringUI.transform.Find("Group_Avility").gameObject;
         avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
         avilityRiminingAmount.text = abilityUseAmount.ToString();
         catch_text = DuringUI.transform.Find("Text_PlayerCatch").GetComponent<Text>();

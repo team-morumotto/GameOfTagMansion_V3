@@ -41,7 +41,7 @@ public class PlayerEscape : PlayerBase {
         staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
         SeenBy = DuringUI.transform.Find("Image_SeenBy").GetComponent<Image>();
 
-        var recastParent = DuringUI.transform.Find("Group_Recast").gameObject;
+        var recastParent = DuringUI.transform.Find("Group_Avility").gameObject;
         avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
         avilityRiminingAmount.text = abilityUseAmount.ToString();
 
@@ -140,9 +140,17 @@ public class PlayerEscape : PlayerBase {
                     isStaminaLoss = true; // スタミナ切れに.
                 }
 
-                MoveType(moveForward, runSpeed, 1.5f);
+                if(isSlow) {
+                    MoveType(moveForward, runSpeed * 0.8f, 1.5f);
+                }else {
+                    MoveType(moveForward, runSpeed, 1.5f);
+                }
             }else {
-                MoveType(moveForward, walkSpeed, 1.0f);
+                if(isSlow) {
+                    MoveType(moveForward, walkSpeed * 0.8f, 1.5f);
+                }else {
+                    MoveType(moveForward, walkSpeed, 1.0f);
+                }
                 RegenerativeStaminaHeal();
             }
 
@@ -263,7 +271,8 @@ public class PlayerEscape : PlayerBase {
         }
 
         if(collider.CompareTag("Bill")) {
-            StartCoroutine(Stan());
+            isSlow = true; // 移動速度低下状態に.
+            ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
         }
     }
     //--------------- ここまでコリジョン ---------------//

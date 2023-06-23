@@ -108,6 +108,9 @@ public class ChaserWenrui : PlayerChaser
             yield return null;
         }
 
+        foreach(var bill in billList) {
+            Destroy(bill); // 展開した御札を破棄.
+        }
 
         // 発動終了.
         isUseAvility = false;
