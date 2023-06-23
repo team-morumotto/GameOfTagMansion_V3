@@ -6,7 +6,7 @@ using Photon.Pun;
 public class ObstructItem : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    float moveSpeed = 10f;
+    float moveSpeed = 4.0f; // 移動速度.
     [SerializeField]
     bool isFront = false;
     public GameObject obstructParticle;
