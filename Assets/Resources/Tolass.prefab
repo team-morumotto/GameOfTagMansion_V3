@@ -171,23 +171,10 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 9201823568262013975, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 9201823568262013975, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1540237805267734380, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
     - {fileID: 3876192695165522269, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
---- !u!1 &1741196377504123459 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5584692477080468667, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
-  m_PrefabInstance: {fileID: 6172509677859501816}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2353902694390473322 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8431748808391742610, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
@@ -523,6 +510,7 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 8393682996223326627}
   obstructItem: {fileID: 6237512017513054898, guid: 3d1ae80c29cee42e2bbfdaaacd81e3f6, type: 3}
 --- !u!114 &8051680368648037076
@@ -562,7 +550,8 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 8393682996223326627}
-  RedCube: {fileID: 1741196377504123459}
+  RedCube: {fileID: 0}
   obstructItem: {fileID: 3238743353331741567, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}

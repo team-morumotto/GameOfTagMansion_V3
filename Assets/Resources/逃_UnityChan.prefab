@@ -3340,7 +3340,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
   m_Controller: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -3459,9 +3459,6 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: DashSpeed
-  - Type: 4
-    SynchronizeType: 0
-    Name: Stan
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -3494,14 +3491,17 @@ MonoBehaviour:
   character: 9
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  obstructItem: {fileID: 8333294537088516929, guid: 3b6e249a004a6cc44a19921984a36c30, type: 3}
   characterNumber: 0
-  resultPanel: {fileID: 0}
+  anim: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 0}
 --- !u!114 &-5633023524762969515
 MonoBehaviour:
@@ -3530,14 +3530,17 @@ MonoBehaviour:
   character: 0
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  obstructItem: {fileID: 8333294537088516929, guid: 3b6e249a004a6cc44a19921984a36c30, type: 3}
   characterNumber: 0
-  resultPanel: {fileID: 0}
+  anim: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 8179242313304045502}
 --- !u!82 &8502407851292141370
 AudioSource:

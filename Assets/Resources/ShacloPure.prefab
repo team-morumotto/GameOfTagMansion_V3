@@ -179,14 +179,6 @@ PrefabInstance:
       propertyPath: targetColor.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 9148364014351262257, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 9148364014351262257, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2410309251282037539, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
     - {fileID: 7044655041059000967, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
@@ -479,11 +471,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBase: {fileID: 0}
---- !u!1 &3745054998621379506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2784651880961904935, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
-  m_PrefabInstance: {fileID: 1539115669872396949}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3891797744631244900 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2548607350266274545, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
@@ -526,9 +513,10 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 6894089064162846802}
-  RedCube: {fileID: 3745054998621379506}
+  RedCube: {fileID: 0}
 --- !u!114 &8897349601203449597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +554,7 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 6894089064162846802}
 --- !u!4 &6894089064162846802 stripped
 Transform:

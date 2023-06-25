@@ -175,14 +175,6 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5430314082611086557, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 5430314082611086557, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5738740100208714635, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: sceneViewId
       value: 0
@@ -191,11 +183,6 @@ PrefabInstance:
     - {fileID: 4999833113619800508, guid: de60b4785650e4a2daa490832fa01723, type: 3}
     - {fileID: 5951838189694107887, guid: de60b4785650e4a2daa490832fa01723, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: de60b4785650e4a2daa490832fa01723, type: 3}
---- !u!1 &47190346200148198 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6339012847075966512, guid: de60b4785650e4a2daa490832fa01723, type: 3}
-  m_PrefabInstance: {fileID: 6295774752800757462}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4731225321923646155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1654973473339491357, guid: de60b4785650e4a2daa490832fa01723, type: 3}
@@ -230,15 +217,18 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 7850343187509041926}
-  RedCube: {fileID: 47190346200148198}
+  RedCube: {fileID: 0}
 --- !u!114 &8187105280557907778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,12 +258,15 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 7850343187509041926}
 --- !u!1 &5541145690256919979 stripped
 GameObject:

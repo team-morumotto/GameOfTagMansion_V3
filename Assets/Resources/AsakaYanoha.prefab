@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -161,14 +161,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4853689743113489954, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4853689743120687108, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 4853689743120687108, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
-      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -510,6 +502,7 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 1216296032970227544}
 --- !u!114 &8485308468099934473
 MonoBehaviour:
@@ -548,11 +541,7 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 1216296032970227544}
-  RedCube: {fileID: 8985952411576962232}
---- !u!1 &8985952411576962232 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 507997499743967627, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
-  m_PrefabInstance: {fileID: 8914947012300543283}
-  m_PrefabAsset: {fileID: 0}
+  RedCube: {fileID: 0}

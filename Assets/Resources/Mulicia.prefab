@@ -11,14 +11,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4564650937992798607, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 4564650937992798607, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7130070878451884367, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_Name
       value: Mulicia
@@ -214,15 +206,18 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 689822695781808902}
-  RedCube: {fileID: 7333862136309319910}
+  RedCube: {fileID: 0}
 --- !u!114 &7143825190657047655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,12 +247,15 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 689822695781808902}
 --- !u!1 &2544021666120515481 stripped
 GameObject:
@@ -547,8 +545,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBase: {fileID: 0}
---- !u!1 &7333862136309319910 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1169486702004384171, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
-  m_PrefabInstance: {fileID: 8502168499628816717}
-  m_PrefabAsset: {fileID: 0}

@@ -123,14 +123,6 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 7523141663100209252, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 7523141663100209252, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7523141663109244552, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -560,9 +552,4 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 640049411942303907}
-  RedCube: {fileID: 7256507755491556163}
---- !u!1 &7256507755491556163 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8028603615042674284, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
-  m_PrefabInstance: {fileID: 855436711805183279}
-  m_PrefabAsset: {fileID: 0}
+  RedCube: {fileID: 0}

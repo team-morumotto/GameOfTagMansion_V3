@@ -59,17 +59,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4676428946842308761, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 4676428946842308761, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -175,11 +167,6 @@ PrefabInstance:
     - {fileID: 5541560943772497622, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
     - {fileID: 8123782059386967395, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
---- !u!1 &1157865137365205810 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8264737103983133428, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
-  m_PrefabInstance: {fileID: 7107716702465524166}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2469571247317656211 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4676428946834891605, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
@@ -510,9 +497,10 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 8954337909054533842}
-  RedCube: {fileID: 1157865137365205810}
+  RedCube: {fileID: 0}
 --- !u!114 &7046379418308803169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +538,7 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 8954337909054533842}
 --- !u!4 &8954337909054533842 stripped
 Transform:

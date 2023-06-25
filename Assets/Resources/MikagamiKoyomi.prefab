@@ -7,17 +7,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 454632374231295354, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
-    - target: {fileID: 454632374231295354, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -319,11 +311,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBase: {fileID: 0}
---- !u!1 &3689781687472236084 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 227061036262131981, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
-  m_PrefabInstance: {fileID: 3463851035070213945}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4096296778626196031 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 633576110368345350, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
@@ -507,15 +494,18 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 6872807709980366292}
-  RedCube: {fileID: 3689781687472236084}
+  RedCube: {fileID: 0}
 --- !u!114 &6689280009328681771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,10 +535,13 @@ MonoBehaviour:
   itemDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
-  resultPanel: {fileID: 0}
+  SeenBy: {fileID: 0}
   playerList: []
   escapeList: []
   escapeTargetList: []
   chaserTarget: {fileID: 0}
+  resultPanel: {fileID: 0}
+  avilityRiminingAmount: {fileID: 0}
   isRunning: 0
+  haveItem: 
   lookat: {fileID: 6872807709980366292}
