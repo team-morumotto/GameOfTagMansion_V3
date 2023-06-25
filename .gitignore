@@ -100,7 +100,6 @@ UserSettings/*
 /[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/**/*.*
 # Animation Files
 /[Aa]ssets/[Rr]esources/[Aa]nimations/**/*.[Ff][Bb][Xx]
-/[Aa]ssets/[Rr]esources/[Aa]nimations/**/*.[Cc][Oo][Nn][Tt][Rr][Oo][Ll][Ll][Ee][Rr]
 # Font Files
 /[Aa]ssets/[Rr]esources/[Ff]onts/**/*.*
 # Icon Files
