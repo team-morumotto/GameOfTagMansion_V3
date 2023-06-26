@@ -1,4 +1,4 @@
-using System.Reflection;
+using UnityEngine.Events;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.Serialization;
@@ -75,11 +75,15 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
-    public Text avilityRiminingAmount;    // 固有能力の残り使用可能回数.
+    public Text avilityRiminingAmount;       // 固有能力の残り使用可能回数.
+
+    //------ Coroutine変数 ------//
+    private Coroutine stan;
+    private Coroutine avilityCoolTime;
 
     //------ int変数 ------//
-    protected int abilityUseAmount = 3; // 固有能力の使用可能回数(試験的に三回).
-    private int countDownSeconds = 5;          // ゲームスタートまでのカウントダウン
+    protected int abilityUseAmount = 3;      // 固有能力の使用可能回数(試験的に三回).
+    private int countDownSeconds = 5;        // ゲームスタートまでのカウントダウン.
     protected int isHit = 0; // デバッグ用.
 
     //------ float変数 ------//
@@ -87,7 +91,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     //------ bool変数 ------//
     public bool isRunning = false;               // 走っているか.
-    protected bool isGameStarted = false;         //ゲームスタートしたか.
+    protected bool isGameStarted = false;        //ゲームスタートしたか.
     protected bool isOnGui = false;              // GUIを表示しているか.
     protected bool isGround = true;              // 地面に接地しているか.
     protected bool isSneak = false;              // スニークしているか.
@@ -95,7 +99,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isStan = false;               // スタンしているか.
     protected bool isUseAvility = false;         // 固有能力を発動しているか.
     protected bool isCoolTime = false;           // 固有能力発動後のクールタイム中か.
-    protected bool isSlow = false;                 // 移動速度が低下しているか.
+    protected bool isSlow = false;               // 移動速度が低下しているか.
 
     //------ string変数 ------//
     protected string fps = "";
@@ -192,20 +196,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// スピードアップアイテムを使用する.
-    /// 引数 : なし.
-    /// 戻り値 : なし.
-    /// </summary>
-    public void UseItem() {
-        // マウスの右ボタンを押した && アイテムを持っている && スニーク状態でないなら.
-        if(Input.GetMouseButton(1) && isHaveItem && !isSneak) {
-            // ChangeSpeedコルーチンを発動
-            StartCoroutine(ChangeSpeed());
-            isUseItem = true;
-        }
-    }
-
-    /// <summary>
     /// キャラクターのステータスを取得する.
     /// </summary>
     public void GetStatus() {
@@ -259,15 +249,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         }
     }
 
-    ///<summary> スピードアップアイテムを使用したときの処理 </summary>
-    public IEnumerator ChangeSpeed() {
-        // 5秒間スピードアップ
-        yield return new WaitForSeconds(5.0f);
-        // スピードアップ状態を解除
-        isUseItem = false;
-        isHaveItem = false;
-    }
-
     /// <summary>
     /// ルーム内のキャラクターのオブジェクトやコンポーネントの取得.
     /// </summary>
@@ -319,42 +300,71 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// 与えられたフラグの値入れ替え.
-    /// </summary>
-    /// <param name="flg">フラグ</param>
-    /// <param name="delay">遅延時間</param>
-    /// <returns>反転したbool値</returns>
-    protected IEnumerator ChangeFlg(bool flg, float delay) {
-        yield return new WaitForSeconds(delay);
-        yield return flg = !flg;
-    }
-
-    /// <summary>
     /// 固有性能のクールタイム.
     /// </summary>
     /// <param name="delay">遅延時間</param>
     protected IEnumerator AvillityCoolTime(float delay) {
         isCoolTime = true; // クールタイム中.
-        var nowTime = 0.0f;
-        while(delay > nowTime) {
-            yield return null;
-            nowTime += Time.deltaTime;
-        }
+        yield return new WaitForSeconds(delay);
         isCoolTime = false; // クールタイム解除.
     }
 
     /// <summary>
     /// 3秒スタン
     /// </summary>
-    /// <returns></returns>
     protected IEnumerator Stan() {
-        print("スタン中");
         isStan = true;
         anim.SetBool("Stan", true); // スタンアニメーション.
         yield return new WaitForSeconds(3.0f);
         isStan = false;
         anim.SetBool("Stan", false); // スタンアニメーション.
-        print("スタン後");
+    }
+
+    /// <summary>
+    /// フラグの入れ替えを遅延して行う.
+    /// </summary>
+    /// <param name="flgName">フラグの名前(isは省略)</param>
+    protected IEnumerator DelayChangeFlg(string flgName) {
+        switch(flgName) {
+            case "CanUseAbility ":
+                yield return StartCoroutine(BooleanReverse(x => isCanUseAbility = x, !isCanUseAbility, 10.0f));
+            break;
+            case "CanUseMovement":
+                yield return StartCoroutine(BooleanReverse(x => isCanUseMovement = x, !isCanUseMovement, 5.0f));
+            break;
+            case "Invincible":
+                yield return StartCoroutine(BooleanReverse(x => isInvincible = x, !isInvincible, 10.0f));
+            break;
+            case "Slow":
+                yield return StartCoroutine(BooleanReverse(x => isSlow = x, !isSlow, 5.0f));
+            break;
+        }
+    }
+
+    /// <summary>
+    /// 与えられたフラグをスイッチする.
+    /// </summary>
+    /// <param name="callback"></param>
+    /// <param name="tmpBool">フラグ</param>
+    /// <param name="delay">遅延時間</param>
+    /// <returns></returns>
+    private IEnumerator BooleanReverse(UnityAction<bool> callback, bool tmpBool, float delay) {
+        var tmpReturn = tmpBool;
+        yield return new WaitForSeconds(delay);
+        if(callback != null)callback(tmpReturn);
+    }
+
+    private void OnGUI()
+    {
+        if(!photonView.IsMine) {
+            return;
+        }
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 100;
+        GUI.Label(new Rect(0, 100, style.fontSize, style.fontSize), "CoolTime" + isCoolTime.ToString(), style);
+        GUI.Label(new Rect(0, 200, style.fontSize, style.fontSize), "useAvility" + isUseAvility.ToString(), style);
+        GUI.Label(new Rect(0, 300, style.fontSize, style.fontSize), "Stan" + isStan.ToString(), style);
+        GUI.Label(new Rect(0, 400, style.fontSize, style.fontSize), "Slow" + isSlow.ToString(), style);
     }
 
     public enum ItemName{
@@ -375,85 +385,84 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
-    void ItemUse(){
-        if(Input.GetKey(KeyCode.P)){
-            // アイテムを持っていないなら処理しない.
-            if(haveItem.Count == 0)return;
-                ItemName tmp = haveItem[0]; // アイテム名を取得.
-                switch(tmp){
-                    case ItemName.invincibleStar:
-                        // 無敵スターを使用する.
-                        isInvincible = true;
-                        ChangeFlg(isInvincible, 10.0f);
-                        haveItem.Remove(0); // アイテムを消費.;
-                        break;
-                    case ItemName.locationShuffle:
-                        // 位置入れ替えを使用する. まだできてない
-                        haveItem.Remove(0); // アイテムを消費.;
-                        break;
-                    case ItemName.abilityBlock:
-                        // アビリティ封印を使用する. 現在自分にしかけしかけられない
-                        isCanUseAbility = false;
-                        ChangeFlg(isCanUseAbility, 10.0f);
-                        haveItem.Remove(0); // アイテムを消費.;
-                        break;
-                    case ItemName.movementBinding:
-                        // 移動封印を使用する. 現在自分にしかけしかけられない
-                        isCanUseMovement = false;
-                        ChangeFlg(isCanUseMovement, 5.0f);
-                        haveItem.Remove(0); // アイテムを消費.
-                        break;
-                    case ItemName.drink:
-                        // 小回復を使用する.
-                        InstanceStaminaHeal(10);
-                        haveItem.Remove(0); // アイテムを消費.
-                        break;
-                    case ItemName.poteto:
-                        // 中回復を使用する.
-                        InstanceStaminaHeal(30);
-                        haveItem.Remove(0); // アイテムを消費.
-                        break;
-                    case ItemName.hamburger:
-                        // 大回復を使用する.
-                        InstanceStaminaHeal(50);
-                        haveItem.Remove(0); // アイテムを消費.
-                        break;
-                    case ItemName.disposableGrapnelGun:
-                        // 使い捨てグラップルガンを使用する.  まだできてない
-                        haveItem.Remove(0); // アイテムを消費.
-                        break;
-                }
+    protected void ItemUse(){
+        // アイテムを持っていないなら処理しない.
+        if(haveItem.Count == 0) {
+            return;
+        }
+
+        // Pキーが押されていたら.
+        if(Input.GetKeyDown(KeyCode.P)){
+            ItemName tmp = haveItem[0]; // アイテム名を取得.
+            switch(tmp){
+                case ItemName.invincibleStar:
+                    // 無敵スターを使用する.
+                    isInvincible = true;
+                    DelayChangeFlg("Invincible");
+                    break;
+                case ItemName.locationShuffle:
+                    // 位置入れ替えを使用する. まだできてない.
+                    break;
+                case ItemName.abilityBlock:
+                    // アビリティ封印を使用する. 現在自分にしかけしかけられない
+                    isCanUseAbility = false;
+                    DelayChangeFlg("CanUseAbility");
+                    break;
+                case ItemName.movementBinding:
+                    // 移動封印を使用する. 現在自分にしかけしかけられない
+                    isCanUseMovement = false;
+                    DelayChangeFlg("CanUseMovement");
+                    break;
+                case ItemName.drink:
+                    // 小回復を使用する.
+                    InstanceStaminaHeal(10);
+                    break;
+                case ItemName.poteto:
+                    // 中回復を使用する.
+                    InstanceStaminaHeal(30);
+                    break;
+                case ItemName.hamburger:
+                    // 大回復を使用する.
+                    InstanceStaminaHeal(50);
+                    break;
+                case ItemName.disposableGrapnelGun:
+                    // 使い捨てグラップルガンを使用する.  まだできてない
+                    break;
+            }
+            haveItem.RemoveAt(0); // アイテムを消費.
         }
     }
+
     /// <summary>
-    ///アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
+    /// アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
     /// </summary>
     public void ItemGet(ItemName itemName){
         //ない時は無条件で追加
         if(haveItem.Count == 0){
             haveItem.Add(itemName);
-            return;
         }
         //二個目のアイテムを持てるキャラなら
-        else if(haveItem.Count == 1&&isAddhaveItem){ //
+        else if(haveItem.Count == 1 && isAddhaveItem){
             haveItem.Add(itemName);
-            return;
         }
-
     }
 
     protected float amplification = 0; // アイテムの効果量の増幅効果があるキャラが使用する変数
 
-    ///<summary>
+    /// <summary>
     /// 回復する割合を%で指定すると最大スタミナに合わせて回復する.
-    ///</summary>
+    /// </summary>
     protected void InstanceStaminaHeal(float healparsent){
         //回復したらスタミナがどのぐらいになるのか計算
         var healamount = (nowStamina/staminaAmount)+(healparsent+amplification/healparsent);
         //回復量が最大スタミナを超えたら最大スタミナにする
-        if(healamount > staminaAmount)nowStamina = staminaAmount;
+        if(healamount > staminaAmount) {
+            nowStamina = staminaAmount;
+        }
         //回復量が最大スタミナを超えなかったら回復後の値を代入
-        else nowStamina = healamount;
+        else{
+            nowStamina = healamount;
+        }
     }
 
     /// <summary>
@@ -466,7 +475,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに.) ------//
-    // 使用キャラ:シャーロ
     /// <summary>
     /// ルーム内のキャラクターのカーソルを表示.
     /// </summary>
@@ -494,7 +502,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         }
     }
 
-    // 使用キャラ:リルモア
     private float relativeDistance;
     private float HitDistance = 1.0f;
     private float speed = 30.0f; // 移動速度
