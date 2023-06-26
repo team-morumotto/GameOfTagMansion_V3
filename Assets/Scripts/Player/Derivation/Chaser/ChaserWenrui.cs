@@ -37,6 +37,10 @@ public class ChaserWenrui : PlayerChaser
     }
 
     void OnTriggerEnter(Collider collider) {
+        if(!photonView.IsMine) {
+            return;
+        }
+
         // 当たったオブジェクトがアイテムボックスなら.
         if(collider.CompareTag("ItemBox")) {
 
@@ -108,12 +112,16 @@ public class ChaserWenrui : PlayerChaser
             yield return null;
         }
 
-        foreach(var bill in billList) {
-            Destroy(bill); // 展開した御札を破棄.
-        }
+        billDestroy();
 
         // 発動終了.
         isUseAvility = false;
         StartCoroutine(AvillityCoolTime(coolTime));
+    }
+
+    private void billDestroy() {
+        foreach(var bill in billList) {
+            Destroy(bill); // 展開した御札を破棄.
+        }
     }
 }
