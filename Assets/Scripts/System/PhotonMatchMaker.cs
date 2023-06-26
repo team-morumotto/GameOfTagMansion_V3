@@ -235,7 +235,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
         SetCustomProperty("h", false, 0);
 
-        player = PhotonNetwork.Instantiate(CharacterObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+        player = PhotonNetwork.Instantiate(CharacterObject[1].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
 
         if(GoToChooseChara.GetPlayMode() == 0) {
             sneakUI.SetActive(true);

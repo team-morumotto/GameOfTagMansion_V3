@@ -69,7 +69,6 @@ public class ChaserLiloumois : PlayerChaser
                 if(!isStan && isGround && !isUseAvility) {
                     PlayerMove();
                 }
-                UseItem();
                 GameTimer();
                 CharaPositionReset();
             break;

@@ -1,11 +1,17 @@
 /*
 *   Created by Kobayashi Atsuki
 
-*   派生クラスの[PunRPC]について補足.
+*   == 派生クラスの[PunRPC]について補足. ==
 *   関数:キャラクター名ES()は自分が「鬼キャラ」だった場合「逃げ用のスクリプト」を削除するという働きをする.
 *   [PunRPC]で定義された関数は自環境の自分と他環境の自分で同じ動作をさせるためのもの.
-*   photonViewコンポーネントがアタッチされたゲームオブジェクトにアタッチしたスクリプトから出ないと動作しないので、派生クラスごとに定義している。
+*   photonViewコンポーネントがアタッチされたゲームオブジェクトにアタッチしたスクリプトからでないと動作しないので、派生クラスごとに定義している.
 *   https://zenn.dev/o8que/books/bdcb9af27bdd7d/viewer/2e3520
+*   ==
+
+*   == 定期処理について補足 ==
+*   Initは派生先のStartで動かす.
+*   BaseUpdateは派生先のUpdateで動かす.
+*   また、BaseUpdateはトラスとリルモアのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
 using Smile_waya.GOM.ScreenTimer;
@@ -14,7 +20,6 @@ using Photon.Pun;
 using ExitGames.Client.Photon;
 using UnityEngine.UI;
 using Cinemachine;
-using System.Runtime.CompilerServices;
 
 public class PlayerEscape : PlayerBase {
     [Tooltip("カメラが注視するオブジェクト")]
@@ -70,6 +75,10 @@ public class PlayerEscape : PlayerBase {
         //====== オブジェクトやコンポーネントの取得 ======//
     }
 
+    /// <summary>
+    /// Update処理のベース.
+    /// 上書き予定なので仮想関数として定義.
+    /// </summary>
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
@@ -87,6 +96,7 @@ public class PlayerEscape : PlayerBase {
                         Sneak();
                     }
                 }
+                ItemUse();
                 PlayNumber();
 
                 if(PhotonMatchMaker.GameStartFlg) {
@@ -106,9 +116,9 @@ public class PlayerEscape : PlayerBase {
                 if(isGround){
                     PlayerMove();
                 }
-                GameTimer();
                 Sneak();
-                UseItem();
+                ItemUse();
+                GameTimer();
                 CharaPositionReset();
             break;
         }
@@ -147,7 +157,7 @@ public class PlayerEscape : PlayerBase {
                 }
             }else {
                 if(isSlow) {
-                    MoveType(moveForward, walkSpeed * 0.8f, 1.5f);
+                    MoveType(moveForward, walkSpeed * 0.8f, 1.0f);
                 }else {
                     MoveType(moveForward, walkSpeed, 1.0f);
                 }
@@ -272,7 +282,7 @@ public class PlayerEscape : PlayerBase {
 
         if(collider.CompareTag("Bill")) {
             isSlow = true; // 移動速度低下状態に.
-            ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
+            // ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
         }
     }
     //--------------- ここまでコリジョン ---------------//

@@ -62,7 +62,6 @@ public class EscapeLiloumois : PlayerEscape
                 }
                 GameTimer();
                 Sneak();
-                UseItem();
                 CharaPositionReset();
             break;
         }

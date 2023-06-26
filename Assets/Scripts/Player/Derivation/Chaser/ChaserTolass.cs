@@ -30,6 +30,7 @@ public class ChaserTolass : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
+
         if(Input.GetKeyDown(KeyCode.I) && abilityUseAmount > 0) {
             avilityRiminingUpdate();
             photonView.RPC(nameof(FireObstruct), RpcTarget.All);

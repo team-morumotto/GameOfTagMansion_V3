@@ -1,30 +1,34 @@
 /*
 *   Created by Kobayashi Atsuki
 
-*   派生クラスの[PunRPC]について補足.
+*   == 派生クラスの[PunRPC]について補足. ==
 *   関数:キャラクター名CS()は自分が「逃げキャラ」だった場合自分の「RedCubeオブジェクトと鬼用のスクリプト」を削除するという働きをする.
 *   [PunRPC]で定義された関数は自環境の自分と他環境の自分で同じ動作をさせるためのもの.
-*   photonViewコンポーネントがアタッチされたゲームオブジェクトにアタッチしたスクリプトから出ないと動作しないので、派生クラスごとに定義している。
+*   photonViewコンポーネントがアタッチされたゲームオブジェクトにアタッチしたスクリプトからでないと動作しないので、派生クラスごとに定義している.
 *   https://zenn.dev/o8que/books/bdcb9af27bdd7d/viewer/2e3520
+*   ==
+
+*   == 定期処理について補足 ==
+*   Initは派生先のStartで動かす.
+*   BaseUpdateは派生先のUpdateで動かす.
+*   また、BaseUpdateはリルモアのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
-using ExitGames.Client.Photon;
 using Cinemachine;
-using System.Collections;
 
 public class PlayerChaser : PlayerBase
 {
-    [Tooltip("捕まえたキャラクターの表示")]
-    [SerializeField]
-    protected Text catch_text; //捕まえたプレイヤー名を表示するUI.
-
     [Tooltip("カメラが注視するオブジェクト")]
     [SerializeField]
     public Transform lookat;
+
+    [Tooltip("捕まえたキャラクターの表示")]
+    [SerializeField]
+    protected Text catch_text; //捕まえたプレイヤー名を表示するUI.
 
     //----------- Private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
@@ -70,6 +74,10 @@ public class PlayerChaser : PlayerBase
         //====== オブジェクトやコンポーネントの取得 ======//
     }
 
+    /// <summary>
+    /// Update処理のベース.
+    /// 上書き予定なので仮想関数として定義.
+    /// </summary>
     protected virtual void BaseUpdate() {
         // 自分のキャラクターでなければ処理をしない
         if(!photonView.IsMine) {
@@ -86,6 +94,7 @@ public class PlayerChaser : PlayerBase
                         PlayerMove();
                     }
                 }
+                ItemUse();
                 PlayNumber();
 
                 if(PhotonMatchMaker.GameStartFlg) {
@@ -105,7 +114,7 @@ public class PlayerChaser : PlayerBase
                 if(isGround){
                     PlayerMove();
                 }
-                UseItem();
+                ItemUse();
                 GameTimer();
                 CharaPositionReset();
             break;
@@ -275,6 +284,11 @@ public class PlayerChaser : PlayerBase
 
             // Keyで照合;
             switch(tmpKey) {
+                case "on":
+                    abilityUseAmount = 3; //! マジックナンバー.
+                    isUseAvility = false;
+                    isCoolTime = false;
+                break;
                 case "et":
                     if((bool)tmpValue) {
                         print("et");

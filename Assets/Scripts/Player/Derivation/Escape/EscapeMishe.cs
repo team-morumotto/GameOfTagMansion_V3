@@ -11,6 +11,7 @@ public class EscapeMishe : PlayerEscape
             if(GoToChooseChara.GetPlayMode() == 1) {
                 photonView.RPC(nameof(MisheES), RpcTarget.AllBuffered);
             }
+            isAddhaveItem = true; // アイテムの複数個持ちが可能.
             Init(); // オブジェクトやコンポーネントの取得.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();

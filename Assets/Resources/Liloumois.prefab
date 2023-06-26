@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -125,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5430314082611086557, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 13bc7791bf093c3459d76e64a7fc0f91, type: 2}
     - target: {fileID: 5738740100208714635, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: sceneViewId
       value: 0
@@ -231,8 +235,8 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
   lookat: {fileID: 7850343187509041926}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 3821876905082432764}
 --- !u!114 &8187105280557907778
 MonoBehaviour:

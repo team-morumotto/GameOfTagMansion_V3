@@ -23,7 +23,6 @@ public class EscapeAsakaYanoha : PlayerEscape
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
-        
     }
 
     void Update () {

@@ -13,6 +13,7 @@ public class ChaserMishe : PlayerChaser
             if(GoToChooseChara.GetPlayMode() == 0) {
                 photonView.RPC(nameof(MisheCS), RpcTarget.AllBuffered);
             }
+            isAddhaveItem = true; // アイテムの複数個持ちが可能.
             Init(); // オブジェクトやコンポーネントの取得.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
