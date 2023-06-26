@@ -544,4 +544,9 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 1216296032970227544}
-  RedCube: {fileID: 0}
+  RedCube: {fileID: 4100801742021459518}
+--- !u!1 &4100801742021459518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4850579547254909709, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+  m_PrefabInstance: {fileID: 8914947012300543283}
+  m_PrefabAsset: {fileID: 0}

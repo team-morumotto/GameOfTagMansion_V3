@@ -500,7 +500,7 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 8954337909054533842}
-  RedCube: {fileID: 0}
+  RedCube: {fileID: 5635300422949944091}
 --- !u!114 &7046379418308803169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +540,11 @@ MonoBehaviour:
   isRunning: 0
   haveItem: 
   lookat: {fileID: 8954337909054533842}
+--- !u!1 &5635300422949944091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3213095468646775517, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+  m_PrefabInstance: {fileID: 7107716702465524166}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8954337909054533842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2226920392643309844, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}

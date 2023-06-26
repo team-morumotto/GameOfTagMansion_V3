@@ -268,6 +268,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5196168349932501096, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
   m_PrefabInstance: {fileID: 139811683133212796}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6903775817878998814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6791312220220737378, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
+  m_PrefabInstance: {fileID: 139811683133212796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7288766834422409984 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7266086504449942396, guid: a47e113a42aaa4ea19708ff35d906608, type: 3}
@@ -313,7 +318,7 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 5326855013174112276}
-  RedCube: {fileID: 0}
+  RedCube: {fileID: 6903775817878998814}
 --- !u!114 &5844706760832483485
 MonoBehaviour:
   m_ObjectHideFlags: 0

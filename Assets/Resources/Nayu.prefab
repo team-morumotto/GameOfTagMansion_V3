@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3867687653650548620, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3867687653650548620, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -167,9 +167,9 @@ PrefabInstance:
     - {fileID: 1551197613791054549, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
     - {fileID: 4787212896809687586, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
---- !u!1 &3085149332823431599 stripped
+--- !u!1 &3804696974756056034 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2973262441694757831, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3990047662271746442, guid: 0e8f2ed38011644c5904737778c74bd7, type: 3}
   m_PrefabInstance: {fileID: 257690929065056872}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4264147829468758346 stripped
@@ -221,8 +221,8 @@ MonoBehaviour:
   isRunning: 0
   haveItem: 
   catch_text: {fileID: 0}
-  lookat: {fileID: 0}
-  RedCube: {fileID: 3085149332823431599}
+  lookat: {fileID: 4264147829468758346}
+  RedCube: {fileID: 3804696974756056034}
 --- !u!114 &6132514321603546797
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -311,6 +311,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBase: {fileID: 0}
+--- !u!1 &2459899040003338437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1310902697347751932, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
+  m_PrefabInstance: {fileID: 3463851035070213945}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4096296778626196031 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 633576110368345350, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
@@ -505,7 +510,7 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 6872807709980366292}
-  RedCube: {fileID: 0}
+  RedCube: {fileID: 2459899040003338437}
 --- !u!114 &6689280009328681771
 MonoBehaviour:
   m_ObjectHideFlags: 0

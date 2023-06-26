@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -178,6 +178,11 @@ PrefabInstance:
 --- !u!4 &640049411942303907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 233895418050456972, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+  m_PrefabInstance: {fileID: 855436711805183279}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5575263993193914043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5080146382730345364, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
   m_PrefabInstance: {fileID: 855436711805183279}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7185649694992703227 stripped
@@ -552,4 +557,4 @@ MonoBehaviour:
   haveItem: 
   catch_text: {fileID: 0}
   lookat: {fileID: 640049411942303907}
-  RedCube: {fileID: 0}
+  RedCube: {fileID: 5575263993193914043}
