@@ -5,23 +5,26 @@ using UnityEngine.UI;
 
 public class FowardSliderScript : MonoBehaviour
 {
-    [SerializeField] private Text Text_Contents;
-    [SerializeField] private Button _ButtonNext;
-    [SerializeField] private Button _ButtonPrevious;
-    public enum Mode{
-        Oni,
-        Nige
+    [SerializeField] private Text Text_Contents; //表示するテキスト
+    [SerializeField] private Button buttonNext; //次のページに進むボタン
+    [SerializeField] private Button buttonPrevious; //前のページに戻るボタン
+    public enum Mode{ //表示する内容
+        鬼,
+        逃げ
     }
-    public List<Mode> modeList = new List<Mode>();
-    private int _MaxPageNumber;
+    public List<Mode> modeList = new List<Mode>(); //表示される順番(インスペクターで入力)
+    private int _MaxPageNumber; //最大ページ数
     private int _NowPageNumber = 1;
+    [SerializeField] private GameObject nigeCharacterPalel;
+    [SerializeField] private GameObject oniCharacterPalel;
+    [SerializeField] private CharacterPreviewManager charactorPreview;
     // Start is called before the first frame update
     void Start()
     {
         _MaxPageNumber = modeList.Count;
         ChangeContents(_NowPageNumber);
-        _ButtonNext.onClick.AddListener(OnNextPaper);
-        _ButtonPrevious.onClick.AddListener(OnPreviousPaper);
+        buttonNext.onClick.AddListener(OnNextPaper);
+        buttonPrevious.onClick.AddListener(OnPreviousPaper);
     }
 
     // Update is called once per frame
@@ -29,41 +32,52 @@ public class FowardSliderScript : MonoBehaviour
     {
         
     }
-     [System.Serializable]
-    public class Blog
-    {
-        public string Title;
-        [TextArea(1, 10)] public string Contents;
 
-
-        public Blog(string title ,string contents)
-        {
-            Title = title;
-            Contents = contents;
-        }
-     }
-
+    /// <summary>
+    /// ページを変更する
+    /// </summary>
     private void OnNextPaper()
     {
         if (_NowPageNumber != _MaxPageNumber)
         {
             ChangeContents(_NowPageNumber + 1);
         }
+        else{
+            ChangeContents(1);
+        }
 
     }
 
+    /// <summary>
+    /// ページを戻る
+    /// </summary>
     private void OnPreviousPaper()
     {
         if (_NowPageNumber != 1)
         {
             ChangeContents(_NowPageNumber - 1);
         }
+        else{
+            ChangeContents(_MaxPageNumber);
+        }
 
     }
+    /// <summary>
+    /// ページの内容を変更する
+    /// </summary>
     private void ChangeContents(int pageNumber)
     {
         _NowPageNumber = pageNumber;
-
-
+        Text_Contents.text = modeList[_NowPageNumber - 1].ToString();
+        if(_NowPageNumber == 1){
+            nigeCharacterPalel.SetActive(false);
+            oniCharacterPalel.SetActive(true);
+            charactorPreview.CharactorPreview(1);
+        }
+        else{
+            nigeCharacterPalel.SetActive(true);
+            oniCharacterPalel.SetActive(false);
+            charactorPreview.CharactorPreview(0);
+        }
     }
 }
