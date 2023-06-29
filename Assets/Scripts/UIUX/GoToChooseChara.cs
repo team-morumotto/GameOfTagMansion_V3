@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class GoToChooseChara : MonoBehaviour {
     public static GoToChooseChara instance = null;
-    public static int PlayMode = 0;
-    public static int Characters = 0;
+    public static int playMode = 0;
+    public static int characters = 0;
     public static int actorNumber = -1;
     public static bool isSolo = false;
     public static bool isEdit = false;
@@ -26,10 +26,10 @@ public class GoToChooseChara : MonoBehaviour {
 
     //------- ゲッター -------//
     public static int GetPlayMode() {
-        return PlayMode;
+        return playMode;
     }
     public static int GetCharacters() {
-        return Characters;
+        return characters;
     }
     public static bool GetIsEdit() {
         return isEdit;
@@ -45,17 +45,21 @@ public class GoToChooseChara : MonoBehaviour {
     /// 逃げか鬼かを選択する.
     /// 仮引数 : 0 = 逃げ, 1 = 鬼.
     /// </summary>
-    public void SetPlayMode(int setPlayMode) {
-        PlayMode = setPlayMode;
+    public void SetPlayMode() {
+        if(playMode == 0) {
+            playMode = 1;
+        }else {
+            playMode = 0;
+        }
     }
 
     /// <summary>
     /// キャラクターを選択する.
     /// 仮引数は左から0、1、2...
-    /// 仮引数 : トラス、リルモア、水鏡こよみ、NoranekoSeven、シャーロ、ミュリシア、ウェンルイ、ミーシェ、朝霞やのは、ナユ.
+    /// 仮引数 : トラス、リルモワ、水鏡こよみ、NoranekoSeven、シャーロ、ミュリシア、ウェンルイ、ミーシェ、朝霞やのは、ナユ.
     /// </summary>
     public void setCharacters(int setCharacters) {
-        Characters = setCharacters;
+        characters = setCharacters;
     }
 
     // ルームの参加の自分の順番を記録.
