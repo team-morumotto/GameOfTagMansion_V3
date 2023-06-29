@@ -10,10 +10,10 @@ enum PlayerType {
 
 public class CharacterPreviewManager : MonoBehaviour {
     [SerializeField] GameObject[] characterPreviewObject; // キャラプレビュー(object)
-    [SerializeField] Text characterPreviewNameText;       // キャラ名前(text)
-    [SerializeField] Text characterPreviewSkillText;      // キャラスキル(text)
-    [SerializeField] Text characterPreviewSpecText;       // キャラ性能(text)
-    [SerializeField] Text characterPreviewOtherText;      // キャラ備考(text)
+    [SerializeField] Text characterPreviewName;       // キャラ名前(text)
+    [SerializeField] Text characterPreviewSkill;      // キャラスキル(text)
+    [SerializeField] Text characterPreviewSpec;       // キャラ性能(text)
+    [SerializeField] Text characterPreviewOther;      // キャラ備考(text)
     private PlayerType playerType;                        // PlayerType.Chaser: 鬼, PlayerType.Escape: 逃げ
     // Start is called before the first frame update
     void Start() {
@@ -40,111 +40,109 @@ public class CharacterPreviewManager : MonoBehaviour {
         switch(cr){
             case 0:
                 characterPreviewObject[0].SetActive(true);
-                characterPreviewNameText.text = "トラスとウェッジ";
+                characterPreviewName.text = "トラスとウェッジ";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "爆発物を前に投げて邪魔する";
+                    characterPreviewSkill.text = "爆発物を前に投げて邪魔する";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "爆発物を後ろに設置して邪魔する";
+                    characterPreviewSkill.text = "爆発物を後ろに設置して邪魔する";
                 }
-                characterPreviewSpecText.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 15.0\n回復速度: 1.0\n";
-                characterPreviewOtherText.text = "逃げ切ることも邪魔もできる";
+                characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 15.0\n回復速度: 1.0\n";
+                characterPreviewOther.text = "逃げ切ることも邪魔もできる";
                 break;
             case 1:
                 characterPreviewObject[1].SetActive(true);
-                characterPreviewNameText.text = "リルモア";
-                characterPreviewSkillText.text = "高いところへ飛べる他、足音が聞こえない";
-                characterPreviewSpecText.text = "移動速度: 1.0 (ダッシュ時3.0)\n体力: 10.0\n回復速度: 2.0\n";
-                characterPreviewOtherText.text = "忍び寄ることに特化している分、体力がない";
+                characterPreviewName.text = "リルモア";
+                characterPreviewSkill.text = "高いところへ飛べる他、足音が聞こえない";
+                characterPreviewSpec.text = "移動速度: 1.0 (ダッシュ時3.0)\n体力: 10.0\n回復速度: 2.0\n";
+                characterPreviewOther.text = "忍び寄ることに特化している分、体力がない";
                 break;
             case 2:
                 characterPreviewObject[2].SetActive(true);
-                if(playerType == PlayerType.Chaser.Escape) {
-                    characterPreviewNameText.text = "水鏡こよみ";
-                    characterPreviewSkillText.text = "小さくなりステルス性を高める";
-                    characterPreviewSpecText.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 5.0\n回復速度: 2.0\n";
-                    characterPreviewOtherText.text = "隠れている際は体力を使わないが、体力がない";
-                }
+                characterPreviewName.text = "水鏡こよみ";
+                characterPreviewSkill.text = "小さくなりステルス性を高める";
+                characterPreviewSpec.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 5.0\n回復速度: 2.0\n";
+                characterPreviewOther.text = "隠れている際は体力を使わないが、体力がない";
                 break;
             case 3:
                 characterPreviewObject[3].SetActive(true);
-                characterPreviewNameText.text = "NoranekoSeven";
+                characterPreviewName.text = "NoranekoSeven";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "物に化けて隠れられる";
+                    characterPreviewSkill.text = "物に化けて隠れられる";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "壁を越えられる";
+                    characterPreviewSkill.text = "壁を越えられる";
                 }
-                characterPreviewSpecText.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.5\n";
-                characterPreviewOtherText.text = "物に化けたり走ると体力を消耗";
+                characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.5\n";
+                characterPreviewOther.text = "物に化けたり走ると体力を消耗";
                 break;
             case 4:
                 characterPreviewObject[4].SetActive(true);
-                characterPreviewNameText.text = "シャーロ";
+                characterPreviewName.text = "シャーロ";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "3回だけ逃げの位置を表示";
+                    characterPreviewSkill.text = "3回だけ逃げの位置を表示";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "3回だけ鬼の位置を表示";
+                    characterPreviewSkill.text = "3回だけ鬼の位置を表示";
                 }
-                characterPreviewSpecText.text = "移動速度: 1.0 (ダッシュ時1.5)\n体力: 20.0\n回復速度: 1.0\n";
-                characterPreviewOtherText.text = "逃げで使うと味方も鬼の場所が見れる";
+                characterPreviewSpec.text = "移動速度: 1.0 (ダッシュ時1.5)\n体力: 20.0\n回復速度: 1.0\n";
+                characterPreviewOther.text = "逃げで使うと味方も鬼の場所が見れる";
                 break;
             case 5:
                 characterPreviewObject[5].SetActive(true);
-                characterPreviewNameText.text = "ミュリシア";
+                characterPreviewName.text = "ミュリシア";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "近くに逃げがいると反応する";
+                    characterPreviewSkill.text = "近くに逃げがいると反応する";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "一度だけ捕まっても回避できる";
+                    characterPreviewSkill.text = "一度だけ捕まっても回避できる";
                 }
-                characterPreviewSpecText.text = "移動速定: 1.5 (ダッシュ時2.5)\n体力: 15.0/20.0\n回復速度: 1.5/2.0\n";
-                characterPreviewOtherText.text = "ポテトを食べると性能が上がる";
+                characterPreviewSpec.text = "移動速定: 1.5 (ダッシュ時2.5)\n体力: 15.0/20.0\n回復速度: 1.5/2.0\n";
+                characterPreviewOther.text = "ポテトを食べると性能が上がる";
                 break;
             case 6:
                 characterPreviewObject[6].SetActive(true);
-                characterPreviewNameText.text = "ウェンルイ";
+                characterPreviewName.text = "ウェンルイ";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "御札を使って範囲に入ってきた逃げの動きを一定時間鈍らせる";
+                    characterPreviewSkill.text = "御札を使って範囲に入ってきた逃げの動きを一定時間鈍らせる";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "御札を使って範囲に入ってきた鬼の動きを一定時間封じる";
+                    characterPreviewSkill.text = "御札を使って範囲に入ってきた鬼の動きを一定時間封じる";
                 }
-                characterPreviewSpecText.text = "移動速定: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.0\n";
-                characterPreviewOtherText.text = "御札は3回まで。範囲はあまり大きくない";
+                characterPreviewSpec.text = "移動速定: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.0\n";
+                characterPreviewOther.text = "御札は3回まで。範囲はあまり大きくない";
                 break;
             case 7:
                 characterPreviewObject[7].SetActive(true);
-                characterPreviewNameText.text = "ミーシェ";
-                characterPreviewSkillText.text = "アイテムをホールド（持ち運ぶ）できる他、足音が視覚的に見える";
-                characterPreviewSpecText.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 10.0\n回復速度: 1.0\n";
-                characterPreviewOtherText.text = "オールマイティ";
+                characterPreviewName.text = "ミーシェ";
+                characterPreviewSkill.text = "アイテムをホールド（持ち運ぶ）できる他、足音が視覚的に見える";
+                characterPreviewSpec.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 10.0\n回復速度: 1.0\n";
+                characterPreviewOther.text = "オールマイティ";
                 break;
             case 8:
                 characterPreviewObject[8].SetActive(true);
-                characterPreviewNameText.text = "朝霞やのは";
-                characterPreviewSkillText.text = "アイテムの効果が増幅される";
-                characterPreviewSpecText.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 10.0\n回復速度: 1.0\n";
-                characterPreviewOtherText.text = "組み合わせによっては強い";
+                characterPreviewName.text = "朝霞やのは";
+                characterPreviewSkill.text = "アイテムの効果が増幅される";
+                characterPreviewSpec.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 10.0\n回復速度: 1.0\n";
+                characterPreviewOther.text = "組み合わせによっては強い";
                 break;
             case 9:
                 characterPreviewObject[9].SetActive(true);
-                characterPreviewNameText.text = "ナユ";
+                characterPreviewName.text = "ナユ";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkillText.text = "自分の体力回復が早くなる";
+                    characterPreviewSkill.text = "自分の体力回復が早くなる";
                 }
                 else if(playerType == PlayerType.Escape) {
-                    characterPreviewSkillText.text = "自分と味方の体力回復が早くなる";
+                    characterPreviewSkill.text = "自分と味方の体力回復が早くなる";
                 }
-                characterPreviewSpecText.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 5.0\n回復速度: 2.5\n";
-                characterPreviewOtherText.text = "体力回復に長けているので補助に最適";
+                characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 5.0\n回復速度: 2.5\n";
+                characterPreviewOther.text = "体力回復に長けているので補助に最適";
                 break;
             default:
-                characterPreviewNameText.text = "";
-                characterPreviewSkillText.text = "";
-                characterPreviewSpecText.text = "";
-                characterPreviewOtherText.text = "";
+                characterPreviewName.text = "";
+                characterPreviewSkill.text = "";
+                characterPreviewSpec.text = "";
+                characterPreviewOther.text = "";
                 break;
         }
     }
