@@ -73,7 +73,7 @@ public class CharacterPreviewManager : MonoBehaviour {
                 charactorPreviewObject[9].SetActive(true);
                 charactorPreviewNameText.text = "ナユ";
                 break;
-            case default:
+            default:
                 charactorPreviewNameText.text = "";
                 charactorPreviewSkillText.text = "";
                 charactorPreviewSpecText.text = "";
