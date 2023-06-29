@@ -17,7 +17,7 @@ public class FowardSliderScript : MonoBehaviour
     private int _NowPageNumber = 1;
     [SerializeField] private GameObject nigeCharacterPalel;
     [SerializeField] private GameObject oniCharacterPalel;
-    [SerializeField] private CharacterPreviewManager charactorPreview;
+    [SerializeField] private CharacterPreviewManager characterPreview;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,12 +72,12 @@ public class FowardSliderScript : MonoBehaviour
         if(_NowPageNumber == 1){
             nigeCharacterPalel.SetActive(false);
             oniCharacterPalel.SetActive(true);
-            charactorPreview.CharactorPreview(1);
+            characterPreview.characterPreview(1);
         }
         else{
             nigeCharacterPalel.SetActive(true);
             oniCharacterPalel.SetActive(false);
-            charactorPreview.CharactorPreview(0);
+            characterPreview.characterPreview(0);
         }
     }
 }
