@@ -160,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262.5, y: 58}
+  m_AnchoredPosition: {x: -262.5, y: 50}
   m_SizeDelta: {x: 120, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &12048458
@@ -396,11 +396,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3028870551460949589, guid: 4cad9083da7a3e44ca492e603fa1349a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 3028870551460949589, guid: 4cad9083da7a3e44ca492e603fa1349a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 3028870551460949589, guid: 4cad9083da7a3e44ca492e603fa1349a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -627,11 +627,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3848515358318124282, guid: 15fb1269faba7634d9f1299b6a43ff87, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.1299925
+      value: 9.019988
       objectReference: {fileID: 0}
     - target: {fileID: 3848515358318124282, guid: 15fb1269faba7634d9f1299b6a43ff87, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 3848515358318124282, guid: 15fb1269faba7634d9f1299b6a43ff87, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1224,7 +1224,7 @@ GameObject:
   - component: {fileID: 163513520}
   - component: {fileID: 163513519}
   m_Layer: 0
-  m_Name: Rendercamera
+  m_Name: 2DCameraRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1278,7 +1278,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 15
+  field of view: 27
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1748,7 +1748,7 @@ RectTransform:
   m_GameObject: {fileID: 216201597}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 906762508}
@@ -1817,7 +1817,7 @@ MonoBehaviour:
   modeList: 0000000001000000
   nigeCharacterPalel: {fileID: 1331570962}
   oniCharacterPalel: {fileID: 2092324164}
-  charactorPreview: {fileID: 1275731601}
+  characterPreview: {fileID: 1275731601}
 --- !u!1 &228505265
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,8 +2192,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2698,8 +2698,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4472,11 +4472,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8404642649577797364, guid: 62af0e74dd7b493449bc9510fa97c3a4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.13
+      value: 9.199988
       objectReference: {fileID: 0}
     - target: {fileID: 8404642649577797364, guid: 62af0e74dd7b493449bc9510fa97c3a4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 8404642649577797364, guid: 62af0e74dd7b493449bc9510fa97c3a4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5914,8 +5914,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6201,8 +6201,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6642,8 +6642,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6964,8 +6964,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8424,11 +8424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777256174353758711, guid: f0d8ebfed4c866346a914fb21093161f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.090012
       objectReference: {fileID: 0}
     - target: {fileID: 8777256174353758711, guid: f0d8ebfed4c866346a914fb21093161f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 8777256174353758711, guid: f0d8ebfed4c866346a914fb21093161f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9393,8 +9393,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9725,11 +9725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7905617289681348031, guid: 89d4732205c0da446804a6af815aa305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 9.219988
       objectReference: {fileID: 0}
     - target: {fileID: 7905617289681348031, guid: 89d4732205c0da446804a6af815aa305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 7905617289681348031, guid: 89d4732205c0da446804a6af815aa305, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9798,7 +9798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262.5, y: 10}
+  m_AnchoredPosition: {x: -262.5, y: 0}
   m_SizeDelta: {x: 120, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &975480850
@@ -11091,7 +11091,7 @@ GameObject:
   - component: {fileID: 1084347691}
   - component: {fileID: 1084347690}
   m_Layer: 5
-  m_Name: CharacterStatus_BaseSpecTitle_01
+  m_Name: CharacterStatus_CommentTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11302,8 +11302,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11699,8 +11699,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12737,8 +12737,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12879,6 +12879,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 134725771}
+        m_TargetAssemblyTypeName: Button_SE, Assembly-CSharp
+        m_MethodName: Button_Selected
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Select
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1175637044
@@ -13654,11 +13666,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5979177240166485183, guid: ff1fe0164e8ffaf46b9bb0087ee4d209, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.5600122
       objectReference: {fileID: 0}
     - target: {fileID: 5979177240166485183, guid: ff1fe0164e8ffaf46b9bb0087ee4d209, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 5979177240166485183, guid: ff1fe0164e8ffaf46b9bb0087ee4d209, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13727,11 +13739,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4007628137553934327, guid: 47242b1b9eafd2641be82a0d21580689, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.050012
       objectReference: {fileID: 0}
     - target: {fileID: 4007628137553934327, guid: 47242b1b9eafd2641be82a0d21580689, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 4007628137553934327, guid: 47242b1b9eafd2641be82a0d21580689, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14550,8 +14562,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14703,7 +14715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de384259407671b49a7c508babcf8b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charactorPreviewObject:
+  characterPreviewObject:
   - {fileID: 1890632637}
   - {fileID: 568076465}
   - {fileID: 131327344}
@@ -14714,10 +14726,10 @@ MonoBehaviour:
   - {fileID: 1991986992}
   - {fileID: 1274499466}
   - {fileID: 1597248790}
-  charactorPreviewNameText: {fileID: 1054019228}
-  charactorPreviewSkillText: {fileID: 350454083}
-  charactorPreviewSpecText: {fileID: 536005619}
-  charactorPreviewOtherText: {fileID: 1680707343}
+  characterPreviewName: {fileID: 1054019228}
+  characterPreviewSkill: {fileID: 350454083}
+  characterPreviewSpec: {fileID: 536005619}
+  characterPreviewOther: {fileID: 1680707343}
 --- !u!1 &1276152274
 GameObject:
   m_ObjectHideFlags: 0
@@ -14840,8 +14852,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15053,8 +15065,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15761,8 +15773,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16675,8 +16687,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16845,11 +16857,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6151945796585134003, guid: 95b46e1e9ebe325458bf8c7a8bad5bd4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 9.149988
       objectReference: {fileID: 0}
     - target: {fileID: 6151945796585134003, guid: 95b46e1e9ebe325458bf8c7a8bad5bd4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 6151945796585134003, guid: 95b46e1e9ebe325458bf8c7a8bad5bd4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17092,6 +17104,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 134725771}
+        m_TargetAssemblyTypeName: Button_SE, Assembly-CSharp
+        m_MethodName: Button_Selected
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Select
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1557395043
@@ -17831,11 +17855,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3356565031565649681, guid: 1d2887615d82d674fbe3546827b4c0c7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 9.149988
       objectReference: {fileID: 0}
     - target: {fileID: 3356565031565649681, guid: 1d2887615d82d674fbe3546827b4c0c7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 3356565031565649681, guid: 1d2887615d82d674fbe3546827b4c0c7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17972,8 +17996,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18565,7 +18589,7 @@ GameObject:
   - component: {fileID: 1680707344}
   - component: {fileID: 1680707343}
   m_Layer: 5
-  m_Name: CharacterStatus_BaseSpecDescription_01
+  m_Name: CharacterStatus_CommentDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19462,8 +19486,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19696,8 +19720,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19790,11 +19814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7759380146115555366, guid: 25a570f154d3f49419f72f63a38043b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 9.149988
       objectReference: {fileID: 0}
     - target: {fileID: 7759380146115555366, guid: 25a570f154d3f49419f72f63a38043b2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 7759380146115555366, guid: 25a570f154d3f49419f72f63a38043b2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -21282,7 +21306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1998843916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21484,8 +21508,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21642,11 +21666,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4769985174191153468, guid: 0ab18d491d477a541a3d61ceb43e9cf9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.670012
       objectReference: {fileID: 0}
     - target: {fileID: 4769985174191153468, guid: 0ab18d491d477a541a3d61ceb43e9cf9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -530
       objectReference: {fileID: 0}
     - target: {fileID: 4769985174191153468, guid: 0ab18d491d477a541a3d61ceb43e9cf9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22210,8 +22234,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1275731601}
-        m_TargetAssemblyTypeName: CharactorPreviewScript, Assembly-CSharp
-        m_MethodName: CharactorPreview
+        m_TargetAssemblyTypeName: CharacterPreviewManager, Assembly-CSharp
+        m_MethodName: characterPreview
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
