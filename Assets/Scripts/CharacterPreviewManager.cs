@@ -9,7 +9,7 @@ public class CharacterPreviewManager : MonoBehaviour {
     [SerializeField] Text charactorPreviewSkillText;      // キャラスキル(text)
     [SerializeField] Text charactorPreviewSpecText;       // キャラ性能(text)
     [SerializeField] Text charactorPreviewOtherText;      // キャラ備考(text)
-
+    private bool isOni = true; //true: 鬼, false: 逃げ
     // Start is called before the first frame update
     void Start() {
         //初期化
@@ -81,4 +81,10 @@ public class CharacterPreviewManager : MonoBehaviour {
                 break;
         }
     }
+    /// <summary>
+    /// キャラクターが鬼か逃げかを切り替える
+    /// </summary>
+    public void SetisOni(bool tmp){
+        isOni = tmp;
+    } 
 }
