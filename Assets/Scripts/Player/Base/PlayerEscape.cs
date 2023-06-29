@@ -144,12 +144,17 @@ public class PlayerEscape : PlayerBase {
 
             // スタミナが残っていて走っている.
             if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
-                nowStamina -= 0.1f;  // スタミナ減少.
+                if(isCanUseDash) { // スタミナ無限
+                    
+                }
+                else {
+                    nowStamina -= 0.1f;  // スタミナ減少. 
+                }
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
                 }
-
+                
                 if(isSlow) {
                     MoveType(moveForward, runSpeed * 0.8f, 1.5f);
                 }else {
