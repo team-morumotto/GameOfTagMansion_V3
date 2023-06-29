@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharactorPreviewScript : MonoBehaviour {
+public class CharacterPreviewManager : MonoBehaviour {
     [SerializeField] GameObject[] charactorPreviewObject; // キャラプレビュー(object)
     [SerializeField] Text charactorPreviewNameText;       // キャラ名前(text)
     [SerializeField] Text charactorPreviewSkillText;      // キャラスキル(text)
