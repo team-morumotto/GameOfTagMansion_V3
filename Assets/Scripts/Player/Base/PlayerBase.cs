@@ -338,6 +338,11 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             case "Slow":
                 yield return StartCoroutine(BooleanReverse(x => isSlow = x, !isSlow, 5.0f));
             break;
+            case "CanUseDash":
+            print("無限ダッシュ");
+            yield return StartCoroutine(BooleanReverse(x => isCanUseDash = x, !isCanUseDash, 20.0f));
+            print("無限ダッシュ解除");
+            break;
         }
     }
 
@@ -376,12 +381,14 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         poteto, //中回復
         hamburger, //大回復
         disposableGrapnelGun, //使い捨てグラップルガン
+        speedup,//スタミナ無限
     }
     public List<ItemName> haveItem = new List<ItemName>(); // 所持アイテム記録用のリスト
     protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
     protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
     protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
     protected bool isAddhaveItem = false; //これがtrueならアイテムを二個保持できる(キャラクター用)
+    protected bool isCanUseDash = false; //これがtrueならスタミナが減らない
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
@@ -428,6 +435,14 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 case ItemName.disposableGrapnelGun:
                     // 使い捨てグラップルガンを使用する.  まだできてない
                     break;
+                    case ItemName.speedup:
+                    // スタミナの上限解放（無制限ダッシュ）
+                    isCanUseDash = true;
+                    isStaminaLoss = false; // スタミナ切れ回復
+                    nowStamina = staminaAmount;  // スタミナマックス.
+                    StartCoroutine(DelayChangeFlg("CanUseDash"));
+                    print("UseDash");
+                    break;  
             }
             haveItem.RemoveAt(0); // アイテムを消費.
         }
