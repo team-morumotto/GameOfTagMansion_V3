@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum PlayerType {
-    Chaser,
-    Escape
-}
-
 public class CharacterPreviewManager : MonoBehaviour {
     [SerializeField] GameObject[] characterPreviewObject; // キャラプレビュー(object)
     [SerializeField] Text characterPreviewName;       // キャラ名前(text)
     [SerializeField] Text characterPreviewSkill;      // キャラスキル(text)
     [SerializeField] Text characterPreviewSpec;       // キャラ性能(text)
     [SerializeField] Text characterPreviewOther;      // キャラ備考(text)
-    private PlayerType playerType;                        // PlayerType.Chaser: 鬼, PlayerType.Escape: 逃げ
     // Start is called before the first frame update
     void Start() {
         //初期化
@@ -41,10 +35,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 0:
                 characterPreviewObject[0].SetActive(true);
                 characterPreviewName.text = "トラスとウェッジ";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "爆発物を前に投げて邪魔する";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "爆発物を後ろに設置して邪魔する";
                 }
                 characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 15.0\n回復速度: 1.0\n";
@@ -67,10 +61,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 3:
                 characterPreviewObject[3].SetActive(true);
                 characterPreviewName.text = "NoranekoSeven";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "物に化けて隠れられる";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "壁を越えられる";
                 }
                 characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.5\n";
@@ -79,10 +73,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 4:
                 characterPreviewObject[4].SetActive(true);
                 characterPreviewName.text = "シャーロ";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "3回だけ逃げの位置を表示";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "3回だけ鬼の位置を表示";
                 }
                 characterPreviewSpec.text = "移動速度: 1.0 (ダッシュ時1.5)\n体力: 20.0\n回復速度: 1.0\n";
@@ -91,10 +85,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 5:
                 characterPreviewObject[5].SetActive(true);
                 characterPreviewName.text = "ミュリシア";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "近くに逃げがいると反応する";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "一度だけ捕まっても回避できる";
                 }
                 characterPreviewSpec.text = "移動速定: 1.5 (ダッシュ時2.5)\n体力: 15.0/20.0\n回復速度: 1.5/2.0\n";
@@ -103,10 +97,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 6:
                 characterPreviewObject[6].SetActive(true);
                 characterPreviewName.text = "ウェンルイ";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "御札を展開し、触れた逃げの動きを一定時間鈍らせる";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "御札を使って範囲に入ってきた鬼の動きを一定時間封じる";
                 }
                 characterPreviewSpec.text = "移動速定: 1.5 (ダッシュ時2.0)\n体力: 10.0\n回復速度: 1.0\n";
@@ -129,10 +123,10 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 9:
                 characterPreviewObject[9].SetActive(true);
                 characterPreviewName.text = "ナユ";
-                if(playerType == PlayerType.Chaser) {
+                if(GoToChooseChara.playMode == 1) {
                     characterPreviewSkill.text = "自分の体力回復が早くなる";
                 }
-                else if(playerType == PlayerType.Escape) {
+                else {
                     characterPreviewSkill.text = "自分と味方の体力回復が早くなる";
                 }
                 characterPreviewSpec.text = "移動速度: 1.5 (ダッシュ時2.0)\n体力: 5.0\n回復速度: 2.5\n";
@@ -146,16 +140,4 @@ public class CharacterPreviewManager : MonoBehaviour {
                 break;
         }
     }
-    /// <summary>
-    /// キャラクターが鬼か逃げかを切り替える
-    /// </summary>
-    public void SetPlayerType(bool isOni){
-        if(isOni) {
-            playerType = PlayerType.Chaser;
-        }
-        else {
-            playerType = PlayerType.Escape;
-        }
-        characterPreview(0);
-    } 
 }
