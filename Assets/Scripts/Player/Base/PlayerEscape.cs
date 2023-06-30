@@ -11,7 +11,7 @@
 *   == 定期処理について補足 ==
 *   Initは派生先のStartで動かす.
 *   BaseUpdateは派生先のUpdateで動かす.
-*   また、BaseUpdateはトラスとリルモアのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
+*   また、BaseUpdateはトラスとリルモワのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
 using Smile_waya.GOM.ScreenTimer;
@@ -40,18 +40,38 @@ public class PlayerEscape : PlayerBase {
 
         var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
 
+        //====== Panel_DuringGameUI下のオブジェクト ======//
         var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
         gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
         staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
         staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
         SeenBy = DuringUI.transform.Find("Image_SeenBy").GetComponent<Image>();
+        var itemParent = DuringUI.Find("Group_Item");
+        haveItemImageList.Add(itemParent.transform.Find("Image_Item1BG").transform.Find("Image_Item1").GetComponent<Image>());
+        // アイテム複数持ちが可能なキャラなら.
+        if(isAddhaveItem) {
+            var tmpItem2 = itemParent.transform.Find("Image_Item2BG").gameObject;
+            tmpItem2.SetActive(true);
+            haveItemImageList.Add(tmpItem2.transform.Find("Image_Item2").GetComponent<Image>());
+        }
 
         var recastParent = DuringUI.transform.Find("Group_Avility").gameObject;
-        avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
-        avilityRiminingAmount.text = abilityUseAmount.ToString();
+        if(isFrequency) {
+            var rimining = recastParent.transform.Find("Image_UseLimited").gameObject;
+            avilityRiminingAmount = rimining.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+            avilityRiminingAmount.text = abilityUseAmount.ToString();
+        }else {
+            var recast = recastParent.transform.Find("Image_Recast").gameObject;
+            recast.SetActive(true);
+            avilityRecastAmount = recast.GetComponent<Image>();
+            avilityRecastAmount.fillAmount = 0.0f;
+            avilityRiminingAmount = recast.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+        }
+        avilityImage = recastParent.transform.Find("Image_Avility").GetComponent<Image>();
 
         SeenBy.color = new Color(255, 255, 255, 0); // 非表示に.
         staminaParent.SetActive(false);
+        //====== Panel_DuringGameUI下のオブジェクト ======//
 
         resultPanel = mainCanvas.transform.Find("Panel_ResultList").transform.gameObject;
         resultWinLoseText = resultPanel.transform.Find("Result_TextBox").GetComponent<Text>();
@@ -89,12 +109,10 @@ public class PlayerEscape : PlayerBase {
 
         switch(gameState) {
             case GameState.ゲーム開始前:
-                // 地面に接している.
-                if(!isStan) {
-                    if(isGround){
-                        PlayerMove();
-                        Sneak();
-                    }
+                // 地面に接していてスタンしていない.
+                if(!isStan && isGround) {
+                    PlayerMove();
+                    Sneak();
                 }
                 ItemUse();
                 PlayNumber();
@@ -112,11 +130,11 @@ public class PlayerEscape : PlayerBase {
             break;
 
             case GameState.ゲーム中:
-                // 地面に接している.
-                if(isGround){
+                // 地面に接していてスタンしていない.
+                if(!isStan && isGround) {
                     PlayerMove();
+                    Sneak();
                 }
-                Sneak();
                 ItemUse();
                 GameTimer();
                 CharaPositionReset();
@@ -144,17 +162,16 @@ public class PlayerEscape : PlayerBase {
 
             // スタミナが残っていて走っている.
             if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
-                if(isCanUseDash) { // スタミナ無限
-                    
+                // スタミナ無限でないなら.
+                if(!isCanUseDash) {
+                    nowStamina -= 0.1f;  // スタミナ減少.
                 }
-                else {
-                    nowStamina -= 0.1f;  // スタミナ減少. 
-                }
+
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
                 }
-                
+
                 if(isSlow) {
                     MoveType(moveForward, runSpeed * 0.8f, 1.5f);
                 }else {
@@ -285,6 +302,7 @@ public class PlayerEscape : PlayerBase {
             StartCoroutine(Stan());
         }
 
+        // 当たったオブジェクトが御札なら.
         if(collider.CompareTag("Bill")) {
             isSlow = true; // 移動速度低下状態に.
             // ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
@@ -309,6 +327,11 @@ public class PlayerEscape : PlayerBase {
 
             // Keyで照合;
             switch(tmpKey) {
+                case "on":
+                    abilityUseAmount = 3; //! マジックナンバー.
+                    isUseAvility = false;
+                    isCoolTime = false;
+                break;
                 // スタミナの回復量のブースト.
                 case "hb":
                     staminaHealAmount += float.Parse(tmpValue.ToString());

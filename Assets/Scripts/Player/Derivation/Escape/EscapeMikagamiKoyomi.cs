@@ -12,7 +12,7 @@ public class EscapeMikagamiKoyomi : PlayerEscape
 {
     private float nowAbilityTime = 0.0f; // 能力発動の経過時間.
     private float maxAbilityTime = 1.0f; // 能力の効果時間.
-    private float scaleChangeAvirityTime = 20.0f; // 小さくなる能力の効果時間.
+    private float scaleChangeAvirityTime = 5.0f; // 小さくなる能力の効果時間.
     private float reductionAmount = 0.5f; // 縮小後のサイズ.
     private float expansionAmount = 1.0f; // 拡大後のサイズ.
     void Start() {
@@ -42,7 +42,7 @@ public class EscapeMikagamiKoyomi : PlayerEscape
         yield return ScaleChange(reductionAmount);
         yield return Delay(scaleChangeAvirityTime);
         yield return ScaleChange(expansionAmount);
-        StartCoroutine(AvillityCoolTime(20.0f));
+        StartCoroutine(AvillityCoolTime(10.0f));
         // 発動終了.
     }
 
@@ -69,6 +69,7 @@ public class EscapeMikagamiKoyomi : PlayerEscape
             transform.localScale = dd;
             yield return null; // 1フレーム遅延.
         }
+        isUseAvility = false;
     }
 
     /// <summary>

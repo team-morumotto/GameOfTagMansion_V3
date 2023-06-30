@@ -9,6 +9,7 @@ public class NewItemScript : MonoBehaviour
     [SerializeField] private GameObject rotateObject;
     private int itemNameCnt = 0; // アイテムの種類の列挙体の数.
     void Start() {
+        //アイテムの列挙型の最大値を取得
         itemNameCnt = System.Enum.GetValues(typeof(PlayerBase.ItemName)).Length;
     }
     void Update() {
@@ -33,12 +34,13 @@ public class NewItemScript : MonoBehaviour
     ///</sammary>
     void OnCollisionEnter(Collision collision) {
         //プレイヤー以外は無視
-        if (collision.gameObject.tag != "Player")return;
-        //アイテムの列挙型の最大値を取得
+        if (collision.gameObject.tag != "Player") {
+            return;
+        }
         //アイテムの列挙型の最大値の中からランダムでアイテムを取得
-        var b = UnityEngine.Random.Range(0,itemNameCnt) ;
+        var b = UnityEngine.Random.Range(0,itemNameCnt);
         //アイテムの名前を取得
-        PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), b);
+        PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), 8);
         collision.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
         Debug.Log("アイテムとれたよ");
         Destroy(this.gameObject);

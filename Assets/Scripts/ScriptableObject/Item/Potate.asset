@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Potate
   m_EditorClassIdentifier: 
   itemName: poteto
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 64af71c4f701d234a87e7a594ab8fdae, type: 3}

@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -77,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
@@ -508,8 +508,9 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 6872807709980366292}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 2459899040003338437}
 --- !u!114 &6689280009328681771
 MonoBehaviour:
@@ -549,4 +550,5 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 6872807709980366292}

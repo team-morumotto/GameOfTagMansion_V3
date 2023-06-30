@@ -498,8 +498,9 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 8954337909054533842}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 5635300422949944091}
 --- !u!114 &7046379418308803169
 MonoBehaviour:
@@ -539,6 +540,7 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 8954337909054533842}
 --- !u!1 &5635300422949944091 stripped
 GameObject:

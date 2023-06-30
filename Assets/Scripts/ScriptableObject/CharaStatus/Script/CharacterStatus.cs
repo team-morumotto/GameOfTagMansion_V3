@@ -14,4 +14,5 @@ public class CharacterStatus : ScriptableObject
 	public float staminaHealAmount; // スタミナ回復量.
 	public bool overCome; // 乗り越え.
 	public bool floating; // 浮遊.
+	public Sprite avilitySprite; // 固有性能のアイコン.
 }

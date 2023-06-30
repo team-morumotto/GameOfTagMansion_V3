@@ -18,7 +18,7 @@ public class EscapeAsakaYanoha : PlayerEscape
                 photonView.RPC(nameof(YanohaES), RpcTarget.AllBuffered);
             }
             Init(); // オブジェクトやコンポーネントの取得.
-             //アイテムの効果増幅用の変数に値を代入.(パーセンテージで増幅)
+            //アイテムの効果増幅用の変数に値を代入.(パーセンテージで増幅)
             amplification = addamplification;
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();

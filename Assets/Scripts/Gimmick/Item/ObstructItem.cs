@@ -16,9 +16,9 @@ public class ObstructItem : MonoBehaviourPunCallbacks
 
     void Update() {
         if(isFront) {
-            transform.position += transform.forward * Time.deltaTime  * moveSpeed * moveSpeed;
+            transform.position += transform.forward * Time.deltaTime  * moveSpeed;
         }else{
-            transform.position += -transform.forward * Time.deltaTime * moveSpeed * moveSpeed;
+            transform.position += -transform.forward * Time.deltaTime * moveSpeed;
         }
     }
 
@@ -32,7 +32,7 @@ public class ObstructItem : MonoBehaviourPunCallbacks
 
     void OnTriggerEnter(Collider collider) {
         if(collider.CompareTag("Wall") || collider.CompareTag("Player")){
-            // Instantiate(obstructParticle, transform.position, transform.rotation);
+            Instantiate(obstructParticle, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
     }

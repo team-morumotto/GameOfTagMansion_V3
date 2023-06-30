@@ -13,6 +13,7 @@ public class ChaserShacloPure : PlayerChaser
             if(GoToChooseChara.GetPlayMode() == 0) {
                 photonView.RPC(nameof(ShacloPureCS), RpcTarget.AllBuffered);
             }
+            isFrequency = true;
             Init(); // オブジェクトやコンポーネントの取得.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();

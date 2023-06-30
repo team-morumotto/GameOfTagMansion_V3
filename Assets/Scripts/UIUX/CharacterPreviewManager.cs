@@ -104,7 +104,7 @@ public class CharacterPreviewManager : MonoBehaviour {
                 characterPreviewObject[6].SetActive(true);
                 characterPreviewName.text = "ウェンルイ";
                 if(playerType == PlayerType.Chaser) {
-                    characterPreviewSkill.text = "御札を使って範囲に入ってきた逃げの動きを一定時間鈍らせる";
+                    characterPreviewSkill.text = "御札を展開し、触れた逃げの動きを一定時間鈍らせる";
                 }
                 else if(playerType == PlayerType.Escape) {
                     characterPreviewSkill.text = "御札を使って範囲に入ってきた鬼の動きを一定時間封じる";
@@ -115,7 +115,7 @@ public class CharacterPreviewManager : MonoBehaviour {
             case 7:
                 characterPreviewObject[7].SetActive(true);
                 characterPreviewName.text = "ミーシェ";
-                characterPreviewSkill.text = "アイテムをホールド（持ち運ぶ）できる他、足音が視覚的に見える";
+                characterPreviewSkill.text = "アイテムを2つホールドできる";
                 characterPreviewSpec.text = "移動速定: 1.0 (ダッシュ時1.5)\n体力: 10.0\n回復速度: 1.0\n";
                 characterPreviewOther.text = "オールマイティ";
                 break;

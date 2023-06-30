@@ -514,8 +514,10 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 8393682996223326627}
   obstructItem: {fileID: 6237512017513054898, guid: 3d1ae80c29cee42e2bbfdaaacd81e3f6, type: 3}
 --- !u!114 &8051680368648037076
@@ -554,9 +556,11 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 8393682996223326627}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 8235643507131678293}
   obstructItem: {fileID: 3238743353331741567, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}

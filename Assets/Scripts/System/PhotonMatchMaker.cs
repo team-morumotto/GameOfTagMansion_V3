@@ -39,7 +39,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     /* sneakUIとuseItemUIは緊急措置.
         本来は別のスクリプトで管理するべきなので今後変更予定.*/
     public GameObject sneakUI;
-    public GameObject useItemUI;
     public VirtualCameraManager vcm;
 
     //------------ private ------------//
@@ -235,7 +234,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
         SetCustomProperty("h", false, 0);
 
-        player = PhotonNetwork.Instantiate(CharacterObject[1].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+        player = PhotonNetwork.Instantiate(CharacterObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
 
         if(GoToChooseChara.GetPlayMode() == 0) {
             sneakUI.SetActive(true);
@@ -340,12 +339,16 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     // 「タイトルに戻る」ボタン押下時.
     public void GoToTitleScene() {
         // DontDestroy要素を初期化.
-        GoToChooseChara.PlayMode = 0;
-        GoToChooseChara.Characters = 0;
+        GoToChooseChara.playMode = 1;
+        GoToChooseChara.characters = 0;
         GoToChooseChara.actorNumber = -1;
 
         PhotonNetwork.Disconnect();                                         // マスターサーバから切断.
         SceneManager.LoadScene("Closed_TitleScene",LoadSceneMode.Single);   // タイトルシーンに遷移.
+    }
+
+    public void GameSceneReload() {
+        SceneManager.LoadScene("Closed_GameScene", LoadSceneMode.Single); // ゲームシーンをロードする.
     }
     //----------- ボタン -----------//
 

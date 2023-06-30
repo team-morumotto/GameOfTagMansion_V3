@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527dfa632b442f5408c807d90903710b, type: 3}
   m_Name: Wenrui
   m_EditorClassIdentifier: 
-  walkSpeed: 0
-  runSpeed: 0
-  stamina: 0
-  overCome: 0
-  obstructive: 0
-  stealth: 0
-  special: 0
+  charaName: Wenrui
+  walkSpeed: 9
+  runSpeed: 12
+  staminaAmount: 10
+  staminaHealAmount: 0.1
+  overCome: 1
+  floating: 0
+  avilitySprite: {fileID: 21300000, guid: 69fe8df4c20ab904ba663ea19a35a3eb, type: 3}

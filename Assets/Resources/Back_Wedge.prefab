@@ -53,7 +53,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3238743353331741567, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}
       propertyPath: m_Name
-      value: Wedge
+      value: Back_Wedge
       objectReference: {fileID: 0}
+    - target: {fileID: 4301600166759318370, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}
+      propertyPath: obstructParticle
+      value: 
+      objectReference: {fileID: 100012, guid: a905d8e5159ffeb46baa8d2a7624717f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d41d8854fb78453baa206af6d98d0ea, type: 3}

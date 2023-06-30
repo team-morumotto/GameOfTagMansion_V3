@@ -15,8 +15,8 @@ MonoBehaviour:
   charaName: Tolass
   walkSpeed: 9
   runSpeed: 12
-  stamina: 15
+  staminaAmount: 15
+  staminaHealAmount: 0.1
   overCome: 0
-  obstructive: 1
-  stealth: 0
-  special: 0
+  floating: 0
+  avilitySprite: {fileID: 21300000, guid: a168b365805f07c43bfa8f681ac8375e, type: 3}

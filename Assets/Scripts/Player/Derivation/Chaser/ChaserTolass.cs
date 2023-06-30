@@ -20,6 +20,7 @@ public class ChaserTolass : PlayerChaser
             if(GoToChooseChara.GetPlayMode() == 0) {
                 photonView.RPC(nameof(TolassCS), RpcTarget.AllBuffered);
             }
+            isFrequency = true;
             Init(); // 初期化処理.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
@@ -50,6 +51,6 @@ public class ChaserTolass : PlayerChaser
     /// </summary>
     [PunRPC]
     protected void FireObstruct(PhotonMessageInfo info) {
-        Instantiate(obstructItem, transform.position + (transform.forward * 2), transform.rotation); // リストに追加.
+        Instantiate(obstructItem, transform.position + (-transform.forward * 2), transform.rotation); // リストに追加.
     }
 }

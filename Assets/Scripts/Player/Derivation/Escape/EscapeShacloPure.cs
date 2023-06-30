@@ -11,6 +11,7 @@ public class EscapeShacloPure : PlayerEscape
             if(GoToChooseChara.GetPlayMode() == 1) {
                 photonView.RPC(nameof(ShacloPureES), RpcTarget.AllBuffered);
             }
+            isFrequency = true;
             Init(); // オブジェクトやコンポーネントの取得.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();

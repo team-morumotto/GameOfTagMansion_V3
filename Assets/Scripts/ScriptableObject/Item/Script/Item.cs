@@ -7,24 +7,13 @@ using System;
 [CreateAssetMenu(fileName = "", menuName = "CreateItem")]
 public class Item : ScriptableObject
 {
-    public enum ItemType{
-        obstacle, // 障害物系.
-        ability // 能力系.
-    }
-    public ItemType itemType; // アイテムの種類.
-    public string name; // アイテムの名前.
-    public Sprite icon; // アイテムのアイコン.
-    public GameObject instance; // インスタンス(プレハブ). ItemTypeがobstructのときのみ.
-
-    public ItemType GetItemType() {
-        return itemType;
-    }
-
+    public string itemName; // アイテムの名前.
+    public Sprite itemIcon; // アイテムのアイコン.
     public Sprite GetIcon() {
-        return icon;
+        return itemIcon;
     }
 
     public string GetName() {
-        return name;
+        return itemName;
     }
 }

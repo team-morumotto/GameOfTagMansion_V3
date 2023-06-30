@@ -516,7 +516,9 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 640049411942303907}
+  billAmount: 4
 --- !u!114 &1219066978667193250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +557,7 @@ MonoBehaviour:
   avilityRiminingAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 640049411942303907}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 5575263993193914043}

@@ -11,7 +11,7 @@
 *   == 定期処理について補足 ==
 *   Initは派生先のStartで動かす.
 *   BaseUpdateは派生先のUpdateで動かす.
-*   また、BaseUpdateはリルモアのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
+*   また、BaseUpdateはリルモワのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
 using Photon.Pun;
@@ -44,14 +44,35 @@ public class PlayerChaser : PlayerBase
 
         var mainCanvas = GameObject.Find(GAMECANVAS); // MainCanvas取得.
 
+        //====== Panel_DuringGameUI下のオブジェクト ======//
         var DuringUI = mainCanvas.transform.Find("Panel_DuringGameUI"); // ゲーム中の状況表示UI取得.
         gameTimer = DuringUI.transform.Find("Text_Time").GetComponent<Text>(); // 残り時間テキスト取得.
         staminaParent = DuringUI.transform.Find("Group_Stamina").gameObject;
         staminaGuage = staminaParent.transform.Find("Image_Gauge").GetComponent<Image>();
+        var itemParent = DuringUI.Find("Group_Item");
+        haveItemImageList.Add(itemParent.transform.Find("Image_Item1BG").transform.Find("Image_Item1").GetComponent<Image>());
+        // アイテム複数持ちが可能なキャラなら.
+        if(isAddhaveItem) {
+            var tmpItem2 = itemParent.transform.Find("Image_Item2BG").gameObject;
+            tmpItem2.SetActive(true);
+            haveItemImageList.Add(tmpItem2.transform.Find("Image_Item2").GetComponent<Image>());
+        }
 
         var recastParent = DuringUI.transform.Find("Group_Avility").gameObject;
-        avilityRiminingAmount = recastParent.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
-        avilityRiminingAmount.text = abilityUseAmount.ToString();
+        if(isFrequency) {
+            var rimining = recastParent.transform.Find("Image_UseLimited").gameObject;
+            rimining.SetActive(true);
+            avilityRiminingAmount = rimining.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+            avilityRiminingAmount.text = abilityUseAmount.ToString();
+        }else {
+            var recast = recastParent.transform.Find("Image_Recast").gameObject;
+            recast.SetActive(true);
+            avilityRecastAmount = recast.GetComponent<Image>();
+            avilityRecastAmount.fillAmount = 0.0f;
+            avilityRiminingAmount = recast.transform.Find("Text_UseAvilityAmount").GetComponent<Text>();
+        }
+        avilityImage = recastParent.transform.Find("Image_Avility").GetComponent<Image>();
+
         catch_text = DuringUI.transform.Find("Text_PlayerCatch").GetComponent<Text>();
         SeenBy = DuringUI.transform.Find("Image_SeenBy").GetComponent<Image>();
         SeenBy.color = new Color(255, 255, 255, 0); // 非表示に.
@@ -88,11 +109,9 @@ public class PlayerChaser : PlayerBase
 
         switch(gameState) {
             case GameState.ゲーム開始前:
-                // 地面に接している.
-                if(!isStan) {
-                    if(isGround){
-                        PlayerMove();
-                    }
+                // 地面に接していてスタンしていない.
+                if(!isStan && isGround) {
+                    PlayerMove();
                 }
                 ItemUse();
                 PlayNumber();
@@ -110,8 +129,8 @@ public class PlayerChaser : PlayerBase
             break;
 
             case GameState.ゲーム中:
-                // 地面に接している.
-                if(isGround){
+                // 地面に接していてスタンしていない.
+                if(!isStan && isGround) {
                     PlayerMove();
                 }
                 ItemUse();
@@ -142,17 +161,16 @@ public class PlayerChaser : PlayerBase
 
             // スタミナが残っていて走っている.
             if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
-                if(isCanUseDash) { // スタミナ無限
-                
+                // スタミナ無限でないなら.
+                if(!isCanUseDash) {
+                    nowStamina -= 0.1f;  // スタミナ減少.
                 }
-                else {
-                    nowStamina -= 0.1f;  // スタミナ減少. 
-                }
+
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
                     }
-                
+
                 MoveType(moveForward , runSpeed, 1.5f);
             }else {
                 MoveType(moveForward, walkSpeed, 1.0f);

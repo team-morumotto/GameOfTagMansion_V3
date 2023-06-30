@@ -1,7 +1,8 @@
 /*
-    2022/12/25 Atsuki Kobayashi
-        ・Privateメンバ変数を返す関数を追加
-        ・他クラスからは読み取り専用でアクセス可能
+*   Created by Kobayashi atsuki.
+*   2022/12/25 Atsuki Kobayashi.
+*       ・Privateメンバ変数を返す関数を追加.
+*       ・他クラスからは読み取り専用でアクセス可能.
 */
 
 using UnityEngine;
@@ -9,10 +10,9 @@ using UnityEngine.SceneManagement;
 
 public class GoToChooseChara : MonoBehaviour {
     public static GoToChooseChara instance = null;
-    public static int playMode = 0;
+    public static int playMode = 1;
     public static int characters = 0;
     public static int actorNumber = -1;
-    public static bool isSolo = false;
     public static bool isEdit = false;
     public static string beforeSelectButton = "";
 
@@ -24,6 +24,10 @@ public class GoToChooseChara : MonoBehaviour {
         }
     }
 
+    void Update() {
+        print(playMode);
+    }
+
     //------- ゲッター -------//
     public static int GetPlayMode() {
         return playMode;
@@ -33,9 +37,6 @@ public class GoToChooseChara : MonoBehaviour {
     }
     public static bool GetIsEdit() {
         return isEdit;
-    }
-    public static bool GetIsSolo() {
-        return isSolo;
     }
     //------- ゲッター -------//
 
@@ -51,6 +52,10 @@ public class GoToChooseChara : MonoBehaviour {
         }else {
             playMode = 0;
         }
+    }
+
+    public void ResetPlayerMode() {
+        playMode = 1;
     }
 
     /// <summary>
@@ -77,7 +82,7 @@ public class GoToChooseChara : MonoBehaviour {
         SceneManager.LoadScene("Closed_GameScene",LoadSceneMode.Single);
     }
 
-    public static void LoadSettingScene() {
+    /*public static void LoadSettingScene() {
         SceneManager.LoadScene("Setting_Scene",LoadSceneMode.Additive);
-    }
+    }*/
 }

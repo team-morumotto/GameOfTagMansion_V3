@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Liloumois
   m_EditorClassIdentifier: 
   charaName: Liloumois
-  walkSpeed: 1
-  runSpeed: 3
-  stamina: 10
+  walkSpeed: 6
+  runSpeed: 18
+  staminaAmount: 10
+  staminaHealAmount: 0.2
   overCome: 1
-  obstructive: 0
-  stealth: 1
-  special: 0
+  floating: 1
+  avilitySprite: {fileID: 21300000, guid: ce08e58ecec19e3468b3ff8067c2da7a, type: 3}

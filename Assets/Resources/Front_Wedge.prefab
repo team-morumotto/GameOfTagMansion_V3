@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aee926ea39d4c9d4d8a727f7052a79bd, type: 3}
       propertyPath: m_Name
-      value: Wedge
+      value: Front_Wedge
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aee926ea39d4c9d4d8a727f7052a79bd, type: 3}
       propertyPath: m_TagString
@@ -117,4 +117,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   isFront: 0
-  obstructParticle: {fileID: 0}
+  obstructParticle: {fileID: 100012, guid: a905d8e5159ffeb46baa8d2a7624717f, type: 3}

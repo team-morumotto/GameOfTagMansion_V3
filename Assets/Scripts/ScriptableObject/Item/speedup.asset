@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64e395adb9fcf094bbacf8a9f9ca0f61, type: 3}
-  m_Name: SpeedUpItem
+  m_Name: speedup
   m_EditorClassIdentifier: 
-  itemType: 1
-  name: SpeedUpItem
-  icon: {fileID: 0}
+  itemName: speedup
+  itemIcon: {fileID: 21300000, guid: 3a53e3f1c8b085347871d05dd5a25eb7, type: 3}

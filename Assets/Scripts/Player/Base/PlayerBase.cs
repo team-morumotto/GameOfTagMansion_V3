@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.Events;
 using UnityEngine;
 using Photon.Pun;
@@ -76,10 +77,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
     public Text avilityRiminingAmount;       // 固有能力の残り使用可能回数.
-
-    //------ Coroutine変数 ------//
-    private Coroutine stan;
-    private Coroutine avilityCoolTime;
+    public Image avilityRecastAmount;     // 固有能力のリキャスト時間を反映するUI.
+    protected Image avilityImage;            // 固有能力のスプライト.
 
     //------ int変数 ------//
     protected int abilityUseAmount = 3;      // 固有能力の使用可能回数(試験的に三回).
@@ -100,6 +99,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isUseAvility = false;         // 固有能力を発動しているか.
     protected bool isCoolTime = false;           // 固有能力発動後のクールタイム中か.
     protected bool isSlow = false;               // 移動速度が低下しているか.
+    protected bool isFrequency = false;          // 固有能力が回数制限性か.
 
     //------ string変数 ------//
     protected string fps = "";
@@ -210,6 +210,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 staminaHealAmount = characterDatabase.statusList[tmp3].staminaHealAmount;
                 overCome = characterDatabase.statusList[tmp3].overCome;
                 floating = characterDatabase.statusList[tmp3].floating;
+                avilityImage.sprite = characterDatabase.statusList[tmp3].avilitySprite;
             }
         }
         nowStamina = staminaAmount; // 現状のスタミナに最大スタミナを代入.
@@ -221,8 +222,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         isOnGui = true;                     // OnGuiを有効にする.
 
         int i = countDownSeconds;           // カウントダウン秒数を入れる.
+        SE.Call_SE(3);                      // カウントダウンの音を鳴らす.
         while(i > 0) {
-            SE.Call_SE(3);                          // カウントダウンの音を鳴らす.
             yield return new WaitForSeconds(1f);
             i--;
         }
@@ -304,9 +305,17 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="delay">遅延時間</param>
     protected IEnumerator AvillityCoolTime(float delay) {
+        var delta = delay;
         isCoolTime = true; // クールタイム中.
-        yield return new WaitForSeconds(delay);
+        while(delta > 0) {
+            print("delta : " + delta);
+            avilityRecastAmount.fillAmount = delta / delay;
+            yield return null; // 1フレーム遅延.
+            delta -= Time.deltaTime; // クールタイム計算.
+            avilityRiminingAmount.text = delta.ToString(); // クールタイムの残り時間を表示.
+        }
         isCoolTime = false; // クールタイム解除.
+        avilityRiminingAmount.text = ""; // 非表示処理は重いので空白を入れて不可視化.
     }
 
     /// <summary>
@@ -338,10 +347,10 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             case "Slow":
                 yield return StartCoroutine(BooleanReverse(x => isSlow = x, !isSlow, 5.0f));
             break;
-            case "CanUseDash":
-            print("無限ダッシュ");
-            yield return StartCoroutine(BooleanReverse(x => isCanUseDash = x, !isCanUseDash, 20.0f));
-            print("無限ダッシュ解除");
+                case "CanUseDash":
+                print("無限ダッシュ");
+                yield return StartCoroutine(BooleanReverse(x => isCanUseDash = x, !isCanUseDash, 20.0f));
+                print("無限ダッシュ解除");
             break;
         }
     }
@@ -361,15 +370,17 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     private void OnGUI()
     {
-        if(!photonView.IsMine) {
-            return;
-        }
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 100;
-        GUI.Label(new Rect(0, 100, style.fontSize, style.fontSize), "CoolTime" + isCoolTime.ToString(), style);
-        GUI.Label(new Rect(0, 200, style.fontSize, style.fontSize), "useAvility" + isUseAvility.ToString(), style);
-        GUI.Label(new Rect(0, 300, style.fontSize, style.fontSize), "Stan" + isStan.ToString(), style);
-        GUI.Label(new Rect(0, 400, style.fontSize, style.fontSize), "Slow" + isSlow.ToString(), style);
+        #if UNITY_EDITOR
+            if(!photonView.IsMine) {
+                return;
+            }
+            GUIStyle style = new GUIStyle();
+            style.fontSize = 100;
+            GUI.Label(new Rect(0, 100, style.fontSize, style.fontSize), "CoolTime" + isCoolTime.ToString(), style);
+            GUI.Label(new Rect(0, 200, style.fontSize, style.fontSize), "useAvility" + isUseAvility.ToString(), style);
+            GUI.Label(new Rect(0, 300, style.fontSize, style.fontSize), "Stan" + isStan.ToString(), style);
+            GUI.Label(new Rect(0, 400, style.fontSize, style.fontSize), "Slow" + isSlow.ToString(), style);
+        #endif
     }
 
     public enum ItemName{
@@ -384,11 +395,13 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         speedup,//スタミナ無限
     }
     public List<ItemName> haveItem = new List<ItemName>(); // 所持アイテム記録用のリスト
+    public List<Image> haveItemImageList = new List<Image>(); // 所持アイテムのイメージリスト.
     protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
     protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
     protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
     protected bool isAddhaveItem = false; //これがtrueならアイテムを二個保持できる(キャラクター用)
     protected bool isCanUseDash = false; //これがtrueならスタミナが減らない
+
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
@@ -406,6 +419,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                     // 無敵スターを使用する.
                     isInvincible = true;
                     DelayChangeFlg("Invincible");
+                    print("Invincible");
                     break;
                 case ItemName.locationShuffle:
                     // 位置入れ替えを使用する. まだできてない.
@@ -434,17 +448,31 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                     break;
                 case ItemName.disposableGrapnelGun:
                     // 使い捨てグラップルガンを使用する.  まだできてない
+                    HookShot();
                     break;
-                    case ItemName.speedup:
+                case ItemName.speedup:
                     // スタミナの上限解放（無制限ダッシュ）
                     isCanUseDash = true;
                     isStaminaLoss = false; // スタミナ切れ回復
                     nowStamina = staminaAmount;  // スタミナマックス.
                     StartCoroutine(DelayChangeFlg("CanUseDash"));
                     print("UseDash");
-                    break;  
+                    break;
             }
             haveItem.RemoveAt(0); // アイテムを消費.
+
+            // アイテムの複数持ちが可能なら.
+            if(isAddhaveItem) {
+                for(int i = 0; i < haveItemImageList.Count; i++) {
+                    // リストのスプライトがemptyなら.
+                    if(haveItemImageList[i].sprite != itemDatabase.emptySprite) {
+                        haveItemImageList[i].sprite = haveItemImageList[i + 1].sprite; // リストをずらす.
+                        haveItemImageList[i + 1].sprite = itemDatabase.emptySprite; // リストをずらす.
+                    }
+                }
+            }else {
+                haveItemImageList[0].sprite = itemDatabase.emptySprite;
+            }
         }
     }
 
@@ -452,10 +480,25 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
     /// </summary>
     public void ItemGet(ItemName itemName){
+        print("name" + itemName);
+        var itemData = itemDatabase.GetItemData(itemName.ToString());
+        if(isAddhaveItem) {
+            for(int i = 0; i < haveItemImageList.Count; i++) {
+                if(haveItemImageList[i].sprite == itemDatabase.emptySprite) {
+                    // print("空きを発見");
+                    haveItemImageList[i].sprite = itemData.itemIcon;
+                    break;
+                }
+            }
+        }else {
+            haveItemImageList[0].sprite = itemData.itemIcon;
+        }
+
         //ない時は無条件で追加
         if(haveItem.Count == 0){
             haveItem.Add(itemName);
         }
+
         //二個目のアイテムを持てるキャラなら
         else if(haveItem.Count == 1 && isAddhaveItem){
             haveItem.Add(itemName);
@@ -463,7 +506,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     protected float amplification = 0; // アイテムの効果量の増幅効果があるキャラが使用する変数
-
     /// <summary>
     /// 回復する割合を%で指定すると最大スタミナに合わせて回復する.
     /// </summary>
@@ -488,6 +530,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         print(abilityUseAmount);
         avilityRiminingAmount.text = abilityUseAmount.ToString();
     }
+
+
 
     //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに.) ------//
     /// <summary>
@@ -517,13 +561,13 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         }
     }
 
-    private float relativeDistance;
-    private float HitDistance = 1.0f;
-    private float speed = 30.0f; // 移動速度
+    protected float relativeDistance;
+    protected float HitDistance = 1.0f;
+    protected float speed = 30.0f; // 移動速度
     /// <summary>
     /// カメラの中心直線上にレイを飛ばし、当たったオブジェクトを取得する.
     /// </summary>
-    protected void HookShot() {
+    protected virtual void HookShot() {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
         RaycastHit hit;
 
@@ -538,12 +582,12 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// 特定の位置に直線に向かう.
     /// </summary>
     /// <param name="targetPos">目標の位置</param>
-    private IEnumerator LinearMove(Vector3 targetPos) {
+    protected virtual IEnumerator LinearMove(Vector3 targetPos) {
         rb.useGravity = false;
         do {
             print("relative");
             var tmp = targetPos - transform.position;
-            Vector3 direction = tmp.normalized; // 目標位置への方向ベクトルを計算
+            Vector3 direction = tmp.normalized; // 目標位置への単位ベクトルを計算
             relativeDistance = tmp.magnitude;
             float distance = speed * Time.deltaTime; // 目標位置への移動量を計算
             transform.position += direction * distance; // 目標位置に向かって移動
@@ -558,8 +602,5 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
         anim.SetBool("HookShot", false);
         rb.useGravity = true;
-        isUseAvility = false; // 発動終了.
-
-        StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム.
     }
 }

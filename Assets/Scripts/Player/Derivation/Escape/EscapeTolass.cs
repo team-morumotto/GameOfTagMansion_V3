@@ -13,6 +13,7 @@ public class EscapeTolass : PlayerEscape
             if(GoToChooseChara.GetPlayMode() == 1) {
                 photonView.RPC(nameof(TolassES), RpcTarget.AllBuffered);
             }
+            isFrequency = true;
             Init(); // 初期化処理.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
