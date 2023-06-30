@@ -9415,7 +9415,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 4addd74925eb6cd4d916c668104e4efe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21794,8 +21794,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30FB\u30EB\u30FC\u30E0\u3092\u4F5C\u308B \u81EA\u5206\u3067\u540D\u524D\u3092\u6C7A\u3081\u3066\u30EB\u30FC\u30E0\n 
-    \u3092\u7ACB\u3066\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\n\n\u30FB\u30D7\u30E9\u30A4\u30D9\u30FC\u30C8\u30DE\u30C3\u30C1
+  m_Text: "\u30FB\u30EB\u30FC\u30E0\u3092\u4F5C\u308B\n  \u30FB\u30EB\u30FC\u30E0\u540D\u3092\u5165\u529B\u3057\u3001\n\n\u30FB\u30D7\u30E9\u30A4\u30D9\u30FC\u30C8\u30DE\u30C3\u30C1
     \u975E\u516C\u958B\u306E\u30EB\u30FC\u30E0\u306B\n  \u53C2\u52A0\u3057\u305F\u3044\u3068\u304D\u306B\u30EB\u30FC\u30E0\u540D\u3092\u5165\u529B\u3059\u308B\u3053\u3068\u3067\n 
     \u5165\u5BA4\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\n\n\u30FB\u53F3\u306E\u30EA\u30B9\u30C8\u3067\u73FE\u5728\u5EFA\u3066\u3089\u308C\u3066\u3044\u308B\u516C\u958B\u30EB\u30FC\u30E0\u306B\n 
     \u5165\u5BA4\u3059\u308B\u3053\u3068\u304C\u53EF\u80FD\u3067\u3059"
@@ -23708,13 +23707,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemList:
-  - {fileID: 11400000, guid: b6e3a8e6981a37d4891ae74d7ccdc04c, type: 2}
   - {fileID: 11400000, guid: ee812e438135cff48ab7349983e5e337, type: 2}
   - {fileID: 11400000, guid: 3b9b8ce6db641034e91dc91609b33d4d, type: 2}
   - {fileID: 11400000, guid: 28e4b583d34d2f64aba32bcf9ccb6e2b, type: 2}
   - {fileID: 11400000, guid: 447c8581e53075742882f02ebdef8e2d, type: 2}
-  - {fileID: 11400000, guid: 79fa98eb82b61ed4bbbd155111f731c0, type: 2}
-  - {fileID: 11400000, guid: a6b42553fd94a6b4f834cb5dd6e1f53c, type: 2}
   - {fileID: 11400000, guid: 8bd1de28c7efb8e449e4785d4e5c9634, type: 2}
   - {fileID: 11400000, guid: d71c0752fb637d042b658d10d27e1106, type: 2}
   emptySprite: {fileID: 21300000, guid: 4addd74925eb6cd4d916c668104e4efe, type: 3}

@@ -348,6 +348,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     }
 
     public void GameSceneReload() {
+        PhotonNetwork.Disconnect();                                         // マスターサーバから切断.
         SceneManager.LoadScene("Closed_GameScene", LoadSceneMode.Single); // ゲームシーンをロードする.
     }
     //----------- ボタン -----------//

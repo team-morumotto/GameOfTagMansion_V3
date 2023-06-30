@@ -40,7 +40,7 @@ public class NewItemScript : MonoBehaviour
         //アイテムの列挙型の最大値の中からランダムでアイテムを取得
         var b = UnityEngine.Random.Range(0,itemNameCnt);
         //アイテムの名前を取得
-        PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), 8);
+        PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), b);
         collision.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
         Debug.Log("アイテムとれたよ");
         Destroy(this.gameObject);

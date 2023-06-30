@@ -244,7 +244,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public IEnumerator ItemSpawn() {
         while(true) {
             for(int i = 0; i < itemSpawnPoint.Length ; i++) {
-                PhotonNetwork.Instantiate("Item", itemSpawnPoint[i].transform.position, Quaternion.identity);// Resorcesフォルダ内のItemを生成.
+                PhotonNetwork.Instantiate("NewItem", itemSpawnPoint[i].transform.position, Quaternion.identity);// Resorcesフォルダ内のItemを生成.
             }
             yield return new WaitForSeconds(10.0f);
         }
@@ -385,9 +385,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     public enum ItemName{
         invincibleStar, //無敵スター
-        locationShuffle, //位置入れ替え
-        abilityBlock, //アビリティ封印
-        movementBinding, //移動封印
+        // locationShuffle, //位置入れ替え
+        // abilityBlock, //アビリティ封印
+        // movementBinding, //移動封印
         drink, //小回復
         poteto, //中回復
         hamburger, //大回復
@@ -420,19 +420,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                     isInvincible = true;
                     DelayChangeFlg("Invincible");
                     print("Invincible");
-                    break;
-                case ItemName.locationShuffle:
-                    // 位置入れ替えを使用する. まだできてない.
-                    break;
-                case ItemName.abilityBlock:
-                    // アビリティ封印を使用する. 現在自分にしかけしかけられない
-                    isCanUseAbility = false;
-                    DelayChangeFlg("CanUseAbility");
-                    break;
-                case ItemName.movementBinding:
-                    // 移動封印を使用する. 現在自分にしかけしかけられない
-                    isCanUseMovement = false;
-                    DelayChangeFlg("CanUseMovement");
                     break;
                 case ItemName.drink:
                     // 小回復を使用する.

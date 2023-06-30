@@ -24,10 +24,6 @@ public class GoToChooseChara : MonoBehaviour {
         }
     }
 
-    void Update() {
-        print(playMode);
-    }
-
     //------- ゲッター -------//
     public static int GetPlayMode() {
         return playMode;

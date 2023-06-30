@@ -496,6 +496,7 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
   haveItemImageList: []
@@ -538,6 +539,7 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
   haveItemImageList: []
