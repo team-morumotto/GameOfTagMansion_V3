@@ -119,3 +119,6 @@ UserSettings/*
 # 魔法の呪文（おまじない）
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
+
+# .が入ったフォルダは除外されてしまうので回避
+!/[Aa]ssets/[Rr]esources/**/
