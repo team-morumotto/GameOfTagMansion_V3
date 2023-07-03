@@ -77,8 +77,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
     public Text avilityRiminingAmount;       // 固有能力の残り使用可能回数.
-    public Image avilityRecastAmount;     // 固有能力のリキャスト時間を反映するUI.
-    protected Image avilityImage;            // 固有能力のスプライト.
+    public Image avilityRecastAmount;        // 固有能力のリキャスト時間を反映するUI.
+    protected Image avilityImage;            // 固有能力の画像.
 
     //------ int変数 ------//
     protected int abilityUseAmount = 3;      // 固有能力の使用可能回数(試験的に三回).
@@ -140,9 +140,12 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// キャラクターの座標をリセットする.
+    /// </summary>
     public void CharaPositionReset() {
-        // ステージ外に落ちたときy座標が-100以下になったら自分のスポーン位置に戻る.
-        if(gameObject.transform.position.y <= -300f) {
+        // Bキーを押した時、最初のスポーン位置に転移する.
+        if(Input.GetKeyDown(KeyCode.B)) {
             PlayerSpawn();
         }
     }
@@ -411,8 +414,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             return;
         }
 
-        // Pキーが押されていたら.
-        if(Input.GetKeyDown(KeyCode.P)){
+        // Eキーが押されていたら.
+        if(Input.GetKeyDown(KeyCode.E)){
             ItemName tmp = haveItem[0]; // アイテム名を取得.
             switch(tmp){
                 case ItemName.invincibleStar:
@@ -502,6 +505,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         //回復量が最大スタミナを超えたら最大スタミナにする
         if(healamount > staminaAmount) {
             nowStamina = staminaAmount;
+            isStaminaLoss = false;
         }
         //回復量が最大スタミナを超えなかったら回復後の値を代入
         else{

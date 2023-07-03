@@ -30,7 +30,7 @@ public class ChaserAsakaYanoha : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.Space)) {
             // 固有性能はここから使用する.
         }
         BaseUpdate();

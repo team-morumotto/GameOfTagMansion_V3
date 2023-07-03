@@ -29,7 +29,7 @@ public class ChaserWenrui : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I) && !isUseAvility && !isCoolTime) {
+        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
             isUseAvility = true;
             // 固有性能はここから使用する.
         }

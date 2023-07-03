@@ -31,7 +31,7 @@ public class EscapeMikagamiKoyomi : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I) && !isUseAvility && !isCoolTime) {
+        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
             isUseAvility = true;
             StartCoroutine(CharacterScaleChange());
         }

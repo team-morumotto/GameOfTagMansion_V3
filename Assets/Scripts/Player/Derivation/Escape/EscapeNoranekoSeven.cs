@@ -24,7 +24,7 @@ public class EscapeNoranekoSeven : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.I)) {
+        if(Input.GetKeyDown(KeyCode.Space)) {
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit)) {
