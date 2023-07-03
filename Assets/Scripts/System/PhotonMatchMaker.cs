@@ -84,8 +84,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
             // 自分がマスタークライアントなら.
             if(PhotonNetwork.LocalPlayer.IsMasterClient) {
-                // Eキーを押したら.
-                if(Input.GetKeyDown(KeyCode.E)) {
+                // Enterキーを押したら.
+                if(Input.GetKeyDown(KeyCode.Return)) {
                     if(GameStartError()) {
                         SetCustomProperty("on", true, 1);
                     }
@@ -126,9 +126,11 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         if(isMenuOn) {
             isMenuOn = false;
             gameLobbyPanel.SetActive(false);
+            Cursor.visible = false;
         }else{
             isMenuOn = true;
             gameLobbyPanel.SetActive(true);
+            Cursor.visible = true;
         }
     }
 
@@ -224,6 +226,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 	// フォトンのルームに参加したときに呼ばれる.
     public override void OnJoinedRoom() {
         isJoinRoom = true;              // ルームに参加した.
+        Cursor.visible = false;
         gameDuringPanel.SetActive(true);
         gameLobbyPanel.SetActive(false); // ゲームメニューを非表示.
 
