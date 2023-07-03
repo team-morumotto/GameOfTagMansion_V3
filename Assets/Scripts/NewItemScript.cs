@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using System;
 using UnityEngine;
 
-public class NewItemScript : MonoBehaviour
+public class NewItemScript : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Vector3 rotateSpeed = new Vector3(5,5,5);
     [SerializeField] private GameObject rotateObject;
@@ -11,6 +11,7 @@ public class NewItemScript : MonoBehaviour
     void Start() {
         //アイテムの列挙型の最大値を取得
         itemNameCnt = System.Enum.GetValues(typeof(PlayerBase.ItemName)).Length;
+        StartCoroutine(Destroy());
     }
     void Update() {
         //まわす
@@ -44,5 +45,13 @@ public class NewItemScript : MonoBehaviour
         collision.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
         Debug.Log("アイテムとれたよ");
         Destroy(this.gameObject);
+    }
+
+    // 生成してから10秒後に消す.
+    IEnumerator Destroy(){
+        if(PhotonNetwork.IsMasterClient) {
+            yield return new WaitForSeconds(10.0f);
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
