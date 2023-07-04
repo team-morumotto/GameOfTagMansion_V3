@@ -100,6 +100,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected bool isCoolTime = false;           // 固有能力発動後のクールタイム中か.
     protected bool isSlow = false;               // 移動速度が低下しているか.
     protected bool isFrequency = false;          // 固有能力が回数制限性か.
+    public static bool isDebug = false;              // デバッグか.
 
     //------ string変数 ------//
     protected string fps = "";
@@ -558,7 +559,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// カメラの中心直線上にレイを飛ばし、当たったオブジェクトを取得する.
     /// </summary>
-    protected virtual void HookShot() {
+    protected void HookShot() {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
         RaycastHit hit;
 
@@ -573,25 +574,31 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// 特定の位置に直線に向かう.
     /// </summary>
     /// <param name="targetPos">目標の位置</param>
-    protected virtual IEnumerator LinearMove(Vector3 targetPos) {
+    protected IEnumerator LinearMove(Vector3 targetPos) {
         rb.useGravity = false;
         do {
-            print("relative");
+            // print("relative");
             var tmp = targetPos - transform.position;
-            Vector3 direction = tmp.normalized; // 目標位置への単位ベクトルを計算
+            Vector3 direction = tmp.normalized; // 目標位置への単位ベクトルを計算.
             relativeDistance = tmp.magnitude;
-            float distance = speed * Time.deltaTime; // 目標位置への移動量を計算
-            transform.position += direction * distance; // 目標位置に向かって移動
+            float distance = speed * Time.deltaTime; // 目標位置への移動量を計算.
+            transform.position += direction * distance; // 目標位置に向かって移動.
 
-            //ベクトルの大きさが0.01以上の時に向きを変える処理をする
+            //ベクトルの大きさが0.01以上の時に向きを変える処理をする.
             if (relativeDistance > 0.01f) {
-                transform.rotation = Quaternion.LookRotation(direction); //向きを変更する
+                transform.rotation = Quaternion.LookRotation(direction); //向きを変更する.
             }
 
             yield return null; // 1フレーム遅延.
         } while(relativeDistance > HitDistance);
 
+        transform.position = targetPos;
+        transform.rotation = Quaternion.Euler(0,transform.rotation.y, 0);
+
         anim.SetBool("HookShot", false);
         rb.useGravity = true;
+        // isUseAvility = false; // 発動終了. // override追加項目.
+
+        // StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム. // override追加項目.
     }
 }
