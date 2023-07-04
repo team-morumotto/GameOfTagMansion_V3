@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class EscapeMulicia : PlayerEscape
 {
+    GameObject muliciaCoat; // ミュリシアのコート.
     void Start() {
         if(photonView.IsMine) {
             // 自分が鬼なら.
@@ -13,6 +14,9 @@ public class EscapeMulicia : PlayerEscape
             }
             Init(); // オブジェクトやコンポーネントの取得.
         }
+
+        // コートを取得
+        muliciaCoat = GameObject.Find("mdl_c001_base_00/outer");
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
     }
@@ -22,6 +26,9 @@ public class EscapeMulicia : PlayerEscape
             return;
         }
         BaseUpdate();
+        
+        // 鬼と当たったらこれを実行してください（現状スポーンしたら非表示になるようになってるんでコートの取得は出来てます）
+        muliciaCoat.SetActive(false);
     }
 
     [PunRPC]
