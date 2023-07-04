@@ -7,6 +7,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 229251097069950145, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Height
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 229251097069950145, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 229251097069950145, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 229251097069950145, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Center.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 229251097069950145, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1654973473339491357, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_Name
       value: Liloumois
