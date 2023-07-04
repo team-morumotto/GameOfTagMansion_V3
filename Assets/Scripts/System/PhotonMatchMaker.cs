@@ -90,6 +90,11 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
                         SetCustomProperty("on", true, 1);
                     }
                 }
+
+                if(Input.GetKeyDown(KeyCode.P)) {
+                    GameStartFlg = true;
+                    PlayerBase.isDebug = true;
+                }
             }
         }
     }
