@@ -160,7 +160,7 @@ public class PlayerChaser : PlayerBase
             Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
             // スタミナが残っていて走っている.
-            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
+            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftShift) && !isStaminaLoss) {
                 // スタミナ無限でないなら.
                 if(!isCanUseDash) {
                     nowStamina -= 0.1f;  // スタミナ減少.
@@ -171,9 +171,17 @@ public class PlayerChaser : PlayerBase
                     isStaminaLoss = true; // スタミナ切れに.
                     }
 
-                MoveType(moveForward , runSpeed, 1.5f);
+                if(isSlow) {
+                    MoveType(moveForward, runSpeed * 0.8f, 1.5f);
+                }else {
+                    MoveType(moveForward, runSpeed, 1.5f);
+                }
             }else {
-                MoveType(moveForward, walkSpeed, 1.0f);
+                if(isSlow) {
+                    MoveType(moveForward, walkSpeed * 0.8f, 1.0f);
+                }else {
+                    MoveType(moveForward, walkSpeed, 1.0f);
+                }
                 RegenerativeStaminaHeal();
             }
 
@@ -267,9 +275,8 @@ public class PlayerChaser : PlayerBase
     }
 
     void OnTriggerEnter(Collider collider) {
-        // 当たったオブジェクトがアイテムボックスなら.
-        if(collider.CompareTag("ItemBox")) {
-
+        if(!photonView.IsMine) {
+            return;
         }
 
         // 当たったオブジェクトが障害物なら.
@@ -280,12 +287,16 @@ public class PlayerChaser : PlayerBase
                 return;
             }
             isHit++;
-            Destroy(collider.gameObject); // 破壊.
+            Destroy(collider.gameObject); // 破棄.
             StartCoroutine(Stan());
         }
 
+        // 当たったオブジェクトが御札なら.
         if(collider.CompareTag("Bill")) {
-            StartCoroutine(Stan());
+            if(!isSlow) {
+                isSlow = true;
+                StartCoroutine(DelayChangeFlg("Slow"));
+            }
         }
     }
     //--------------- ここまでコリジョン ---------------//

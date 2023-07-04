@@ -161,7 +161,7 @@ public class PlayerEscape : PlayerBase {
             Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
             // スタミナが残っていて走っている.
-            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
+            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftShift) && !isStaminaLoss) {
                 // スタミナ無限でないなら.
                 if(!isCanUseDash) {
                     nowStamina -= 0.1f;  // スタミナ減少.
@@ -201,14 +201,14 @@ public class PlayerEscape : PlayerBase {
     }
 
     /// <summary>
-    /// 機能 : LeftShiftを押すとスニークを切り替え.
+    /// 機能 : LeftControlを押すとスニークを切り替え.
     /// 引数 : なし.
     /// 戻り値 : なし.
     /// </summary>
     protected void Sneak() {
         switch(isSneak) {
             case true:
-                if(Input.GetKeyDown(KeyCode.LeftShift)) {
+                if(Input.GetKeyDown(KeyCode.LeftControl)) {
                     anim.SetBool("Sneak", false);
                     isSneak = false; // スニークフラグOFF.
 
@@ -217,7 +217,7 @@ public class PlayerEscape : PlayerBase {
             break;
 
             case false:
-                if(Input.GetKeyDown(KeyCode.LeftShift)) {
+                if(Input.GetKeyDown(KeyCode.LeftControl)) {
                     anim.SetBool("Sneak", true);
                     isSneak = true; // スニークフラグON.
 
@@ -285,9 +285,8 @@ public class PlayerEscape : PlayerBase {
     }
 
     void OnTriggerEnter(Collider collider) {
-        // 当たったオブジェクトがアイテムボックスなら.
-        if(collider.CompareTag("ItemBox")) {
-
+        if(!photonView.IsMine) {
+            return;
         }
 
         // 当たったオブジェクトが障害物なら.
@@ -298,14 +297,16 @@ public class PlayerEscape : PlayerBase {
                 return;
             }
             isHit++;
-            Destroy(collider.gameObject); // 破壊.
+            Destroy(collider.gameObject); // 破棄.
             StartCoroutine(Stan());
         }
 
         // 当たったオブジェクトが御札なら.
         if(collider.CompareTag("Bill")) {
-            isSlow = true; // 移動速度低下状態に.
-            // ChangeFlg(isSlow, 5.0f); // 5秒間移動速度低下.
+            if(!isSlow) {
+                isSlow = true;
+                StartCoroutine(DelayChangeFlg("Slow"));
+            }
         }
     }
     //--------------- ここまでコリジョン ---------------//
