@@ -58,7 +58,7 @@ public class EscapeWenrui : PlayerEscape
         // 当たったオブジェクトが障害物なら.
         if(collider.CompareTag("Obstruct")) {
             isHit++;
-            Destroy(collider.gameObject); // 破壊.
+            Destroy(collider.gameObject); // 破棄.
             StartCoroutine(Stan());
         }
 

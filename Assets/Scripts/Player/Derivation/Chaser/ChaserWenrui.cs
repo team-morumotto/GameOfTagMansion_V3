@@ -54,7 +54,7 @@ public class ChaserWenrui : PlayerChaser
             }
 
             isHit++;
-            Destroy(collider.gameObject); // 破壊.
+            Destroy(collider.gameObject); // 破棄.
             StartCoroutine(Stan());
         }
 
@@ -67,7 +67,10 @@ public class ChaserWenrui : PlayerChaser
                 }
             }
 
-            StartCoroutine(Stan());
+            if(!isSlow) {
+                isSlow = true;
+                StartCoroutine(DelayChangeFlg("Slow"));
+            }
         }
     }
 
