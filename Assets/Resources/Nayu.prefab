@@ -218,10 +218,12 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 4264147829468758346}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 3804696974756056034}
 --- !u!114 &6132514321603546797
 MonoBehaviour:
@@ -259,8 +261,10 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 4264147829468758346}
 --- !u!1 &7443214274015037829 stripped
 GameObject:
