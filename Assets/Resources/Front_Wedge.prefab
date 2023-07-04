@@ -116,5 +116,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  isFront: 0
+  isFront: 1
   obstructParticle: {fileID: 100012, guid: a905d8e5159ffeb46baa8d2a7624717f, type: 3}
