@@ -192,10 +192,11 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         else{
             SE.Call_SE(6);
         }
-        resultPanel.SetActive(true);                  //パネルを表示
-        gameTimer.text = ("00:00.000").ToString(); //残り時間を0に上書きし表示
-        PhotonNetwork.Destroy(gameObject);             //自分を全体から破棄
-        PhotonNetwork.Disconnect();                    //ルームから退出
+        Cursor.visible = true;                        // カーソルを表示.
+        resultPanel.SetActive(true);                  // パネルを表示.
+        gameTimer.text = ("00:00.000").ToString();    // 残り時間を0に上書きし表示.
+        PhotonNetwork.Destroy(gameObject);            // 自分を全体から破棄.
+        PhotonNetwork.Disconnect();                   // ルームから退出.
     }
 
     /// <summary>
@@ -470,7 +471,6 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
     /// </summary>
     public void ItemGet(ItemName itemName){
-        print("name" + itemName);
         var itemData = itemDatabase.GetItemData(itemName.ToString());
         if(isAddhaveItem) {
             for(int i = 0; i < haveItemImageList.Count; i++) {
