@@ -32,7 +32,7 @@ public class ChaserLiloumois : PlayerChaser
             return;
         }
         if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
-            isUseAvility = true;
+            // isUseAvility = true;
             anim.SetBool("HookShot", true);
             HookShot();
         }
@@ -97,7 +97,7 @@ public class ChaserLiloumois : PlayerChaser
             Vector3 moveForward = cameraForward * inputVertical + playerCamera.transform.right * inputHorizontal;  // カメラの向きに合わせて移動方向を決定
 
             // スタミナが残っていて走っている.
-            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftControl) && !isStaminaLoss) {
+            if(nowStamina > 0 && Input.GetKey(KeyCode.LeftShift) && !isStaminaLoss) {
                 // スタミナ無限でないなら.
                 if(!isCanUseDash) {
                     nowStamina -= 0.1f;  // スタミナ減少.
@@ -139,48 +139,5 @@ public class ChaserLiloumois : PlayerChaser
     [PunRPC]
     private void IsRunningChangeC(bool value) {
         isRunning = value;
-    }
-
-    /// <summary>
-    /// カメラの中心直線上にレイを飛ばし、当たったオブジェクトを取得する.
-    /// </summary>
-    protected override void HookShot() {
-        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit)) {
-            StartCoroutine(LinearMove(hit.point));
-        }else {
-            anim.SetBool("HookShot", false);
-        }
-    }
-
-    /// <summary>
-    /// 特定の位置に直線に向かう.
-    /// </summary>
-    /// <param name="targetPos">目標の位置</param>
-    protected override IEnumerator LinearMove(Vector3 targetPos) {
-        rb.useGravity = false;
-        do {
-            print("relative");
-            var tmp = targetPos - transform.position;
-            Vector3 direction = tmp.normalized; // 目標位置への方向ベクトルを計算
-            relativeDistance = tmp.magnitude;
-            float distance = speed * Time.deltaTime; // 目標位置への移動量を計算
-            transform.position += direction * distance; // 目標位置に向かって移動
-
-            //ベクトルの大きさが0.01以上の時に向きを変える処理をする
-            if (relativeDistance > 0.01f) {
-                transform.rotation = Quaternion.LookRotation(direction); //向きを変更する
-            }
-
-            yield return null; // 1フレーム遅延.
-        } while(relativeDistance > HitDistance);
-
-        anim.SetBool("HookShot", false);
-        rb.useGravity = true;
-        isUseAvility = false; // 発動終了. // override追加項目.
-
-        StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム. // override追加項目.
     }
 }
