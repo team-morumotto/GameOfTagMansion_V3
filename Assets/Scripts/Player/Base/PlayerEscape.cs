@@ -233,6 +233,9 @@ public class PlayerEscape : PlayerBase {
     /// 戻り値 : なし.
     /// </summary>
     protected void GameTimer() {
+        if(isDebug) {
+            return;
+        }
         var gameTime = ST.GameTimeCounter();
 
         // テキストへ残り時間を表示
