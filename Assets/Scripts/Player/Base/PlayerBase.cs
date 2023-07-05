@@ -215,7 +215,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 staminaHealAmount = characterDatabase.statusList[tmp3].staminaHealAmount;
                 overCome = characterDatabase.statusList[tmp3].overCome;
                 floating = characterDatabase.statusList[tmp3].floating;
-                avilityImage.sprite = characterDatabase.statusList[tmp3].avilitySprite;
+                if(photonView.IsMine) {
+                    avilityImage.sprite = characterDatabase.statusList[tmp3].avilitySprite;
+                }
             }
         }
         nowStamina = staminaAmount; // 現状のスタミナに最大スタミナを代入.
@@ -472,6 +474,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// アイテムを入手する処理(アイテムから叩かせるのでpublicにしました)
     /// </summary>
     public void ItemGet(ItemName itemName){
+        if(!photonView.IsMine) {
+            return;
+        }
         var itemData = itemDatabase.GetItemData(itemName.ToString());
         if(isAddhaveItem) {
             for(int i = 0; i < haveItemImageList.Count; i++) {
