@@ -1337,6 +1337,7 @@ MonoBehaviour:
   gameDuringPanel: {fileID: 1309398330}
   gameLobbyPanel: {fileID: 1138217484}
   gameErrorPanel: {fileID: 2029966322}
+  loadPanel: {fileID: 90683409}
   sneakUI: {fileID: 661142554}
   vcm: {fileID: 1437243934}
 --- !u!114 &75826378
@@ -24020,7 +24021,7 @@ Animator:
   m_GameObject: {fileID: 1105416698}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 201a41f31b3345b4eaf6ab5d0e49d006, type: 2}
+  m_Controller: {fileID: 9100000, guid: 52b8318b18f57a74b8b43de3eab21e5b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
