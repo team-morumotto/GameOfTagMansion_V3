@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class EscapeMulicia : PlayerEscape
 {
-    GameObject muliciaCoat; // ミュリシアのコート.
+    private GameObject muliciaCoat; // ミュリシアのコート.
+    private bool isAvoidingCapture = false; // 捕まりを回避したか.
     void Start() {
         if(photonView.IsMine) {
             // 自分が鬼なら.
@@ -13,10 +14,10 @@ public class EscapeMulicia : PlayerEscape
                 photonView.RPC(nameof(MuliciaES), RpcTarget.AllBuffered);
             }
             Init(); // オブジェクトやコンポーネントの取得.
+            // コートを取得
+            muliciaCoat = GameObject.Find("mdl_c001_base_00/outer");
         }
 
-        // コートを取得
-        muliciaCoat = GameObject.Find("mdl_c001_base_00/outer");
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
         GetStatus(); // ステータスの取得.
     }
@@ -26,9 +27,6 @@ public class EscapeMulicia : PlayerEscape
             return;
         }
         BaseUpdate();
-        
-        // 鬼と当たったらこれを実行してください（現状スポーンしたら非表示になるようになってるんでコートの取得は出来てます）
-        muliciaCoat.SetActive(false);
     }
 
     [PunRPC]
@@ -36,5 +34,41 @@ public class EscapeMulicia : PlayerEscape
         Destroy(this); // 削除.
     }
 
-    //------ 以下、固有性能 ------//
+    /// <summary>
+    /// プレイヤーのカスタムプロパティが変更された時.
+    /// </summary>
+    /// <param name="targetPlayer">変更があったプレイヤー</param>
+    /// <param name="changedProps">変更されたプロパティ</param>
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        // 自分でない場合.
+        if(!photonView.IsMine) {
+            return;
+        }
+
+        if(targetPlayer == PhotonNetwork.LocalPlayer) {
+            print("namename"+targetPlayer.NickName);
+            foreach(var prop in changedProps) {
+                var tmpKey = prop.Key.ToString();
+                switch(tmpKey) {
+                    case "c":
+                        if((bool)prop.Value) {
+                            // 回避したか.
+                            if(!isAvoidingCapture) {
+                                isAvoidingCapture = true;
+                                muliciaCoat.SetActive(false); // コートを脱ぐ.
+                                PhotonMatchMaker.SetCustomProperty("c", false, 0);
+                            }else {
+                                resultWinLoseText.text = "捕まった！";
+                                GameEnd(false); // ゲーム終了.
+                            }
+                        }
+                    break;
+                }
+            }
+        }else{
+            print("Invalid");
+            print("namename"+targetPlayer.NickName);
+        }
+    }
 }

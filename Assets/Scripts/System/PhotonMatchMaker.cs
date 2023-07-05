@@ -26,16 +26,17 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
     //------------ public ------------//
     [FormerlySerializedAs("before")] public GameObject[] CharacterObject = {null,null,null,null,null,null,null,null,null,null,};
-    [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;						         // キャラクタースポーンポイント.
-    [FormerlySerializedAs("before")] public GameObject Instant;                                      // ルームリストのボタン.
+    [FormerlySerializedAs("before")] public GameObject[] SpawnPoint;  // キャラクタースポーンポイント.
+    [FormerlySerializedAs("before")] public GameObject Instant;       // ルームリストのボタン.
     [Tooltip("ゲーム中のパネルの背景")] public GameObject BGPanel;
-    [Tooltip("ルームリストのスクロール")] public Transform roomScroll;                                                                     // ルームリストのスクロールビュー.
-    public InputField inputCreateRoomName;                                                           // 作成するルーム名を入力するInputField.
-    public InputField inputJoinRoomName;                                                             // 参加する非公開ルーム名を保存するInputField.
+    [Tooltip("ルームリストのスクロール")] public Transform roomScroll; // ルームリストのスクロールビュー.
+    public InputField inputCreateRoomName;                            // 作成するルーム名を入力するInputField.
+    public InputField inputJoinRoomName;                              // 参加する非公開ルーム名を保存するInputField.
     public GameObject cursol;
-    public GameObject gameDuringPanel;                                                               // ゲーム中のUIパネル.
-    public GameObject gameLobbyPanel;                                                                // ゲーム中のボタンUIパネル.
-    public GameObject gameErrorPanel;                                                                // ルームの作成/参加に失敗した際のエラー表示パネル.
+    public GameObject gameDuringPanel;                                // ゲーム中のUIパネル.
+    public GameObject gameLobbyPanel;                                 // ゲーム中のボタンUIパネル.
+    public GameObject gameErrorPanel;                                 // ルームの作成/参加に失敗した際のエラー表示パネル.
+    public GameObject loadPanel;                                      // マスターサーバー接続/ルーム入室時の「ロード中」パネル.
     /* sneakUIとuseItemUIは緊急措置.
         本来は別のスクリプトで管理するべきなので今後変更予定.*/
     public GameObject sneakUI;
@@ -63,6 +64,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         GameStartFlg = false;   // ゲームスタートフラグを初期化.
         isJoinRoom = false;     // ルーム参加フラグを初期化.
         isMenuOn = false;       // メニュー表示フラグを初期化.
+        loadPanel.SetActive(true);
 
         Application.targetFrameRate = 60; // フレームレートを60固定.
     }
@@ -192,6 +194,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     // ロビーに入室した場合.
     public override void OnJoinedLobby() {
         print("【Debug】 ロビー入室");
+        loadPanel.SetActive(false);
         Invoke("ListUpdate" , 1.0f);            // GameSceneがロードされてから1秒後にListUpdate関数を実行.
     }
 
@@ -218,7 +221,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     }
 
 	/// <summary>
-	/// ルーム傘下に失敗したとき.
+	/// ルーム参加に失敗したとき.
 	/// </summary>
 	/// <param name="returnCode">エラーコード</param>
 	/// <param name="message">エラーメッセージ</param>
@@ -234,6 +237,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         Cursor.visible = false;
         gameDuringPanel.SetActive(true);
         gameLobbyPanel.SetActive(false); // ゲームメニューを非表示.
+        loadPanel.SetActive(false);
 
         float x = UnityEngine.Random.Range(SpawnPoint[0].transform.position.x, SpawnPoint[1].transform.position.x);
         float y = UnityEngine.Random.Range(SpawnPoint[0].transform.position.y, SpawnPoint[1].transform.position.y);
@@ -277,6 +281,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();	                // RoomOptionをインスタンス化.
         roomOptions.MaxPlayers = (byte)RoomPlayerSet.GamePlayers;       // ルームの最大人数を設定.
 
+        loadPanel.SetActive(true);
+
         PhotonNetwork.CreateRoom(createRoomName, roomOptions);	        // ルームを作成.
 
         PanelBlind(panel);
@@ -288,14 +294,14 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             return;
         }
 
+        loadPanel.SetActive(true);
+
         PhotonNetwork.JoinRoom(joinRoomName);                                       // ルームに参加.
 
         PanelBlind(panel);
     }
 
-    /*
-        公開ルームリストを更新する.
-    */
+    // 公開ルームのリストを取得.
     public void ListUpdate() {
         print("【Debug】 : ListUpdate");
         roomListName = roomData.Item1;        // 更新されたルームの名前を取得.
