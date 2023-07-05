@@ -1,4 +1,3 @@
-using System.Collections;
 using Photon.Pun;
 using System;
 using UnityEngine;
@@ -11,7 +10,6 @@ public class NewItemScript : MonoBehaviourPunCallbacks
     void Start() {
         //アイテムの列挙型の最大値を取得
         itemNameCnt = System.Enum.GetValues(typeof(PlayerBase.ItemName)).Length;
-        StartCoroutine(Destroy());
     }
     void Update() {
         //まわす
@@ -33,24 +31,31 @@ public class NewItemScript : MonoBehaviourPunCallbacks
     ///<sammary>
     ///プレイヤーがアイテムを取得したときの処理
     ///</sammary>
-    void OnCollisionEnter(Collision collision) {
+    void OnTriggerEnter(Collider other) {
+        print(other.name);
+        print(other.tag);
         //プレイヤー以外は無視
-        if (collision.gameObject.tag != "Player") {
+        if (!other.gameObject.CompareTag("Player")) {
             return;
+        }
+
+        if(photonView.IsMine) {
+            print("IsMine");
+        }else if(!photonView.IsMine) {
+            print("Not IsMine");
         }
         //アイテムの列挙型の最大値の中からランダムでアイテムを取得
         var b = UnityEngine.Random.Range(0,itemNameCnt);
         //アイテムの名前を取得
         PlayerBase.ItemName ii = (PlayerBase.ItemName)Enum.ToObject(typeof(PlayerBase.ItemName), b);
-        collision.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
+        other.gameObject.GetComponent<PlayerBase>().ItemGet(ii);
         Debug.Log("アイテムとれたよ");
-        Destroy(this.gameObject);
+        photonView.RPC(nameof(ItemDestroy), RpcTarget.All);
     }
 
-    // 生成してから10秒後に消す.
-    IEnumerator Destroy(){
+    [PunRPC]
+    void ItemDestroy() {
         if(PhotonNetwork.IsMasterClient) {
-            yield return new WaitForSeconds(10.0f);
             PhotonNetwork.Destroy(gameObject);
         }
     }
