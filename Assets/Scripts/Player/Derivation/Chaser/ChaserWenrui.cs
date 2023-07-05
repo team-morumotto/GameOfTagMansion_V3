@@ -41,10 +41,6 @@ public class ChaserWenrui : PlayerChaser
             return;
         }
 
-        // 当たったオブジェクトがアイテムボックスなら.
-        if(collider.CompareTag("ItemBox")) {
-
-        }
         // 当たったオブジェクトが障害物なら.
         if(collider.CompareTag("Obstruct")) {
             // すでにスタンしているなら処理しない.

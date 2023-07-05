@@ -44,11 +44,6 @@ public class EscapeWenrui : PlayerEscape
             return;
         }
 
-        // 当たったオブジェクトがアイテムボックスなら.
-        if(collider.CompareTag("ItemBox")) {
-
-        }
-
         // すでにスタンしているなら処理しない.
         if(isStan) {
             print("スタン済み");
