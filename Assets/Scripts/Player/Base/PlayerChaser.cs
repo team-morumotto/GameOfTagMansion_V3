@@ -14,6 +14,7 @@
 *   また、BaseUpdateはリルモワのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
+using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
@@ -325,6 +326,13 @@ public class PlayerChaser : PlayerBase
                     abilityUseAmount = 3; //! マジックナンバー.
                     isUseAvility = false;
                     isCoolTime = false;
+
+                    // 所持アイテムリセット.
+                    haveItem = new List<ItemName>();
+                    haveItemImageList[0].sprite = itemDatabase.emptySprite;
+                    if(isAddhaveItem) {
+                        haveItemImageList[1].sprite = itemDatabase.emptySprite;
+                    }
                 break;
                 case "et":
                     if((bool)tmpValue) {

@@ -14,6 +14,7 @@
 *   また、BaseUpdateはトラスとリルモワのみoverrideにて上書きしているため、BaseUpdateを編集する場合は個別スクリプトにて書き換えが必要.
 */
 using UnityEngine;
+using System.Collections.Generic;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
 using Photon.Pun;
@@ -335,6 +336,13 @@ public class PlayerEscape : PlayerBase {
                     abilityUseAmount = 3; //! マジックナンバー.
                     isUseAvility = false;
                     isCoolTime = false;
+
+                    // 所持アイテムリセット.
+                    haveItem = new List<ItemName>();
+                    haveItemImageList[0].sprite = itemDatabase.emptySprite;
+                    if(isAddhaveItem) {
+                        haveItemImageList[1].sprite = itemDatabase.emptySprite;
+                    }
                 break;
                 // スタミナの回復量のブースト.
                 case "hb":
