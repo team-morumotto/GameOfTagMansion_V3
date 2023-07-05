@@ -26,11 +26,13 @@ public class JoinRoomName : MonoBehaviourPunCallbacks
     public void OnClick() {
         var objName = gameObject.name;      // ボタンの名前を取得.
         print("【Debug】: 公開ルームに参加");
+        PMM.loadPanel.SetActive(true);
         PhotonNetwork.JoinRoom(objName);    // ルームに参加.
     }
 
     public override void OnJoinedRoom() {
         print("【Debug】: ルームに参加しました");
+        PMM.loadPanel.SetActive(false);
         PanelBlind();
     }
 
