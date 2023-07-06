@@ -32,18 +32,11 @@ public class NewItemScript : MonoBehaviourPunCallbacks
     ///プレイヤーがアイテムを取得したときの処理
     ///</sammary>
     void OnTriggerEnter(Collider other) {
-        print(other.name);
-        print(other.tag);
         //プレイヤー以外は無視
         if (!other.gameObject.CompareTag("Player")) {
             return;
         }
 
-        if(photonView.IsMine) {
-            print("IsMine");
-        }else if(!photonView.IsMine) {
-            print("Not IsMine");
-        }
         //アイテムの列挙型の最大値の中からランダムでアイテムを取得
         var b = UnityEngine.Random.Range(0,itemNameCnt);
         //アイテムの名前を取得
@@ -53,6 +46,9 @@ public class NewItemScript : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(ItemDestroy), RpcTarget.All);
     }
 
+    /// <summary>
+    /// アイテムの削除.
+    /// </summary>
     [PunRPC]
     void ItemDestroy() {
         if(PhotonNetwork.IsMasterClient) {
