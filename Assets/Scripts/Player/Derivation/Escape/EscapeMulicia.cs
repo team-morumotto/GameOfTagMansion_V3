@@ -60,7 +60,7 @@ public class EscapeMulicia : PlayerEscape
                                 PhotonMatchMaker.SetCustomProperty("c", false, 0);
                             }else {
                                 resultWinLoseText.text = "捕まった！";
-                                GameEnd(false); // ゲーム終了.
+                                GameEnd(0); // ゲーム終了.
                             }
                         }
                     break;
