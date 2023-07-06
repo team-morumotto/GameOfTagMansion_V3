@@ -249,11 +249,18 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
     ///<summary>指定の座標にアイテムを出現させる</summary>
     public IEnumerator ItemSpawn() {
+        List<GameObject> items = new List<GameObject>();
         while(true) {
             for(int i = 0; i < itemSpawnPoint.Length ; i++) {
-                PhotonNetwork.Instantiate("NewItem", itemSpawnPoint[i].transform.position, Quaternion.identity);// Resorcesフォルダ内のItemを生成.
+                items.Add(PhotonNetwork.Instantiate("NewItem", itemSpawnPoint[i].transform.position, Quaternion.identity));// Resorcesフォルダ内のItemを生成.
             }
             yield return new WaitForSeconds(10.0f);
+            foreach(var item in items) {
+                if(item) {
+                    print("削除");
+                    PhotonNetwork.Destroy(item);
+                }
+            }
         }
     }
 
@@ -559,7 +566,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     protected float relativeDistance;
-    protected float HitDistance = 1.0f;
+    protected float HitDistance = 2.0f;
     protected float speed = 30.0f; // 移動速度
     /// <summary>
     /// カメラの中心直線上にレイを飛ばし、当たったオブジェクトを取得する.
@@ -588,6 +595,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             relativeDistance = tmp.magnitude;
             float distance = speed * Time.deltaTime; // 目標位置への移動量を計算.
             transform.position += direction * distance; // 目標位置に向かって移動.
+
+            print(relativeDistance);
 
             //ベクトルの大きさが0.01以上の時に向きを変える処理をする.
             if (relativeDistance > 0.01f) {
