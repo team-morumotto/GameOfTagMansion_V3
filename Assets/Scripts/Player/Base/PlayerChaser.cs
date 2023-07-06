@@ -23,16 +23,19 @@ using Cinemachine;
 
 public class PlayerChaser : PlayerBase
 {
+    //----------- public 変数 -----------//
     [Tooltip("カメラが注視するオブジェクト")]
     [SerializeField]
     public Transform lookat;
 
+    //----------- protected 変数 -----------//
     [Tooltip("捕まえたキャラクターの表示")]
     [SerializeField]
-    protected Text catch_text; //捕まえたプレイヤー名を表示するUI.
+    protected Text catch_text; // 捕まえたキャラクターの名前.
 
-    //----------- Private 変数 -----------//
+    //----------- private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer();
+    private int CatchCnt = 0; // 捕まえたキャラクターのカウント.
     //----------- 変数宣言終了 -----------//
 
     protected void Init() {
@@ -222,13 +225,13 @@ public class PlayerChaser : PlayerBase
         // 時間切れになったら.
         if(gameTime.gameTimeInt < 0){
             resultWinLoseText.text = "全員捕まえられなかった...";
-            GameEnd(false);
+            GameEnd(0);
         }
 
         // 時間切れ前に全員捕まえたら.
-        if(escapeList.Count == 0) {
+        if(escapeList.Count == 0 && CatchCnt == (PhotonNetwork.CurrentRoom.MaxPlayers -1)) {
             resultWinLoseText.text = "全員捕まえられた！\n" + ("残り時間 : " + gameTime.gameTimeStr);
-            GameEnd(true);
+            GameEnd(1);
         }
     }
 
@@ -250,6 +253,7 @@ public class PlayerChaser : PlayerBase
             var pName = collision.gameObject.GetComponent<PhotonView>().Owner.NickName;// 接触した逃げキャラのプレイヤー名を取得
             print(pName);
             catch_text.text = pName + "を捕まえた！";
+            CatchCnt++;
             SE.Call_SE(1);
 
             Invoke("EscapeCount",1.0f); // 逃げキャラをカウント.
