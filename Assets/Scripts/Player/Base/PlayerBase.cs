@@ -111,13 +111,17 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <param name="moveForward">移動方向</param>
     /// <param name="moveSpeed">移動速度</param>
     /// <param name="animSpeed">アニメーション速度</param>
-    protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed) {
+    protected void MoveType(Vector3 moveForward, float moveSpeed, float animSpeed,float horizontal,float vertical) {
         //print("f" + moveForward);
         // print(moveSpeed);
         rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
         // print("vel" + rb.velocity);
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
+        
+        anim.SetFloat("SpeedX", horizontal);
+        anim.SetFloat("SpeedY", vertical);
         anim.SetFloat("DashSpeed", animSpeed);
+    
     }
 
     /// <summary>

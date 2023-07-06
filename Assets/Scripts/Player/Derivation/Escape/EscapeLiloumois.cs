@@ -100,10 +100,10 @@ public class EscapeLiloumois : PlayerEscape
                 }
 
                 photonView.RPC(nameof(IsRunningChangeE), RpcTarget.All, true); // override追加項目.
-                MoveType(moveForward , runSpeed, 1.5f);
+                MoveType(moveForward , runSpeed, 1.5f,inputHorizontal, inputVertical);
             }else {
                 photonView.RPC(nameof(IsRunningChangeE), RpcTarget.All, false); // override追加項目.
-                MoveType(moveForward, walkSpeed, 1.0f);
+                MoveType(moveForward, walkSpeed, 1.0f,inputHorizontal, inputVertical);
                 RegenerativeStaminaHeal();
             }
 

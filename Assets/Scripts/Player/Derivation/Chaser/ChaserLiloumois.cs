@@ -109,10 +109,10 @@ public class ChaserLiloumois : PlayerChaser
                 }
 
                 photonView.RPC(nameof(IsRunningChangeC), RpcTarget.All, true); // override追加項目.
-                MoveType(moveForward , runSpeed, 1.5f);
+                MoveType(moveForward , runSpeed, 1.5f,inputHorizontal, inputVertical);
             }else {
                 photonView.RPC(nameof(IsRunningChangeC), RpcTarget.All, false); // override追加項目.
-                MoveType(moveForward, walkSpeed, 1.0f);
+                MoveType(moveForward, walkSpeed, 1.0f,inputHorizontal, inputVertical);
                 RegenerativeStaminaHeal();
             }
 

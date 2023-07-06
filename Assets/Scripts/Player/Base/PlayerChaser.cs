@@ -173,15 +173,15 @@ public class PlayerChaser : PlayerBase
                     }
 
                 if(isSlow) {
-                    MoveType(moveForward, runSpeed * 0.8f, 1.5f);
+                    MoveType(moveForward, runSpeed * 0.8f, 1.5f,inputHorizontal,inputVertical);
                 }else {
-                    MoveType(moveForward, runSpeed, 1.5f);
+                    MoveType(moveForward, runSpeed, 1.5f, inputHorizontal, inputVertical);
                 }
             }else {
                 if(isSlow) {
-                    MoveType(moveForward, walkSpeed * 0.8f, 1.0f);
+                    MoveType(moveForward, walkSpeed * 0.8f, 1.0f,inputHorizontal,inputVertical);
                 }else {
-                    MoveType(moveForward, walkSpeed, 1.0f);
+                    MoveType(moveForward, walkSpeed, 1.0f, inputHorizontal, inputVertical);
                 }
                 RegenerativeStaminaHeal();
             }

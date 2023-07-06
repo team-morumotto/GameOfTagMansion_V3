@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -81,11 +81,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: SpeedX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Name
+      value: SpeedZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -113,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4853689743113392642, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_Name
@@ -501,8 +517,10 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
+  haveItemImageList: []
   lookat: {fileID: 1216296032970227544}
 --- !u!114 &8485308468099934473
 MonoBehaviour:
@@ -540,10 +558,12 @@ MonoBehaviour:
   chaserTarget: {fileID: 0}
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
+  avilityRecastAmount: {fileID: 0}
   isRunning: 0
   haveItem: 
-  catch_text: {fileID: 0}
+  haveItemImageList: []
   lookat: {fileID: 1216296032970227544}
+  catch_text: {fileID: 0}
   RedCube: {fileID: 4100801742021459518}
 --- !u!1 &4100801742021459518 stripped
 GameObject:
