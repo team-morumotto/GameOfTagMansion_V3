@@ -23,12 +23,16 @@ using UnityEngine.UI;
 using Cinemachine;
 
 public class PlayerEscape : PlayerBase {
+    //----------- public 変数 -----------//
     [Tooltip("カメラが注視するオブジェクト")]
     [SerializeField]
     public Transform lookat;
+
+    //----------- private 変数 -----------//
     private ScreenTimer ST = new ScreenTimer(); // プレイヤーの機能をまとめたクラス.
     private GameObject offScreen; // ほかプレイヤーの位置を示すマーカーを管理するオブジェクト.
     private float sneakSpeed = 2.5f;   // スニーク状態のスピード.
+    //----------- 変数宣言終了 -----------//
 
     protected void Init() {
         StartCoroutine(GetPlayers(1.0f));
@@ -245,12 +249,17 @@ public class PlayerEscape : PlayerBase {
         // 残り時間が5秒以下なら.
         if(gameTime.gameTimeInt <= 5000) {
             gameTimer.color = Color.red; // 赤色に指定.
+        }else {
+            if(!chaserTarget) {
+                GameEnd(2);
+                resultWinLoseText.text = "エラーが発生しました。";     //テキストを表示.
+            }
         }
 
         // 時間切れになったら.
         if(gameTime.gameTimeInt <= 0){
             resultWinLoseText.text = "逃げ切った！";         //テキストを表示
-            GameEnd(true);                             //ゲーム終了処理
+            GameEnd(0);                             //ゲーム終了処理
         }
     }
 
@@ -382,7 +391,7 @@ public class PlayerEscape : PlayerBase {
     /// <param name="newPlayer">入室してきたプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-            StartCoroutine(GetPlayers(2.0f)); // 入室直後はキャラクターが生成されていないため遅延させる.
+        StartCoroutine(GetPlayers(2.0f)); // 入室直後はキャラクターが生成されていないため遅延させる.
     }
 
     /// <summary>
@@ -414,7 +423,7 @@ public class PlayerEscape : PlayerBase {
                     case "c":
                         if((bool)prop.Value) {
                             resultWinLoseText.text = "捕まった！";
-                            GameEnd(false); // ゲーム終了.
+                            GameEnd(0); // ゲーム終了.
                         }
                     break;
                 }
