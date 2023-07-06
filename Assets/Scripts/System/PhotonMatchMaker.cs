@@ -220,6 +220,24 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         MatchErrorText.text = "エラーコード :\n【" + returnCode + "】\nによりルームの作成に失敗しました。";
     }
 
+    /// <summary>
+    /// ルームからプレイヤーが退室した時.
+    /// </summary>
+    /// <param name="otherPlayer">退室したプレイヤー</param>
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Invoke("GameStartError", 0.5f);
+    }
+
+    /// <summary>
+    /// プレイヤーがルームに参加した時.
+    /// </summary>
+    /// <param name="newPlayer">参加したプレイヤー</param>
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Invoke("GameStartError", 0.5f);
+    }
+
 	/// <summary>
 	/// ルーム参加に失敗したとき.
 	/// </summary>
@@ -239,6 +257,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         gameLobbyPanel.SetActive(false); // ゲームメニューを非表示.
         loadPanel.SetActive(false);
 
+        Invoke("GameStartError", 0.5f);
+
         float x = UnityEngine.Random.Range(SpawnPoint[0].transform.position.x, SpawnPoint[1].transform.position.x);
         float y = UnityEngine.Random.Range(SpawnPoint[0].transform.position.y, SpawnPoint[1].transform.position.y);
         float z = UnityEngine.Random.Range(SpawnPoint[0].transform.position.z, SpawnPoint[1].transform.position.z);
@@ -246,7 +266,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 
         SetCustomProperty("h", false, 0);
 
-        player = PhotonNetwork.Instantiate(CharacterObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// 逃げキャラを生成.
+        player = PhotonNetwork.Instantiate(CharacterObject[GoToChooseChara.GetCharacters()].name,spawnPos,Quaternion.identity,0);// キャラを生成.
 
         if(GoToChooseChara.GetPlayMode() == 0) {
             sneakUI.SetActive(true);
