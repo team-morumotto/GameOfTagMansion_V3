@@ -185,18 +185,29 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// ゲーム終了.
     /// 引数 : なし.
+    /// 引数 : state.
     /// 戻り値 : なし.
     /// </summary>
-    /// <param name="isWin">勝敗</param>
-    public void GameEnd(bool isWin) {
-        //勝った場合
-        if(isWin) {
-            SE.Call_SE(5);
+    /// <param name="state">0 : 敗北, 1 : 勝利, 2 : エラー</param>
+    public void GameEnd(int state) {
+        switch(state) {
+            case 0:
+                SE.Call_SE(6);
+            break;
+
+            case 1:
+                SE.Call_SE(5);
+            break;
+
+            case 2:
+                print("エラーによるゲーム終了です");
+            break;
+
+            default:
+                Debug.LogError("想定されていないゲーム終了です");
+            break;
         }
-        //負けた場合
-        else{
-            SE.Call_SE(6);
-        }
+
         Cursor.visible = true;                        // カーソルを表示.
         resultPanel.SetActive(true);                  // パネルを表示.
         gameTimer.text = ("00:00.000").ToString();    // 残り時間を0に上書きし表示.
