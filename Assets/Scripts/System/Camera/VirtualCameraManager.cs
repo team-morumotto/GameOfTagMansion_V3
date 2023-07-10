@@ -18,13 +18,4 @@ public class VirtualCameraManager : MonoBehaviour
         firstPos = transform.position; // 初期位置を記憶.
         firstRot = Quaternion.identity; // 初期回転を記憶.
     }
-
-    /// <summary>
-    /// マッチ画面でカメラが映す位置と向きをリセット.
-    /// </summary>
-    public void TraReset() {
-        cf.enabled = false; // 位置や向きが制限されてしまうため無効化.
-        transform.position = firstPos;
-        transform.rotation = firstRot;
-    }
 }

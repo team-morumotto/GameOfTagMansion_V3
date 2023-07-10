@@ -22,9 +22,14 @@ public class EscapeShacloPure : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && abilityUseAmount > 0) {
-            avilityRiminingUpdate();
-            ChaserTargetShow();
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && abilityUseAmount > 0) {
+                avilityRiminingUpdate();
+                emitter.Play(EffectDatabase.avilityEffects[3]);
+                ChaserTargetShow();
+            }
         }
         BaseUpdate();
     }
@@ -36,6 +41,7 @@ public class EscapeShacloPure : PlayerEscape
 
     //------ 以下、固有性能 ------//
     public void ChaserTargetShow() {
+        SE.CallAvilitySE(3); // SE.
         PhotonMatchMaker.SetCustomProperty("ct", true, 1);
     }
 }

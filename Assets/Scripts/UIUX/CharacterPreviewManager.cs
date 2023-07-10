@@ -46,7 +46,7 @@ public class CharacterPreviewManager : MonoBehaviour {
                 break;
             case 1:
                 characterPreviewObject[1].SetActive(true);
-                characterPreviewName.text = "リルモア";
+                characterPreviewName.text = "リルモワ";
                 characterPreviewSkill.text = "高いところへ飛べる他、足音が聞こえない";
                 characterPreviewSpec.text = "移動速度: 1.0 (ダッシュ時3.0)\n体力: 10.0\n回復速度: 2.0\n";
                 characterPreviewOther.text = "忍び寄ることに特化している分、体力がない";

@@ -129,7 +129,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
-      value: 0
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7523141663109244552, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_RootOrder
@@ -513,6 +521,7 @@ MonoBehaviour:
   character: 6
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -523,8 +532,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 640049411942303907}
   billAmount: 4
@@ -555,6 +565,7 @@ MonoBehaviour:
   character: 6
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -565,9 +576,28 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 640049411942303907}
   catch_text: {fileID: 0}
   RedCube: {fileID: 5575263993193914043}
+--- !u!114 &7182599228071197489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7185649694992703367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0

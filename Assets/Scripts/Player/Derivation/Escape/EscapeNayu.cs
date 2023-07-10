@@ -5,10 +5,6 @@ using Photon.Pun;
 
 public class EscapeNayu : PlayerEscape
 {
-    //----------- Private変数 -----------//
-    private float HealBoostAmount = 0.3f;
-
-    //----------- 変数宣言終了 -----------//
     void Start() {
         if(photonView.IsMine) {
             // 自分が鬼なら.

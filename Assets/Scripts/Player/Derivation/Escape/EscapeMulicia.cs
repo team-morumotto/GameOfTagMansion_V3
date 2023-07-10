@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Effekseer;
 
 public class EscapeMulicia : PlayerEscape
 {
+    public Sprite escapeAvilityImage;
     private GameObject muliciaCoat; // ミュリシアのコート.
     private bool isAvoidingCapture = false; // 捕まりを回避したか.
     void Start() {
@@ -14,12 +17,20 @@ public class EscapeMulicia : PlayerEscape
                 photonView.RPC(nameof(MuliciaES), RpcTarget.AllBuffered);
             }
             Init(); // オブジェクトやコンポーネントの取得.
-            // コートを取得
-            muliciaCoat = GameObject.Find("mdl_c001_base_00/outer");
         }
 
+        SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
+        emitter = GetComponent<EffekseerEmitter>();
+        EffectDatabase = GameObject.Find("EffectList").GetComponent<EffectDatabase>();
         GetStatus(); // ステータスの取得.
+        if(photonView.IsMine) {
+            if(GoToChooseChara.GetPlayMode() == 0) {
+                avilityImage.sprite = escapeAvilityImage;
+            }
+        }
+        // コートを取得
+        muliciaCoat = GameObject.Find("mdl_c001_base_00/outer");
     }
 
     void Update () {
@@ -53,10 +64,9 @@ public class EscapeMulicia : PlayerEscape
                 switch(tmpKey) {
                     case "c":
                         if((bool)prop.Value) {
-                            // 回避したか.
-                            if(!isAvoidingCapture) {
+                            if(isCanUseAbility && !isAvoidingCapture) {
                                 isAvoidingCapture = true;
-                                muliciaCoat.SetActive(false); // コートを脱ぐ.
+                                photonView.RPC(nameof(Protect),RpcTarget.All);
                                 PhotonMatchMaker.SetCustomProperty("c", false, 0);
                             }else {
                                 resultWinLoseText.text = "捕まった！";
@@ -69,6 +79,15 @@ public class EscapeMulicia : PlayerEscape
         }else{
             print("Invalid");
             print("namename"+targetPlayer.NickName);
+        }
+    }
+
+    [PunRPC]
+    private void Protect() {
+        if(GoToChooseChara.GetPlayMode() == 0) {
+            emitter.Play(EffectDatabase.avilityEffects[2]);
+            SE.CallAvilitySE(4); // SE.
+            muliciaCoat.SetActive(false); // コートを脱ぐ.
         }
     }
 }

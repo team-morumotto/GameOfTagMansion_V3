@@ -61,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -129,11 +129,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: SpeedX
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Name
+      value: SpeedZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -161,6 +177,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -487,6 +511,7 @@ MonoBehaviour:
   character: 7
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -497,12 +522,32 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
+  haveItemEffectList: []
   lookat: {fileID: 8954337909054533842}
   catch_text: {fileID: 0}
   RedCube: {fileID: 5635300422949944091}
+--- !u!114 &4587803016666405449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469571247317656285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0
 --- !u!114 &7046379418308803169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,6 +575,7 @@ MonoBehaviour:
   character: 7
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -540,9 +586,11 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
+  haveItemEffectList: []
   lookat: {fileID: 8954337909054533842}
 --- !u!1 &5635300422949944091 stripped
 GameObject:

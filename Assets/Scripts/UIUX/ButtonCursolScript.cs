@@ -46,7 +46,7 @@ public class ButtonCursolScript : MonoBehaviour,ISelectHandler,IPointerEnterHand
         var selecteObj = gameObject.name;
         // マウスポインターでセレクトしたオブジェクトが
         if(GoToChooseChara.beforeSelectButton != selecteObj) {
-            SE.GetComponent<Button_SE>().Call_SE(4);
+            SE.GetComponent<Button_SE>().CallButtonSE(4);
         }
 
         //カーソル機能がいるとき
@@ -72,7 +72,7 @@ public class ButtonCursolScript : MonoBehaviour,ISelectHandler,IPointerEnterHand
         // SEを鳴らす.
         var selecteObj = gameObject.name;
         if(GoToChooseChara.beforeSelectButton != selecteObj) {
-            SE.GetComponent<Button_SE>().Call_SE(4);
+            SE.GetComponent<Button_SE>().CallButtonSE(4);
         }
 
         GoToChooseChara.beforeSelectButton = gameObject.name; // 前に選択したボタンをオブジェクトを記録.

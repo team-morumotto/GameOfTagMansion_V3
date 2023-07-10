@@ -21,6 +21,7 @@ using Photon.Pun;
 using ExitGames.Client.Photon;
 using UnityEngine.UI;
 using Cinemachine;
+using Effekseer;
 
 public class PlayerEscape : PlayerBase {
     //----------- public 変数 -----------//
@@ -39,6 +40,7 @@ public class PlayerEscape : PlayerBase {
         //====== オブジェクトやコンポーネントの取得 ======//
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        emitter = GetComponent<EffekseerEmitter>();
         SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
         BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
         playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
@@ -85,6 +87,7 @@ public class PlayerEscape : PlayerBase {
         Target.enabled = false; // 自分のカーソルを非表示に.
 
         itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
+        EffectDatabase = GameObject.Find("EffectList").GetComponent<EffectDatabase>();
 
         offScreen = mainCanvas.transform.Find("Panel_OffScreenIndicator").gameObject;
 
@@ -110,12 +113,16 @@ public class PlayerEscape : PlayerBase {
             return;
         }
 
+        if(Input.GetKeyDown(KeyCode.G)) {
+            PhotonMatchMaker.SetCustomProperty("hb", 10, 1);
+        }
+
         fps = (1.0f / Time.deltaTime).ToString();
 
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接していてスタンしていない.
-                if(!isStan && isGround) {
+                if(!isStan && isGround && isCanUseMovement) {
                     PlayerMove();
                     Sneak();
                 }
@@ -136,7 +143,7 @@ public class PlayerEscape : PlayerBase {
 
             case GameState.ゲーム中:
                 // 地面に接していてスタンしていない.
-                if(!isStan && isGround) {
+                if(!isStan && isGround && isCanUseMovement) {
                     PlayerMove();
                     Sneak();
                 }
@@ -258,8 +265,8 @@ public class PlayerEscape : PlayerBase {
 
         // 時間切れになったら.
         if(gameTime.gameTimeInt <= 0){
-            resultWinLoseText.text = "逃げ切った！";         //テキストを表示
-            GameEnd(0);                             //ゲーム終了処理
+            resultWinLoseText.text = "逃げ切った！";// テキストを表示.
+            GameEnd(1);                             // ゲーム終了処理.
         }
     }
 
@@ -347,7 +354,7 @@ public class PlayerEscape : PlayerBase {
                     isCoolTime = false;
 
                     // 所持アイテムリセット.
-                    haveItem = new List<ItemName>();
+                    haveItemList = new List<ItemName>();
                     haveItemImageList[0].sprite = itemDatabase.emptySprite;
                     if(isAddhaveItem) {
                         haveItemImageList[1].sprite = itemDatabase.emptySprite;
@@ -356,6 +363,8 @@ public class PlayerEscape : PlayerBase {
                 // スタミナの回復量のブースト.
                 case "hb":
                     staminaHealAmount += float.Parse(tmpValue.ToString());
+                    SE.CallAvilitySE(6); // SE.
+                    healBoostEffectCoroutine = StartCoroutine(TimeEffectLoop(EffectDatabase.avilityEffects[6], 99999)); // コルーチンを発動とともに格納.
                     print("StaminaHealBoostRoom");
                 break;
                 case "et":
@@ -372,6 +381,43 @@ public class PlayerEscape : PlayerBase {
                         StartCoroutine(TargetShow(true));
                     }
                 break; // 逃げのカーソルを表示.
+
+                case "ab":
+                    if(isRoomPropatiesUpdater){
+                        isRoomPropatiesUpdater = false;
+                    }else {
+                        if(!isCanUseAbility) {
+                            return;
+                        }
+                        print("固有能力使用不可");
+                        if(characterNumber == 9) {
+                            amplification = 0; // アイテムの効果増幅無し.
+                        }else if(characterNumber == 10) {
+                            StopCoroutine(healBoostEffectCoroutine); // スタミナ回復ブーストのエフェクトをストップ.
+                            PhotonMatchMaker.SetCustomProperty("hb", -HealBoostAmount, 1);
+                        }
+
+                        SE.CallItemSE(1); // SE.
+
+                        isCanUseAbility = false;
+                        StartCoroutine(DelayChangeFlg("CanUseAbility"));
+                    }
+                break;
+
+                case "mb":
+                    if(isRoomPropatiesUpdater){
+                        isRoomPropatiesUpdater = false;
+                    }else {
+                        if(!isCanUseAbility) {
+                            return;
+                        }
+                        print("移動不可");
+                        anim.SetBool("Stan", true);
+                        SE.CallItemSE(1); // SE.
+                        isCanUseMovement = false;
+                        StartCoroutine(DelayChangeFlg("CanUseMovement"));
+                    }
+                break;
 
                 //--- 随時追加 ---//
                 default:

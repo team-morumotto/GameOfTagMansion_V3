@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: hamburger
   itemIcon: {fileID: 21300000, guid: 1cb082bbb72063841aab3030ea5a81cc, type: 3}
+  effect: {fileID: 11400000, guid: 8c570615699cc024e9f8a2da696f0e2b, type: 2}

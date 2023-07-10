@@ -24,9 +24,14 @@ public class EscapeTolass : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && abilityUseAmount > 0) {
-            avilityRiminingUpdate();
-            photonView.RPC(nameof(FireObstruct), RpcTarget.All);
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && abilityUseAmount > 0) {
+                avilityRiminingUpdate();
+                SE.CallAvilitySE(0); // SE.
+                photonView.RPC(nameof(FireObstruct), RpcTarget.All);
+            }
         }
         BaseUpdate();
     }

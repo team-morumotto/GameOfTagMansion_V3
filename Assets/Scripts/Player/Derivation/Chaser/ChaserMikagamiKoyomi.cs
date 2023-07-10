@@ -35,7 +35,7 @@ public class ChaserMikagamiKoyomi : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
+        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime && isCanUseAbility) {
             isUseAvility = true;
         }
         BaseUpdate();

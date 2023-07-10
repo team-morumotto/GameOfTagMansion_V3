@@ -127,9 +127,21 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2174709024047668115, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2915941362143745608, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: sceneViewId
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636665189159039033, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
+      propertyPath: m_SynchronizeScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5813867193704595200, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
       propertyPath: m_RootOrder
@@ -486,6 +498,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6621647993206433210, guid: 437c5590db7f6480bb60cd8c6ccd1cf7, type: 3}
   m_PrefabInstance: {fileID: 3463851035070213945}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-2974162659615226626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7779620834549025411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0
 --- !u!114 &776709907898865552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,6 +543,7 @@ MonoBehaviour:
   character: 2
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -523,9 +554,11 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
+  haveItemEffectList: []
   lookat: {fileID: 6872807709980366292}
   catch_text: {fileID: 0}
   RedCube: {fileID: 2459899040003338437}
@@ -556,6 +589,7 @@ MonoBehaviour:
   character: 2
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -566,7 +600,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
+  haveItemEffectList: []
   lookat: {fileID: 6872807709980366292}

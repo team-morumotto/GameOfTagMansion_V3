@@ -195,6 +195,14 @@ PrefabInstance:
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264508413469570663, guid: de60b4785650e4a2daa490832fa01723, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5430314082611086557, guid: de60b4785650e4a2daa490832fa01723, type: 3}
       propertyPath: m_Controller
       value: 
@@ -217,6 +225,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1654973473339491357, guid: de60b4785650e4a2daa490832fa01723, type: 3}
   m_PrefabInstance: {fileID: 6295774752800757462}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7244215240418121160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731225321923646155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0
 --- !u!114 &5732692900202834833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +270,7 @@ MonoBehaviour:
   character: 1
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -254,8 +281,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 7850343187509041926}
   catch_text: {fileID: 0}
@@ -287,6 +315,7 @@ MonoBehaviour:
   character: 1
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -297,8 +326,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 7850343187509041926}
 --- !u!1 &5541145690256919979 stripped

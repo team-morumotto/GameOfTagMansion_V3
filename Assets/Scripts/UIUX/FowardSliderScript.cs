@@ -27,12 +27,6 @@ public class FowardSliderScript : MonoBehaviour
         buttonPrevious.onClick.AddListener(OnPreviousPaper);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     /// <summary>
     /// ページを変更する
     /// </summary>
@@ -45,7 +39,6 @@ public class FowardSliderScript : MonoBehaviour
         else{
             ChangeContents(1);
         }
-
     }
 
     /// <summary>
@@ -60,8 +53,8 @@ public class FowardSliderScript : MonoBehaviour
         else{
             ChangeContents(_MaxPageNumber);
         }
-
     }
+
     /// <summary>
     /// ページの内容を変更する
     /// </summary>

@@ -11,13 +11,17 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4176882866877392131, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7130070878451884367, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_Name
       value: Mulicia
       objectReference: {fileID: 0}
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -85,11 +89,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: SpeedX
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Name
+      value: SpeedZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -118,6 +138,18 @@ PrefabInstance:
     - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266228266353466774, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462263751039454585, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 7618059786429086709, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
       propertyPath: m_RootOrder
@@ -177,6 +209,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7130070878451884367, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}
   m_PrefabInstance: {fileID: 8502168499628816717}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4229044935594126131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661507874408323074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0
 --- !u!114 &4899421799701228951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +254,7 @@ MonoBehaviour:
   character: 5
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -214,12 +265,14 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 689822695781808902}
   catch_text: {fileID: 0}
   RedCube: {fileID: 3253955535232618816}
+  chaserAvilityImage: {fileID: 21300000, guid: 448703dd11046a043b708975234cda1d, type: 3}
 --- !u!114 &7143825190657047655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +300,7 @@ MonoBehaviour:
   character: 5
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -257,10 +311,12 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 689822695781808902}
+  escapeAvilityImage: {fileID: 21300000, guid: c7762d87da09598419ecdcd7632d263f, type: 3}
 --- !u!1 &2544021666120515481 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6247595552497108692, guid: 18503c99839f04347b1050db2ea03ccd, type: 3}

@@ -215,6 +215,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     /// <param name="returnCode">エラーコード</param>
     /// <param name="message">エラーメッセージ</param>
     public override void OnCreateRoomFailed(short returnCode, string message) {
+        loadPanel.SetActive(false);
         gameErrorPanel.SetActive(true); // エラー表示パネルを表示.
         var MatchErrorText = gameErrorPanel.transform.Find("Text_ErrorCode").GetComponent<Text>();
         MatchErrorText.text = "エラーコード :\n【" + returnCode + "】\nによりルームの作成に失敗しました。";
@@ -279,17 +280,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //-------------------- フォトンのコールバック関数 --------------------//
 
     //----------- ボタン -----------//
-    /// <summary>
-    /// ルームを出る.
-    /// </summary>
-    public void LeaveRoom() {
-        GameStartFlg = false;   // ゲームスタートフラグを初期化.
-        isJoinRoom = false;     // ルーム参加フラグを初期化.
-        isMenuOn = false;       // メニュー表示フラグを初期化.
-        PhotonNetwork.Destroy(player);
-        PhotonNetwork.LeaveRoom();
-        vcm.TraReset();
-    }
 
     // ルームを作成する.
     public void CreateRoom(GameObject panel) {
@@ -377,12 +367,12 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
         GoToChooseChara.characters = 0;
         GoToChooseChara.actorNumber = -1;
 
-        PhotonNetwork.Disconnect();                                         // マスターサーバから切断.
-        SceneManager.LoadScene("Closed_TitleScene",LoadSceneMode.Single);   // タイトルシーンに遷移.
+        PhotonNetwork.Disconnect();                                       // マスターサーバから切断.
+        SceneManager.LoadScene("Closed_TitleScene",LoadSceneMode.Single); // タイトルシーンに遷移.
     }
 
     public void GameSceneReload() {
-        PhotonNetwork.Disconnect();                                         // マスターサーバから切断.
+        PhotonNetwork.Disconnect();                                       // マスターサーバから切断.
         SceneManager.LoadScene("Closed_GameScene", LoadSceneMode.Single); // ゲームシーンをロードする.
     }
     //----------- ボタン -----------//

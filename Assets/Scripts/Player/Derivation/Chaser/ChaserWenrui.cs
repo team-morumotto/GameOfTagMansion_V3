@@ -29,9 +29,15 @@ public class ChaserWenrui : PlayerChaser
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
-            isUseAvility = true;
-            // 固有性能はここから使用する.
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
+                isUseAvility = true;
+                SE.CallAvilitySE(5); // SE.
+                StartCoroutine(AvilityEffectLoop(EffectDatabase.avilityEffects[5]));
+                StartCoroutine(BillCircle());
+            }
         }
         BaseUpdate();
     }
@@ -94,7 +100,7 @@ public class ChaserWenrui : PlayerChaser
             billList.Add(tmpBill);
         }
 
-        var tmpRadius = 0.0f; // 膨張する展開距離.
+        var tmpRadius = 0.0f; // 展開距離.
 
         while(deltaTime < abilityTime) {
             // 指定の範囲まで展開されるまで広がる.

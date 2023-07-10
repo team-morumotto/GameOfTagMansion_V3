@@ -11,8 +11,7 @@ using Photon.Pun;
 public class EscapeMikagamiKoyomi : PlayerEscape
 {
     private float nowAbilityTime = 0.0f; // 能力発動の経過時間.
-    private float maxAbilityTime = 1.0f; // 能力の効果時間.
-    private float scaleChangeAvirityTime = 5.0f; // 小さくなる能力の効果時間.
+    private float maxAbilityTime = 20.0f; // 能力の効果時間.
     private float reductionAmount = 0.5f; // 縮小後のサイズ.
     private float expansionAmount = 1.0f; // 拡大後のサイズ.
     void Start() {
@@ -31,17 +30,23 @@ public class EscapeMikagamiKoyomi : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
-            isUseAvility = true;
-            StartCoroutine(CharacterScaleChange());
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
+                isUseAvility = true;
+                SE.CallAvilitySE(2); // SE.
+                StartCoroutine(CharacterScaleChange());
+            }
         }
         BaseUpdate();
     }
 
     private IEnumerator CharacterScaleChange() {
         yield return ScaleChange(reductionAmount);
-        yield return Delay(scaleChangeAvirityTime);
+        yield return Delay(maxAbilityTime);
         yield return ScaleChange(expansionAmount);
+        isUseAvility = false;
         StartCoroutine(AvillityCoolTime(10.0f));
         // 発動終了.
     }
@@ -57,19 +62,20 @@ public class EscapeMikagamiKoyomi : PlayerEscape
     /// </summary>
     /// <param name="easeAmount">最終的なスケール値</param>
     private IEnumerator ScaleChange(float easeAmount) {
+        emitter.Play(EffectDatabase.avilityEffects[1]);
         nowAbilityTime = 0;
-        while(nowAbilityTime <= maxAbilityTime) {
-            nowAbilityTime += Time.deltaTime; // 経過時間.
-            var a = nowAbilityTime / maxAbilityTime; // 経過時間 / 終了時間.
+        while(nowAbilityTime <= 1.0f) {
+            var a = nowAbilityTime / 1.0f; // 経過時間 / 終了時間.
             var easea = easeOutElastic(a, easeAmount); // イージングを用いてスケール値を算出.
             var dd = transform.localScale;
             dd.x = easea;
             dd.y = easea;
             dd.z = easea;
             transform.localScale = dd;
+
+            nowAbilityTime += Time.deltaTime; // 経過時間.
             yield return null; // 1フレーム遅延.
         }
-        isUseAvility = false;
     }
 
     /// <summary>

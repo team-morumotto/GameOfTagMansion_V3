@@ -42,7 +42,7 @@ public class CharacterTeleporter : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player")){
             collision.gameObject.transform.position = TeleportPoint.GetComponent<CharacterTeleporter>().RespownPoint.transform.position;
-            GameObject.Find("Obj_SE").GetComponent<Button_SE>().Call_SE(1);
+            GameObject.Find("Obj_SE").GetComponent<Button_SE>().CallButtonSE(1);
         }
     }
 }

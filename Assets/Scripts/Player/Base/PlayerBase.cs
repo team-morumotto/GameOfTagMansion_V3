@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Effekseer;
 
 public class PlayerBase : MonoBehaviourPunCallbacks
 {
@@ -59,6 +60,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public Character character;
     public CharacterDatabase characterDatabase;
     public ItemDatabase itemDatabase;
+    public EffectDatabase EffectDatabase;
     public int characterNumber;
     public Animator anim;                 // アニメーション.
     public static Camera playerCamera;           // プレイヤーを追尾するカメラ.
@@ -67,23 +69,27 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public List<GameObject> escapeList = new List<GameObject>(); // ルーム内の逃げキャラのリスト.
     public List<Target> escapeTargetList = new List<Target>(); // ルーム内の逃げキャラのTargetコンポーネントのリスト.
     public Target chaserTarget; // ルーム内の鬼キャラのターゲットコンポーネント.
+    public GameObject resultPanel;           // リザルトパネル.
+    public Text avilityRiminingAmount;       // 固有能力の残り使用可能回数.
+    public Image avilityRecastAmount;        // 固有能力のリキャスト時間を反映するUI.
+    public EffekseerEmitter emitter;         // EffeKSeerEmitter.
     //---------- protected変数----------//
     protected Button_SE SE;
     protected BGM_Script BGM;
     protected Text gameTimer;                // タイマー出力用.
-    public GameObject resultPanel;           // リザルトパネル.
     protected Text resultWinLoseText;        // リザルトの勝敗.
     protected Rigidbody rb;                  // リジッドボディ.
     protected GameObject staminaParent;      // スタミナUIの親.
     protected Image staminaGuage;            // スタミナゲージ.
-    public Text avilityRiminingAmount;       // 固有能力の残り使用可能回数.
-    public Image avilityRecastAmount;        // 固有能力のリキャスト時間を反映するUI.
     protected Image avilityImage;            // 固有能力の画像.
+    protected EffekseerEffectAsset avilityEffect; // 固有能力のエフェクト.
+    protected Coroutine healBoostEffectCoroutine;  // スタミナ回復のブーストのエフェクトコルーチン.
 
     //------ int変数 ------//
     protected int abilityUseAmount = 3;      // 固有能力の使用可能回数(試験的に三回).
-    private int countDownSeconds = 5;        // ゲームスタートまでのカウントダウン.
     protected int isHit = 0; // デバッグ用.
+    protected float HealBoostAmount = 0.3f;  // スタミナ回復量のブースト量.
+    private int countDownSeconds = 5;        // ゲームスタートまでのカウントダウン.
 
     //------ float変数 ------//
     protected float nowStamina;
@@ -117,11 +123,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         rb.velocity = moveForward * moveSpeed + new Vector3(0, rb.velocity.y, 0); // 移動.
         // print("vel" + rb.velocity);
         anim.SetFloat("Speed", 1.0f); // 移動中は1.0.
-        
         anim.SetFloat("SpeedX", horizontal);
         anim.SetFloat("SpeedY", vertical);
         anim.SetFloat("DashSpeed", animSpeed);
-    
     }
 
     /// <summary>
@@ -192,11 +196,11 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     public void GameEnd(int state) {
         switch(state) {
             case 0:
-                SE.Call_SE(6);
+                SE.CallButtonSE(6);
             break;
 
             case 1:
-                SE.Call_SE(5);
+                SE.CallButtonSE(5);
             break;
 
             case 2:
@@ -244,7 +248,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         isOnGui = true;                     // OnGuiを有効にする.
 
         int i = countDownSeconds;           // カウントダウン秒数を入れる.
-        SE.Call_SE(3);                      // カウントダウンの音を鳴らす.
+        SE.CallButtonSE(3);                 // カウントダウンの音を鳴らす.
         while(i > 0) {
             yield return new WaitForSeconds(1f);
             i--;
@@ -363,12 +367,19 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="flgName">フラグの名前(isは省略)</param>
     protected IEnumerator DelayChangeFlg(string flgName) {
+        var time = 0.0f;
         switch(flgName) {
-            case "CanUseAbility ":
-                yield return StartCoroutine(BooleanReverse(x => isCanUseAbility = x, !isCanUseAbility, 10.0f));
+            case "CanUseAbility":
+                time = 10.0f;
+                StartCoroutine(TimeEffectLoop(EffectDatabase.itemEffects[1], time));
+                yield return StartCoroutine(BooleanReverse(x => isCanUseAbility = x, !isCanUseAbility, time));
             break;
             case "CanUseMovement":
-                yield return StartCoroutine(BooleanReverse(x => isCanUseMovement = x, !isCanUseMovement, 5.0f));
+                time = 5.0f;
+                anim.SetBool("Stan", true);
+                StartCoroutine(TimeEffectLoop(EffectDatabase.itemEffects[1], time));
+                yield return StartCoroutine(BooleanReverse(x => isCanUseMovement = x, !isCanUseMovement, time));
+                anim.SetBool("Stan", false);
             break;
             case "Invincible":
                 yield return StartCoroutine(BooleanReverse(x => isInvincible = x, !isInvincible, 10.0f));
@@ -377,9 +388,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
                 yield return StartCoroutine(BooleanReverse(x => isSlow = x, !isSlow, 5.0f));
             break;
                 case "CanUseDash":
-                print("無限ダッシュ");
-                yield return StartCoroutine(BooleanReverse(x => isCanUseDash = x, !isCanUseDash, 20.0f));
-                print("無限ダッシュ解除");
+                time = 20.0f;
+                StartCoroutine(TimeEffectLoop(EffectDatabase.itemEffects[0], time));
+                yield return StartCoroutine(BooleanReverse(x => isCanUseDash = x, !isCanUseDash, time));
             break;
         }
     }
@@ -412,83 +423,145 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         #endif
     }
 
+    /// <summary>
+    /// エフェクトを固有能力の発動中ループで再生.
+    /// </summary>
+    /// <param name="asset">エフェクト</param>
+    protected IEnumerator AvilityEffectLoop(EffekseerEffectAsset asset) {
+        EffekseerHandle handle = emitter.Play(asset); // 再生中のエフェクト.
+        while(isUseAvility) {
+            // 再生中のエフェクトが存在しているか.
+            if(!handle.exists) {
+                handle = emitter.Play(asset); // 再生.
+            }
+            yield return null;
+        }
+        handle.Stop();
+    }
+
+    /// <summary>
+    /// エフェクトを時間制限付きでループ再生.
+    /// </summary>
+    /// <param name="asset">エフェクト</param>
+    /// <param name="limitTime">制限時間</param>
+    protected IEnumerator TimeEffectLoop(EffekseerEffectAsset asset, float limitTime) {
+        EffekseerHandle handle = emitter.Play(asset); // 再生中のエフェクト.
+        var deltaTime = 0.0f;
+
+        while(deltaTime < limitTime) {
+            deltaTime += Time.deltaTime;
+            // 再生中のエフェクトが存在しているか.
+            if(!handle.exists) {
+                handle = emitter.Play(asset); // 再生.
+            }
+            yield return null;
+        }
+        handle.Stop();
+    }
+
     public enum ItemName{
         invincibleStar, //無敵スター
         // locationShuffle, //位置入れ替え
-        // abilityBlock, //アビリティ封印
-        // movementBinding, //移動封印
+        abilityBlock, //アビリティ封印
+        movementBinding, //移動封印
         drink, //小回復
         poteto, //中回復
         hamburger, //大回復
         disposableGrapnelGun, //使い捨てグラップルガン
         speedup,//スタミナ無限
     }
-    public List<ItemName> haveItem = new List<ItemName>(); // 所持アイテム記録用のリスト
+    public List<ItemName> haveItemList = new List<ItemName>(); // 所持アイテム記録用のリスト
     public List<Image> haveItemImageList = new List<Image>(); // 所持アイテムのイメージリスト.
     protected bool isCanUseAbility = true; //これがtrueならアビリティが使える(封印処理用)
     protected bool isCanUseMovement = true; //これがtrueなら移動が使える(封印処理用)
     protected bool isInvincible = false; //これがtrueなら無敵(無敵スター用)
     protected bool isAddhaveItem = false; //これがtrueならアイテムを二個保持できる(キャラクター用)
     protected bool isCanUseDash = false; //これがtrueならスタミナが減らない
+    protected bool isRoomPropatiesUpdater; // 自分がルームプロパティのアップデートを、アイテムにより行ったか.
 
     /// <summary>
     /// アイテム関連の処理.
     /// </summary>
     protected void ItemUse(){
         // アイテムを持っていないなら処理しない.
-        if(haveItem.Count == 0) {
+        if(haveItemList.Count == 0) {
             return;
         }
 
         // Eキーが押されていたら.
         if(Input.GetKeyDown(KeyCode.E)){
-            ItemName tmp = haveItem[0]; // アイテム名を取得.
+            ItemName tmp = haveItemList[0]; // アイテム名を取得.
             switch(tmp){
                 case ItemName.invincibleStar:
                     // 無敵スターを使用する.
                     isInvincible = true;
-                    DelayChangeFlg("Invincible");
-                    print("Invincible");
+                    SE.CallItemSE(3);
+                    emitter.Play(EffectDatabase.itemEffects[0]); // エフェクト.
+                    StartCoroutine(DelayChangeFlg("Invincible"));
+                    break;
+                case ItemName.abilityBlock:
+                    // 固有能力封印を使用.
+                    isRoomPropatiesUpdater = true;
+                    SE.CallItemSE(1); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[1]); // エフェクト.
+                    PhotonMatchMaker.SetCustomProperty("ab", true, 1);
+                    break;
+                case ItemName.movementBinding:
+                    // 移動封印を使用.
+                    isRoomPropatiesUpdater = true;
+                    SE.CallItemSE(1); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[1]); // エフェクト.
+                    PhotonMatchMaker.SetCustomProperty("mb", true, 1);
                     break;
                 case ItemName.drink:
                     // 小回復を使用する.
+                    SE.CallItemSE(3); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[2]); // エフェクト.
                     InstanceStaminaHeal(10);
                     break;
                 case ItemName.poteto:
                     // 中回復を使用する.
+                    SE.CallItemSE(3); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[2]); // エフェクト.
                     InstanceStaminaHeal(30);
                     break;
                 case ItemName.hamburger:
                     // 大回復を使用する.
+                    SE.CallItemSE(3); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[2]); // エフェクト.
                     InstanceStaminaHeal(50);
                     break;
                 case ItemName.disposableGrapnelGun:
-                    // 使い捨てグラップルガンを使用する.  まだできてない
+                    // 使い捨てグラップルガンを使用する.
                     HookShot();
                     break;
                 case ItemName.speedup:
                     // スタミナの上限解放（無制限ダッシュ）
                     isCanUseDash = true;
-                    isStaminaLoss = false; // スタミナ切れ回復
+                    isStaminaLoss = false;       // スタミナ切れ回復
                     nowStamina = staminaAmount;  // スタミナマックス.
+                    staminaParent.SetActive(false); // スタミナゲージを隠す.
+                    SE.CallItemSE(2); // SE.
+                    emitter.Play(EffectDatabase.itemEffects[0]); // エフェクト.
                     StartCoroutine(DelayChangeFlg("CanUseDash"));
-                    print("UseDash");
                     break;
             }
-            haveItem.RemoveAt(0); // アイテムを消費.
 
             // アイテムの複数持ちが可能なら.
             if(isAddhaveItem) {
-                for(int i = 0; i < haveItemImageList.Count; i++) {
-                    // リストのスプライトがemptyなら.
+                // アイテムの個数分繰り返す.
+                for(int i = 0; i < haveItemList.Count; i++) {
+                    // リストのスプライトがemptyでないなら.
                     if(haveItemImageList[i].sprite != itemDatabase.emptySprite) {
-                        haveItemImageList[i].sprite = haveItemImageList[i + 1].sprite; // リストをずらす.
-                        haveItemImageList[i + 1].sprite = itemDatabase.emptySprite; // リストをずらす.
+                        haveItemImageList[i].sprite = haveItemImageList[i + 1].sprite; // アイコンリストをずらす.
+                        haveItemImageList[i + 1].sprite = itemDatabase.emptySprite; // アイコンリストをずらす.
                     }
                 }
             }else {
                 haveItemImageList[0].sprite = itemDatabase.emptySprite;
             }
+
+            haveItemList.RemoveAt(0); // アイテムを消費.
         }
     }
 
@@ -499,27 +572,37 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         if(!photonView.IsMine) {
             return;
         }
+
+        if(isAddhaveItem) {
+            if(haveItemList.Count < 2) {
+                print("追加しました");
+                haveItemList.Add(itemName);
+            }else {
+                print("既に持っている");
+                return;
+            }
+        }else{
+            if(haveItemList.Count < 1) {
+                print("追加しました");
+                haveItemList.Add(itemName);
+            }else {
+                print("既に持っている");
+                return;
+            }
+        }
+
+        print("画像追加");
+
         var itemData = itemDatabase.GetItemData(itemName.ToString());
         if(isAddhaveItem) {
-            for(int i = 0; i < haveItemImageList.Count; i++) {
+            // アイテムの個数分繰り返す.
+            for(int i = 0; i < haveItemList.Count; i++) {
                 if(haveItemImageList[i].sprite == itemDatabase.emptySprite) {
-                    // print("空きを発見");
                     haveItemImageList[i].sprite = itemData.itemIcon;
-                    break;
                 }
             }
         }else {
             haveItemImageList[0].sprite = itemData.itemIcon;
-        }
-
-        //ない時は無条件で追加
-        if(haveItem.Count == 0){
-            haveItem.Add(itemName);
-        }
-
-        //二個目のアイテムを持てるキャラなら
-        else if(haveItem.Count == 1 && isAddhaveItem){
-            haveItem.Add(itemName);
         }
     }
 
@@ -546,11 +629,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     /// </summary>
     protected void avilityRiminingUpdate() {
         abilityUseAmount--;
-        print(abilityUseAmount);
         avilityRiminingAmount.text = abilityUseAmount.ToString();
     }
-
-
 
     //------ 以下、固有性能(複数のスクリプトから呼び出しがある場合は基底クラスに.) ------//
     /// <summary>
@@ -561,6 +641,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         if(photonView.IsMine) {
             // クールタイム中の場合は処理しない。
             if(!isCoolTime) {
+                SE.CallAvilitySE(4); // SE.
                 if(isEscape) {
                     chaserTarget.enabled = true;
                     yield return new WaitForSeconds(10.0f);
@@ -591,6 +672,9 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit)) {
+            SE.CallAvilitySE(1); // SE.
+            emitter.Play(EffectDatabase.avilityEffects[0]);
+            anim.SetBool("HookShot", true);
             StartCoroutine(LinearMove(hit.point));
         }else {
             anim.SetBool("HookShot", false);
@@ -604,14 +688,11 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     protected IEnumerator LinearMove(Vector3 targetPos) {
         rb.useGravity = false;
         do {
-            // print("relative");
             var tmp = targetPos - transform.position;
             Vector3 direction = tmp.normalized; // 目標位置への単位ベクトルを計算.
             relativeDistance = tmp.magnitude;
             float distance = speed * Time.deltaTime; // 目標位置への移動量を計算.
             transform.position += direction * distance; // 目標位置に向かって移動.
-
-            print(relativeDistance);
 
             //ベクトルの大きさが0.01以上の時に向きを変える処理をする.
             if (relativeDistance > 0.01f) {
@@ -626,8 +707,10 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
         anim.SetBool("HookShot", false);
         rb.useGravity = true;
-        // isUseAvility = false; // 発動終了. // override追加項目.
 
-        // StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム. // override追加項目.
+        if(isUseAvility && characterNumber == 1){
+            isUseAvility = false; // 発動終了.
+            StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム.
+        }
     }
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: abilityBlock
   m_EditorClassIdentifier: 
   itemName: abilityBlock
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: a25e1a872c4d26e408efa1e7f0ba6b03, type: 3}

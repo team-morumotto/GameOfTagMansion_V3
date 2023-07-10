@@ -67,9 +67,4 @@ public class CameraRotator3rdPersonPov : MonoBehaviour
             Camera.transform.RotateAround(playerObject.transform.position, Vector3.up, -angle.x);
         }
     }
-
-    public void TraReset() {
-        transform.position = firstPos;
-        transform.rotation = firstRot;
-    }
 }

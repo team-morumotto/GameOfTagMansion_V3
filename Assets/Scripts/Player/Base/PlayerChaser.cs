@@ -20,6 +20,7 @@ using UnityEngine.UI;
 using Smile_waya.GOM.ScreenTimer;
 using Photon.Realtime;
 using Cinemachine;
+using Effekseer;
 
 public class PlayerChaser : PlayerBase
 {
@@ -40,8 +41,10 @@ public class PlayerChaser : PlayerBase
 
     protected void Init() {
         StartCoroutine(GetPlayers(1.0f));
+        //====== オブジェクトやコンポーネントの取得 ======//
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        emitter = GetComponent<EffekseerEmitter>();
         SE = GameObject.Find("Obj_SE").GetComponent<Button_SE>(); // SEコンポーネント取得.
         BGM = GameObject.Find("BGM").GetComponent<BGM_Script>(); // BGMコンポーネント取得.
         playerCamera = GameObject.Find("PlayerCamera").GetComponent<Camera>(); // カメラ取得.
@@ -89,6 +92,7 @@ public class PlayerChaser : PlayerBase
         Target.enabled = false; // 自分のカーソルを非表示に.
 
         itemDatabase = GameObject.Find("ItemList").GetComponent<ItemDatabase>();
+        EffectDatabase = GameObject.Find("EffectList").GetComponent<EffectDatabase>();
 
         var cf = GameObject.Find("Vcam").GetComponent<CinemachineFreeLook>();
         cf.enabled = true;
@@ -109,12 +113,10 @@ public class PlayerChaser : PlayerBase
             return;
         }
 
-        fps = (1.0f / Time.deltaTime).ToString();
-
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接していてスタンしていない.
-                if(!isStan && isGround) {
+                if(!isStan && isGround && isCanUseMovement) {
                     PlayerMove();
                 }
                 ItemUse();
@@ -134,7 +136,7 @@ public class PlayerChaser : PlayerBase
 
             case GameState.ゲーム中:
                 // 地面に接していてスタンしていない.
-                if(!isStan && isGround) {
+                if(!isStan && isGround && isCanUseMovement) {
                     PlayerMove();
                 }
                 ItemUse();
@@ -229,7 +231,7 @@ public class PlayerChaser : PlayerBase
         }
 
         // 時間切れ前に全員捕まえたら.
-        if(escapeList.Count == 0 && CatchCnt == (PhotonNetwork.CurrentRoom.MaxPlayers -1)) {
+        if(escapeList.Count == 0) {
             resultWinLoseText.text = "全員捕まえられた！\n" + ("残り時間 : " + gameTime.gameTimeStr);
             GameEnd(1);
         }
@@ -254,7 +256,7 @@ public class PlayerChaser : PlayerBase
             print(pName);
             catch_text.text = pName + "を捕まえた！";
             CatchCnt++;
-            SE.Call_SE(1);
+            SE.CallButtonSE(1);
 
             Invoke("EscapeCount",1.0f); // 逃げキャラをカウント.
         }
@@ -332,7 +334,7 @@ public class PlayerChaser : PlayerBase
                     isCoolTime = false;
 
                     // 所持アイテムリセット.
-                    haveItem = new List<ItemName>();
+                    haveItemList = new List<ItemName>();
                     haveItemImageList[0].sprite = itemDatabase.emptySprite;
                     if(isAddhaveItem) {
                         haveItemImageList[1].sprite = itemDatabase.emptySprite;
@@ -351,6 +353,37 @@ public class PlayerChaser : PlayerBase
                         SeenBy.color = new Color(255, 255, 255, 0);
                     }
                 break;
+
+                case "ab":
+                    if(isRoomPropatiesUpdater){
+                        isRoomPropatiesUpdater = false;
+                    }else {
+                        print("固有能力使用不可");
+                        if(characterNumber == 9) {
+                            amplification = 0; // アイテムの効果増幅無し.
+                        }else if(characterNumber == 10) {
+                            StopCoroutine(healBoostEffectCoroutine); // スタミナ回復ブーストのエフェクトをストップ.
+                            staminaHealAmount -= HealBoostAmount;
+                        }
+
+                        SE.CallItemSE(1); // SE.
+                        isCanUseAbility = false;
+                        StartCoroutine(DelayChangeFlg("CanUseAbility"));
+                    }
+                break;
+
+                case "mb":
+                    if(isRoomPropatiesUpdater){
+                        isRoomPropatiesUpdater = false;
+                    }else {
+                        print("移動不可");
+                        anim.SetBool("Stan", true);
+                        SE.CallItemSE(1); // SE.
+                        isCanUseMovement = false;
+                        StartCoroutine(DelayChangeFlg("CanUseMovement"));
+                    }
+                break;
+
                 //--- 随時追加 ---//
                 default:
                     Debug.LogError("想定されていないキー【" + tmpKey + "】です");

@@ -6,10 +6,10 @@ using Photon.Pun;
 public class EscapeWenrui : PlayerEscape
 {
     private List<GameObject> billList = new List<GameObject>(); // 御札のリスト.
-    public int billAmount = 4; // 同時に展開する御札の枚数.
+    public int billAmount = 6; // 同時に展開する御札の枚数.
     private float radius = 5.0f; // 展開する距離.
     private float abilityTime = 20.0f; // 固有能力の発動時間.
-    private float rotationSpeed = 50.0f; // 展開した御札が回転する速度.
+    private float rotationSpeed = 100.0f; // 展開した御札が回転する速度.
     private float coolTime = 10.0f; // クールタイム.
     void Start() {
         if(photonView.IsMine) {
@@ -28,13 +28,14 @@ public class EscapeWenrui : PlayerEscape
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
-            isUseAvility = true;
-            StartCoroutine(BillCircle());
-        }
-
-        if(isUseAvility) {
-            // キャラが移動した場合でも正確に追いかけてくるようにする.
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
+                isUseAvility = true;
+                SE.CallAvilitySE(5); // SE.
+                StartCoroutine(AvilityEffectLoop(EffectDatabase.avilityEffects[5]));
+                StartCoroutine(BillCircle());
+            }
         }
         BaseUpdate();
     }

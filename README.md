@@ -56,7 +56,6 @@
 > <h1>【要更新】</h1>
 
 # Credit・参考元
-
 - enia’s blog - 猫でもわかるUnity入門（第２２回　Photon PUN2を使ったマルチプレイゲームチュートリアル 最終回）  
   https://enia.hatenablog.com/entry/unity/introduction/22
 
@@ -73,7 +72,36 @@
   https://zenn.dev/nikaera/articles/unity-gameci-github-actions
 
 - flankids - カメラが映すものを低解像度に設定する  
-https://qiita.com/flankids/items/cba8c66c122d56e397b1
+  https://qiita.com/flankids/items/cba8c66c122d56e397b1
 
 - Haruki Yano / Haruma-K(@harumak_11) - 【Unity】特定のカメラのみ低解像度にする  
   https://light11.hatenadiary.com/entry/2018/08/16/224324
+
+# 使用アセット
+- [#NVJOB Water Shaders V2](https://assetstore.unity.com/packages/vfx/shaders/water-shaders-v2-x-149916?locale=ja-JP)
+- [52SpecialEffectPack](https://assetstore.unity.com/packages/vfx/particles/spells/52-special-effects-pack-10419?locale=ja-JP)
+- [Cartoon Vehicles](https://assetstore.unity.com/packages/3d/vehicles/simple-cars-cartoon-vehicles-26537)
+- [Controller Icons Pack (by NullSave)](https://assetstore.unity.com/packages/2d/gui/icons/controller-icon-pack-128505)
+- [Effekseer](https://effekseer.github.io/jp/)
+- [Fantasy Forest Environment Free Sample](https://assetstore.unity.com/packages/3d/environments/fantasy/fantasy-forest-environment-free-demo-35361)
+- [Keyboard Keys & Mouse Sprites](https://assetstore.unity.com/packages/2d/gui/keyboard-keys-mouse-sprites-225232)
+- [Pixel Play](https://assetstore.unity.com/packages/tools/gui/off-screen-target-indicator-71799)
+- [PiyoPiyoEffects](https://booth.pm/ja/items/3955962)
+- [Playground Low Poly](https://assetstore.unity.com/packages/3d/environments/playground-low-poly-191533?locale=ja-JP)
+- [POLYGON city pack](https://assetstore.unity.com/packages/3d/environments/urban/polygon-city-low-poly-3d-art-by-synty-95214?locale=ja-JP)
+- [SkySeries Freebie](https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633?locale=ja-JP)
+- [Dynamic Bone](https://assetstore.unity.com/packages/tools/animation/dynamic-bone-16743?locale=ja-JP)
+- [Liltoon](https://lilxyzw.github.io/lilToon/#/)
+- [メガネ向けガラスシェーダー](https://oyasumisan.booth.pm/items/1035152)
+- [Unity-Chan Toon Shader 2.0](https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project)
+- [Photon Unity Networking](https://www.photonengine.com/ja-JP/PUN)
+
+# 素材引用サイト
+- [IcoonMono](https://icooon-mono.com/)
+- [Mixamo](https://www.mixamo.com/#/)
+
+# 効率化ツール
+- [Costom Copy Component](https://unitech.hatenablog.com/entry/2018/03/21/184223)
+- [Hierarchy 2](https://assetstore.unity.com/packages/tools/utilities/hierarchy-2-166483)
+- [waya0125 - Screen Capture](https://github.com/waya0125/ScreenCapture)
+- [LitJson](https://litjson.net/)

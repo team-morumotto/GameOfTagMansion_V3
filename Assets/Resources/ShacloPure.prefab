@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -85,11 +85,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Name
-      value: Stan
+      value: HookShot
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].Type
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Name
+      value: SpeedX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Name
+      value: SpeedZ
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -117,6 +133,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[8].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[9].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2888399786071980107, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
@@ -476,6 +500,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2548607350266274545, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
   m_PrefabInstance: {fileID: 1539115669872396949}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5368909187662920168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891797744631244900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d396bcb8480c24eb784eebe6096a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimingOfUpdate: 0
+  EmitterScale: 0
+  TimeScale: 0
+  effectAsset: {fileID: 0}
+  playOnStart: 0
+  isLooping: 0
 --- !u!114 &7892120892401656650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +545,7 @@ MonoBehaviour:
   character: 4
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -513,8 +556,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 6894089064162846802}
   catch_text: {fileID: 0}
@@ -546,6 +590,7 @@ MonoBehaviour:
   character: 4
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
+  avilityEffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -556,8 +601,9 @@ MonoBehaviour:
   resultPanel: {fileID: 0}
   avilityRiminingAmount: {fileID: 0}
   avilityRecastAmount: {fileID: 0}
+  emitter: {fileID: 0}
   isRunning: 0
-  haveItem: 
+  haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 6894089064162846802}
 --- !u!4 &6894089064162846802 stripped

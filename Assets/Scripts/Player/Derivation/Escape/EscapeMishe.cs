@@ -22,6 +22,13 @@ public class EscapeMishe : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            isAddhaveItem = false;
+        }else {
+            isAddhaveItem = true;
+        }
         BaseUpdate();
     }
 

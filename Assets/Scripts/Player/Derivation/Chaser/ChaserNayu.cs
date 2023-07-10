@@ -10,7 +10,6 @@ public class ChaserNayu : PlayerChaser
 {
     [SerializeField]
     GameObject RedCube;
-    private float HealBoostAmount = 0.5f;
     void Start()
     {
         if(photonView.IsMine) {
@@ -23,6 +22,7 @@ public class ChaserNayu : PlayerChaser
             StaminaHealBoost(); // 自動で使用.
         }
         characterDatabase = GameObject.Find("CharacterStatusList").GetComponent<CharacterDatabase>();
+        isGameStarted = false;
         GetStatus(); // ステータスの取得.
     }
 
@@ -47,7 +47,9 @@ public class ChaserNayu : PlayerChaser
     /// <summary>
     /// 体力の回復力上昇.
     /// </summary>
-    protected void StaminaHealBoost() {
+    private void StaminaHealBoost() {
         staminaHealAmount += HealBoostAmount;
+        SE.CallAvilitySE(6); // SE.
+        StartCoroutine(TimeEffectLoop(EffectDatabase.avilityEffects[6], 99999f));
     }
 }

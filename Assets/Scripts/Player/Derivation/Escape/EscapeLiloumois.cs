@@ -21,10 +21,14 @@ public class EscapeLiloumois : PlayerEscape
         if(!photonView.IsMine) {
             return;
         }
-        if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
-            isUseAvility = true;
-            anim.SetBool("HookShot", true);
-            HookShot();
+
+        // 固有能力が使用可能か.
+        if(isCanUseAbility) {
+            if(Input.GetKeyDown(KeyCode.Space) && !isUseAvility && !isCoolTime) {
+                isUseAvility = true;
+                anim.SetBool("HookShot", true);
+                HookShot();
+            }
         }
         BaseUpdate();
     }
