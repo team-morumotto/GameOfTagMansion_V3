@@ -349,8 +349,8 @@ Material:
     - _GlossyReflections: 1
     - _IgnoreEncryption: 0
     - _Invisible: 0
-    - _LightMaxLimit: 1
-    - _LightMinLimit: 0.05
+    - _LightMaxLimit: 2.5
+    - _LightMinLimit: 0.35
     - _Main2ndDissolveNoiseStrength: 0.1
     - _Main2ndEnableLighting: 1
     - _Main2ndTexAngle: 0
@@ -518,7 +518,7 @@ Material:
     - _ShadowBorderMaskLOD: 0
     - _ShadowBorderRange: 0.08
     - _ShadowColorType: 0
-    - _ShadowEnvStrength: 0
+    - _ShadowEnvStrength: 0.5
     - _ShadowFlatBlur: 1
     - _ShadowFlatBorder: 1
     - _ShadowMainStrength: 0
@@ -583,7 +583,7 @@ Material:
     - _egci: 2
     - _lilDirectionalLightStrength: 1
     - _lilShadowCasterBias: 0
-    - _lilToonVersion: 34
+    - _lilToonVersion: 32
     m_Colors:
     - _AudioLinkDefaultValue: {r: 0, g: 0, b: 2, a: 0.75}
     - _AudioLinkLocalMapParams: {r: 120, g: 1, b: 0, a: 0}
