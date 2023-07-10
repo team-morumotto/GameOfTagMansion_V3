@@ -175,7 +175,8 @@ public class PlayerChaser : PlayerBase
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
-                    }
+                    staminaGuage.color = new Color(255, 0, 0); // 赤.
+                }
 
                 if(isSlow) {
                     MoveType(moveForward, runSpeed * 0.8f, 1.5f,inputHorizontal,inputVertical);

@@ -113,12 +113,6 @@ public class PlayerEscape : PlayerBase {
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.G)) {
-            PhotonMatchMaker.SetCustomProperty("hb", 10, 1);
-        }
-
-        fps = (1.0f / Time.deltaTime).ToString();
-
         switch(gameState) {
             case GameState.ゲーム開始前:
                 // 地面に接していてスタンしていない.
@@ -182,6 +176,7 @@ public class PlayerEscape : PlayerBase {
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
+                    staminaGuage.color = new Color(255, 0, 0); // 赤.
                 }
 
                 if(isSlow) {
@@ -467,10 +462,15 @@ public class PlayerEscape : PlayerBase {
                 var tmpKey = prop.Key.ToString();
                 switch(tmpKey) {
                     case "c":
-                        if((bool)prop.Value) {
+                    // 無敵状態でないなら.
+                    if((bool)prop.Value) {
+                        if(!isInvincible) {
                             resultWinLoseText.text = "捕まった！";
                             GameEnd(0); // ゲーム終了.
+                        }else {
+                            PhotonMatchMaker.SetCustomProperty("c", false, 0); // 捕まったフラグを初期化.
                         }
+                    }
                     break;
                 }
             }
