@@ -107,13 +107,13 @@ UserSettings/*
 # 目のアイコンは https://icooon-mono.com/14764-%e7%9b%ae%e3%81%ae%e3%81%ae%e7%84%a1%e6%96%99%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b37/ よりDLをお願いします。
 /[Aa]ssets/[Rr]esources/[Ii]cons/IcoonMono/*.[Pp][Nn][Gg]
 /[Aa]ssets/[Rr]esources/[Tt]extures/IcoonMono/*.[Pp][Nn][Gg]
-!/[Aa]ssets/[Rr]esources/[Ii]cons/[Ii]tem/*.[Pp][Nn][Gg]
-!/[Aa]ssets/[Rr]esources/[Ii]cons/[Aa]vilityIcons/*.[Pp][Nn][Gg]
 
 # Model Files
 /[Aa]ssets/[Rr]esources/Models/**/*.*
 !/[Aa]ssets/[Rr]esources/Models/**/*.prefab
-!/[Aa]ssets/[Rr]esources/Models/Mansion/*.*
+!/[Aa]ssets/[Rr]esources/Models/Mansions/**/*.*
+!/[Aa]ssets/[Rr]esources/Models/Stage/**/*.*
+
 # Sound Files
 /[Aa]ssets/[Rr]esources/[Ss]ounds/**/*.*
 
