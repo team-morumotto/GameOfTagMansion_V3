@@ -545,7 +545,7 @@ MonoBehaviour:
   character: 4
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -590,7 +590,7 @@ MonoBehaviour:
   character: 4
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}

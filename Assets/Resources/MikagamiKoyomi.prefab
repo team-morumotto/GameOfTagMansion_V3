@@ -543,7 +543,7 @@ MonoBehaviour:
   character: 2
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -558,7 +558,6 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 6872807709980366292}
   catch_text: {fileID: 0}
   RedCube: {fileID: 2459899040003338437}
@@ -589,7 +588,7 @@ MonoBehaviour:
   character: 2
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -604,5 +603,4 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 6872807709980366292}
