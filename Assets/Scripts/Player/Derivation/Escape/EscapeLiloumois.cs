@@ -101,6 +101,7 @@ public class EscapeLiloumois : PlayerEscape
                 if(nowStamina < 0) {
                     nowStamina = 0;  // スタミナはオーバーフローしない.
                     isStaminaLoss = true; // スタミナ切れに.
+                    staminaGuage.color = new Color(255, 0, 0); // 赤.
                 }
 
                 photonView.RPC(nameof(IsRunningChangeE), RpcTarget.All, true); // override追加項目.

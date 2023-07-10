@@ -144,6 +144,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
             if(nowStamina >= staminaAmount) {
                 nowStamina = staminaAmount; // スタミナはオーバーフローしない.
                 isStaminaLoss = false; //スタミナ切れ解除.
+                staminaGuage.color = new Color(0, 255, 0);
                 staminaParent.SetActive(false); // スタミナUI非表示.
             }
         }
@@ -615,6 +616,8 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         var healamount = (nowStamina/staminaAmount)+(healparsent+amplification/healparsent);
         //回復量が最大スタミナを超えたら最大スタミナにする
         if(healamount > staminaAmount) {
+            staminaGuage.color = new Color(0, 255, 0); // 緑.
+            staminaParent.SetActive(false);
             nowStamina = staminaAmount;
             isStaminaLoss = false;
         }
