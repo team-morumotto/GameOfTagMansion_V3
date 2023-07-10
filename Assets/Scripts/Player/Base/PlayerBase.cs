@@ -710,7 +710,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
 
         if(isUseAvility && characterNumber == 1){
             isUseAvility = false; // 発動終了.
-            StartCoroutine(AvillityCoolTime(10.0f)); // クールタイム.
+            StartCoroutine(AvillityCoolTime(30.0f)); // クールタイム.
         }
     }
 }
