@@ -98,6 +98,7 @@ UserSettings/*
 
 # Add Asset Files
 /[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/**/*.*
+!/[Aa]ssets/[Rr]esources/[Aa]dd[Aa]ssets/Effekseer/**/*.*
 # Animation Files
 /[Aa]ssets/[Rr]esources/[Aa]nimations/**/*.[Ff][Bb][Xx]
 # Font Files
