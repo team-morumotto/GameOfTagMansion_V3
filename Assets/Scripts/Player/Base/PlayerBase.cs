@@ -461,7 +461,7 @@ public class PlayerBase : MonoBehaviourPunCallbacks
     }
 
     public enum ItemName{
-        invincibleStar, //無敵スター
+        // invincibleStar, //無敵スター
         // locationShuffle, //位置入れ替え
         abilityBlock, //アビリティ封印
         movementBinding, //移動封印
@@ -493,13 +493,13 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         if(Input.GetKeyDown(KeyCode.E)){
             ItemName tmp = haveItemList[0]; // アイテム名を取得.
             switch(tmp){
-                case ItemName.invincibleStar:
-                    // 無敵スターを使用する.
-                    isInvincible = true;
-                    SE.CallItemSE(3);
-                    emitter.Play(EffectDatabase.itemEffects[0]); // エフェクト.
-                    StartCoroutine(DelayChangeFlg("Invincible"));
-                    break;
+                // case ItemName.invincibleStar:
+                //     // 無敵スターを使用する.
+                //     isInvincible = true;
+                //     SE.CallItemSE(3);
+                //     emitter.Play(EffectDatabase.itemEffects[0]); // エフェクト.
+                //     StartCoroutine(DelayChangeFlg("Invincible"));
+                //     break;
                 case ItemName.abilityBlock:
                     // 固有能力封印を使用.
                     isRoomPropatiesUpdater = true;
@@ -714,6 +714,64 @@ public class PlayerBase : MonoBehaviourPunCallbacks
         if(isUseAvility && characterNumber == 1){
             isUseAvility = false; // 発動終了.
             StartCoroutine(AvillityCoolTime(30.0f)); // クールタイム.
+        }
+    }
+
+    protected List<GameObject> billList = new List<GameObject>(); // 御札のリスト.
+    private int billAmount = 6; // 同時に展開する御札の枚数.
+    private float radius = 5.0f; // 展開する距離.
+    private float abilityTime = 20.0f; // 固有能力の発動時間.
+    private float rotationSpeed = 100.0f; // 展開した御札が回転する速度.
+    private float coolTime = 10.0f; // クールタイム.
+    /// <summary>
+    /// 自分の周囲に炎上に御札を展開する。
+    /// </summary>
+    protected IEnumerator BillCircle() {
+        var deltaTime = 0.0f;
+        billList = new List<GameObject>();
+
+        for(int i = 0; i < billAmount; i++) {
+            float angle = i * (360f / billAmount);  // 角度を計算
+
+            // 角度に基づいて配置する位置を計算
+            Vector3 position = transform.position + Quaternion.Euler(0f, angle, 0f) * Vector3.forward * 0.1f;
+
+            // オブジェクトを配置
+            var tmpBill = PhotonNetwork.Instantiate("Bill", position, Quaternion.identity);
+            billList.Add(tmpBill);
+        }
+
+        var tmpRadius = 0.0f; // 展開距離.
+
+        while(deltaTime < abilityTime) {
+            // 指定の範囲まで展開されるまで広がる.
+            if(tmpRadius < radius) {
+                tmpRadius += 0.1f;
+            }
+            for(int i = 0; i < billAmount; i++) {
+                var relative = billList[i].transform.position - transform.position; // 方向ベクトル.
+                relative = relative.normalized; // 正規化.
+                billList[i].transform.position = transform.position + (relative * tmpRadius); // 方向ベクトルに距離を乗算し展開.
+                billList[i].transform.RotateAround(transform.position, Vector3.up, (i + 1) * rotationSpeed * Time.deltaTime); // 回転.
+                var pos = billList[i].transform.position;
+                pos.y = transform.position.y;
+                billList[i].transform.position = pos;
+            }
+            deltaTime += Time.deltaTime;
+            yield return null;
+        }
+
+        billDestroy();
+
+        // 発動終了.
+        isUseAvility = false;
+        StartCoroutine(AvillityCoolTime(coolTime));
+    }
+    private void billDestroy() {
+        if(photonView.IsMine) {
+            foreach(var bill in billList) {
+                PhotonNetwork.Destroy(bill); // 展開した御札を破棄.
+            }
         }
     }
 }
