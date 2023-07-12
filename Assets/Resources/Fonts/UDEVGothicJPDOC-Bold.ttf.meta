@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: b7c38f957addcb84ebf32a074474baea
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - UDEV Gothic JPDOC
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9178a71d9498ef5498f1008c71a8078c, type: 3}
+  - {fileID: 12800000, guid: 41e4cf62ebefef7478d9691500ae1668, type: 3}
+  customCharacters: 
+  fontRenderingMode: 1
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

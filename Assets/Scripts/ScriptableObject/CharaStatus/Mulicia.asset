@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 527dfa632b442f5408c807d90903710b, type: 3}
+  m_Name: Mulicia
+  m_EditorClassIdentifier: 
+  charaName: Mulicia
+  walkSpeed: 9
+  runSpeed: 15
+  staminaAmount: 15
+  staminaHealAmount: 0.15
+  overCome: 0
+  floating: 0
+  avilitySprite: {fileID: 21300000, guid: 448703dd11046a043b708975234cda1d, type: 3}

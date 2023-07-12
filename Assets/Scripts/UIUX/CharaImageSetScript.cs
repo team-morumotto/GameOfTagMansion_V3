@@ -8,8 +8,6 @@ public class CharaImageSetScript : MonoBehaviour
     [SerializeField] Image[] charaImage = new Image[3]; // 0がユニティちゃん,1がのらねこセブン,2が水鏡こよみ
     
     public void SetCharactorImage(int charanumber){
-        //カーソル用のスクリプトに入ってましたけど書く場所絶対そこじゃないと思います
-        
             // すべて非表示に.
             foreach(Image ch in charaImage) {
                 ch.enabled = false;

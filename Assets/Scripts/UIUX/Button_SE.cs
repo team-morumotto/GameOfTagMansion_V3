@@ -11,6 +11,8 @@ public class Button_SE : MonoBehaviour
 {
     AudioSource audioSource;
     public AudioClip[] buttonSE;
+    public AudioClip[] avilitySE;
+    public AudioClip[] itemSE;
 
     void Start()
     {
@@ -34,7 +36,15 @@ public class Button_SE : MonoBehaviour
         }
     }
 
-    public void Call_SE(int SEnumber){
-        audioSource.PlayOneShot(buttonSE[SEnumber]);
+    public void CallButtonSE(int number){
+        audioSource.PlayOneShot(buttonSE[number]);
+    }
+
+    public void CallAvilitySE(int number) {
+        audioSource.PlayOneShot(avilitySE[number]);
+    }
+
+    public void CallItemSE(int number) {
+        audioSource.PlayOneShot(itemSE[number]);
     }
 }

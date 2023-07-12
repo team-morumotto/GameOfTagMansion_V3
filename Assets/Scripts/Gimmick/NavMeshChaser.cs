@@ -29,8 +29,8 @@ public class NavMeshChaser : MonoBehaviour
         
         switch(mode){
             case Mode.ゲーム開始前:
-                if(GameObject.FindGameObjectWithTag("Nigeru")){
-                    GameObject nierObject = GameObject.FindGameObjectWithTag("Nigeru");
+                if(GameObject.FindGameObjectWithTag("Nige")){
+                    GameObject nierObject = GameObject.FindGameObjectWithTag("Nige");
                     NierNige = nierObject;
                 }
                 //ここに開始前の待機時間とか突っ込んでから巡回中に変えてください

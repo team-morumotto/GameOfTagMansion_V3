@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Closed_GameScene.unity
     guid: dd1862e87eefed44cba113137e43be41
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Setting_Scene.unity
     guid: 944419d2c7108cf4f9f1592f53b09871
   m_configObjects: {}

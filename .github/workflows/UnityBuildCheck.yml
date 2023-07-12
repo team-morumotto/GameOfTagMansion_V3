@@ -1,0 +1,60 @@
+name: BuildCheck
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+jobs:
+  testAllModes:
+    name: Unity Project Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 走らせるプロジェクトのパス Rootの場合は./
+        projectPath:
+          - ./
+        # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
+        unityVersion:
+          - 2021.3.25f1
+        # 実行するテストのモード
+        testMode:
+          - editmode
+    steps:
+      # actions/checkout@v3 を利用して作業ディレクトリにUnity プロジェクトの中身をダウンロードしてくる
+      - name: Check out my unity project.
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          lfs: false
+
+      # 以前のライブラリファイルをキャッシュ（ビルド成功時のみ）
+      - name: Check out cache.
+        uses: actions/cache@v3.2.1
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}-
+          restore-keys: Library-
+
+      # webbertakken の unity-test-runner を利用して、Unity プロジェクトのビルドを実行する
+      # Powered by https://github.com/game-ci/unity-test-runner
+      - uses: webbertakken/unity-test-runner@v2.2.0
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: ${{ matrix.testMode }} Test Results
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Coverage results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.coveragePath }}
