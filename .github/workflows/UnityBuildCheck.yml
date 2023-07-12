@@ -1,0 +1,42 @@
+name: BuildCheck
+env:
+  cache-version: v1
+jobs:
+  build:
+    name: Standalone Windows builder
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+    steps:
+      # actions/checkout@v3 を利用して作業ディレクトリにUnity プロジェクトの中身をダウンロードしてくる
+      - name: Check out my unity project.
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      # 以前のライブラリファイルをキャッシュ（ビルド成功時のみ）
+      - name: Check out cache.
+        uses: actions/cache@v3.2.1
+        with:
+          path: /home/runner/work/GameOfTagMansion_V3/GameOfTagMansion_V3/Library
+          key: ${{ env.cache-version }}-Library
+          restore-keys: ${{ env.cache-version }}-Library
+
+      # GameCI の Builder を利用して、Unity プロジェクトのビルドを実行する
+      - name: Run the building.
+        uses: game-ci/unity-builder@v2.1.2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          # ビルド時にプラットフォーム指定可能な値は下記に記載の値が利用可能
+          # ref: https://docs.unity3d.com/ScriptReference/BuildTarget.html
+          targetPlatform: ${{ matrix.targetPlatform }}
+          # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
+          # unityVersion: 2020.3.5f1
