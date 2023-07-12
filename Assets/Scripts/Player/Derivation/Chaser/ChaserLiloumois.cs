@@ -53,7 +53,7 @@ public class ChaserLiloumois : PlayerChaser
 
         switch(gameState) {
             case GameState.ゲーム開始前:
-                if(!isStan && isGround && !isUseAvility) {
+                if(!isStan && isGround && !isUseAvility && isCanUseMovement) {
                     PlayerMove();
                 }
                 ItemUse();
@@ -72,7 +72,7 @@ public class ChaserLiloumois : PlayerChaser
             break;
 
             case GameState.ゲーム中:
-                if(!isStan && isGround && !isUseAvility) {
+                if(!isStan && isGround && !isUseAvility && isCanUseMovement) {
                     PlayerMove();
                 }
                 ItemUse();
