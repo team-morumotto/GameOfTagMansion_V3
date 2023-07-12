@@ -39,6 +39,4 @@ public class ChaserMishe : PlayerChaser
         RedCube.SetActive(false);
         Destroy(this); // 削除.
     }
-
-    //------ 以下、固有性能 ------//
 }
