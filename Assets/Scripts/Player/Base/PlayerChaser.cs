@@ -1,3 +1,4 @@
+using System.Collections;
 /*
 *   Created by Kobayashi Atsuki
 
@@ -254,13 +255,18 @@ public class PlayerChaser : PlayerBase
 
             catch_text.enabled = true;
             var pName = collision.gameObject.GetComponent<PhotonView>().Owner.NickName;// 接触した逃げキャラのプレイヤー名を取得
-            print(pName);
             catch_text.text = pName + "を捕まえた！";
+            StartCoroutine(DelayShowText());
             CatchCnt++;
             SE.CallButtonSE(1);
 
             Invoke("EscapeCount",1.0f); // 逃げキャラをカウント.
         }
+    }
+
+    private IEnumerator DelayShowText() {
+        yield return new WaitForSeconds(5.0f);
+        catch_text.enabled = false;
     }
 
     void OnCollisionStay(Collision collision) {
@@ -304,9 +310,9 @@ public class PlayerChaser : PlayerBase
 
         // 当たったオブジェクトが御札なら.
         if(collider.CompareTag("Bill")) {
-            if(!isSlow) {
-                isSlow = true;
-                StartCoroutine(DelayChangeFlg("Slow"));
+            if(isCanUseMovement) {
+                isCanUseMovement = false;
+                StartCoroutine(DelayChangeFlg("CanUseMovement"));
             }
         }
     }
@@ -330,9 +336,27 @@ public class PlayerChaser : PlayerBase
             // Keyで照合;
             switch(tmpKey) {
                 case "on":
-                    abilityUseAmount = 3; //! マジックナンバー.
+                    if(isFrequency) {
+                        abilityUseAmount = 3; //! マジックナンバー.
+                        avilityRiminingAmount.text = abilityUseAmount.ToString();
+                    }else {
+                        avilityRecastAmount.fillAmount = 0.0f;
+                    }
+
+                    //== 各種パラメータの初期化 ==//
                     isUseAvility = false;
                     isCoolTime = false;
+                    isCanUseMovement = true;
+                    isCanUseAbility = true;
+                    isStan = false;
+                    anim.SetBool("Stan", false);
+                    anim.SetBool("HookShot", false);
+                    nowStamina = staminaAmount;
+                    isStaminaLoss = false;
+                    //== 各種パラメータの初期化 ==//
+
+                    EffekseerSystem.StopAllEffects();
+                    StopAllCoroutines();
 
                     // 所持アイテムリセット.
                     haveItemList = new List<ItemName>();
@@ -359,7 +383,9 @@ public class PlayerChaser : PlayerBase
                     if(isRoomPropatiesUpdater){
                         isRoomPropatiesUpdater = false;
                     }else {
-                        print("固有能力使用不可");
+                        if(!isCanUseAbility) {
+                            return;
+                        }
                         if(characterNumber == 9) {
                             amplification = 0; // アイテムの効果増幅無し.
                         }else if(characterNumber == 10) {
@@ -377,7 +403,9 @@ public class PlayerChaser : PlayerBase
                     if(isRoomPropatiesUpdater){
                         isRoomPropatiesUpdater = false;
                     }else {
-                        print("移動不可");
+                        if(!isCanUseMovement) {
+                            return;
+                        }
                         anim.SetBool("Stan", true);
                         SE.CallItemSE(1); // SE.
                         isCanUseMovement = false;
@@ -403,7 +431,7 @@ public class PlayerChaser : PlayerBase
     /// <param name="newPlayer">入室してきたプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-            StartCoroutine(GetPlayers(2.0f)); // 入室直後はキャラクターが生成されていないため遅延させる.
+        StartCoroutine(GetPlayers(2.0f)); // 入室直後はキャラクターが生成されていないため遅延させる.
     }
 
     /// <summary>
