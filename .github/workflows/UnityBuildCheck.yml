@@ -11,7 +11,7 @@ jobs:
       matrix:
         # 走らせるプロジェクトのパス
         projectPath:
-          - GameOfTagMansion_V3
+          - ./
         # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
         unityVersion:
           - 2021.3.25f1
