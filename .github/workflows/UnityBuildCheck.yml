@@ -18,7 +18,7 @@ jobs:
       - name: Check out my unity project.
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.ref }}
           fetch-depth: 0
           lfs: false
 
