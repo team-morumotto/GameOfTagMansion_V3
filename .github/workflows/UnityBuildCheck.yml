@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 走らせるプロジェクトのパス
+        # 走らせるプロジェクトのパス Rootの場合は./
         projectPath:
           - ./
         # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
