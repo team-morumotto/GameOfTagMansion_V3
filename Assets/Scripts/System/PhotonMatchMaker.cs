@@ -37,10 +37,8 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     public GameObject gameLobbyPanel;                                 // ゲーム中のボタンUIパネル.
     public GameObject gameErrorPanel;                                 // ルームの作成/参加に失敗した際のエラー表示パネル.
     public GameObject loadPanel;                                      // マスターサーバー接続/ルーム入室時の「ロード中」パネル.
-    /* sneakUIとuseItemUIは緊急措置.
-        本来は別のスクリプトで管理するべきなので今後変更予定.*/
+    public GameObject gameStartInformationObj;                        // ゲームを開始できる場合に表示されるテキスト.
     public GameObject sneakUI;
-    public VirtualCameraManager vcm;
 
     //------------ private ------------//
     private RoomList roomList = new RoomList();             // RoomListClassのインスタンスを生成.
@@ -89,10 +87,12 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
                 // Enterキーを押したら.
                 if(Input.GetKeyDown(KeyCode.Return)) {
                     if(GameStartError()) {
+                        gameStartInformationObj.SetActive(false);
                         SetCustomProperty("on", true, 1);
                     }
                 }
 
+                // ソロでデバッグ.
                 if(Input.GetKeyDown(KeyCode.P)) {
                     GameStartFlg = true;
                     PlayerBase.isDebug = true;
@@ -102,7 +102,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     }
 
     // ゲームスタートができるかどうか.
-    private bool GameStartError() {
+    public bool GameStartError() {
         var players = GameObject.FindGameObjectsWithTag("Player");
         int chaserCnt = 0;
         foreach(var tmp in players) {
@@ -111,19 +111,28 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
             }
         }
 
-        var walningText = gameLobbyPanel.transform.Find("Text_Caution").GetComponent<Text>();
+        var walningText = gameDuringPanel.transform.Find("Text_Caution").GetComponent<Text>();
         // ルームの人数がルームの最大参加人数と同じなら.
         if(PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers) {
             walningText.text = "【注意】ルームの参加人数が足りません。";
+            if(PhotonNetwork.IsMasterClient) {
+                gameStartInformationObj.SetActive(false);
+            }
             return false;
         }
 
         // 鬼が1人なら.
         if(chaserCnt == 1){
             walningText.text = "";
+            if(PhotonNetwork.IsMasterClient) {
+                gameStartInformationObj.SetActive(true);
+            }
             return true;
         }else{
             walningText.text = "【注意】鬼の数が一人ではありません。";
+            if(PhotonNetwork.IsMasterClient) {
+                gameStartInformationObj.SetActive(false);
+            }
             return false;
         }
     }
@@ -227,7 +236,9 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     /// <param name="otherPlayer">退室したプレイヤー</param>
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Invoke("GameStartError", 0.5f);
+        if(!GameStartFlg) {
+            Invoke("GameStartError", 0.5f);
+        }
     }
 
     /// <summary>
@@ -236,7 +247,9 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     /// <param name="newPlayer">参加したプレイヤー</param>
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Invoke("GameStartError", 0.5f);
+        if(!GameStartFlg) {
+            Invoke("GameStartError", 0.5f);
+        }
     }
 
 	/// <summary>
@@ -245,6 +258,7 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
 	/// <param name="returnCode">エラーコード</param>
 	/// <param name="message">エラーメッセージ</param>
     public override void OnJoinRoomFailed(short returnCode, string message) {
+        loadPanel.SetActive(false);
         gameErrorPanel.SetActive(true);
         var MatchErrorText = gameErrorPanel.transform.Find("Text_ErrorCode").GetComponent<Text>();
         MatchErrorText.text = "エラーコード :\n【" + returnCode + "】\nによりルームの参加に失敗しました。";
@@ -280,7 +294,6 @@ public class PhotonMatchMaker : MonoBehaviourPunCallbacks
     //-------------------- フォトンのコールバック関数 --------------------//
 
     //----------- ボタン -----------//
-
     // ルームを作成する.
     public void CreateRoom(GameObject panel) {
         if(createRoomName == "" || createRoomName == null) {
