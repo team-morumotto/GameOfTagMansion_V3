@@ -6,13 +6,17 @@ env:
   cache-version: v1
 jobs:
   build:
-    name: Standalone Windows builder
+    name: Unity Project Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+        # 走らせるプロジェクトのパス
+        projectPath: GameOfTagMansion_V3
+        # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
+        unityVersion: 2021.3.25f1
+        # 実行するテストのモード
+        testMode: editmode
     steps:
       # actions/checkout@v3 を利用して作業ディレクトリにUnity プロジェクトの中身をダウンロードしてくる
       - name: Check out my unity project.
@@ -26,21 +30,20 @@ jobs:
       - name: Check out cache.
         uses: actions/cache@v3.2.1
         with:
-          path: /home/runner/work/GameOfTagMansion_V3/GameOfTagMansion_V3/Library
+          path: /home/runner/work/${{ matrix.projectPath }}/${{ matrix.projectPath }}/Library
           key: ${{ env.cache-version }}-Library
-          restore-keys: ${{ env.cache-version }}-Library
+          restore-keys: -Library
 
-      # GameCI の Builder を利用して、Unity プロジェクトのビルドを実行する
-      - name: Run the building.
-        uses: game-ci/unity-builder@v2.1.2
+      # webbertakken の unity-test-runner を利用して、Unity プロジェクトのビルドを実行する
+      # Powered by https://github.com/game-ci/unity-test-runner
+      - uses: webbertakken/unity-test-runner@v2.2.0
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
-          # ビルド時にプラットフォーム指定可能な値は下記に記載の値が利用可能
-          # ref: https://docs.unity3d.com/ScriptReference/BuildTarget.html
-          targetPlatform: ${{ matrix.targetPlatform }}
-          # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
-          # unityVersion: 2020.3.5f1
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
