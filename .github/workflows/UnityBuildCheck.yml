@@ -1,4 +1,7 @@
 name: BuildCheck
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 env:
   cache-version: v1
 jobs:
@@ -15,6 +18,7 @@ jobs:
       - name: Check out my unity project.
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
           lfs: false
 
