@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -97,11 +97,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Name
-      value: SpeedZ
+      value: SpeedY
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Name
+      value: Stan
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -137,6 +145,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4311334541198213775, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7523141663109244552, guid: 27305c7160b1d4befb2230b344e1cce4, type: 3}
@@ -537,7 +549,6 @@ MonoBehaviour:
   haveItemList: 
   haveItemImageList: []
   lookat: {fileID: 640049411942303907}
-  billAmount: 4
 --- !u!114 &1219066978667193250
 MonoBehaviour:
   m_ObjectHideFlags: 0

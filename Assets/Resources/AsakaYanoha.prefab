@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -97,11 +97,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Name
-      value: SpeedZ
+      value: SpeedY
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Name
+      value: Stan
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -137,6 +145,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833064937846272556, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4853689743113392642, guid: 0e930248d9b8144f9806577e15f33f99, type: 3}
@@ -534,7 +546,7 @@ MonoBehaviour:
   character: 8
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -549,7 +561,6 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 1216296032970227544}
 --- !u!114 &8485308468099934473
 MonoBehaviour:
@@ -578,7 +589,7 @@ MonoBehaviour:
   character: 8
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -593,7 +604,6 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 1216296032970227544}
   catch_text: {fileID: 0}
   RedCube: {fileID: 4100801742021459518}

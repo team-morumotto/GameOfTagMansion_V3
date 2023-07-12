@@ -61,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -145,11 +145,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Name
-      value: SpeedZ
+      value: SpeedY
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Name
+      value: Stan
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -185,6 +193,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5962456737843066373, guid: 1b3d59459b9774d2a841a8e96f3134ad, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -511,7 +523,7 @@ MonoBehaviour:
   character: 7
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -526,7 +538,6 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 8954337909054533842}
   catch_text: {fileID: 0}
   RedCube: {fileID: 5635300422949944091}
@@ -575,7 +586,7 @@ MonoBehaviour:
   character: 7
   characterDatabase: {fileID: 0}
   itemDatabase: {fileID: 0}
-  avilityEffectDatabase: {fileID: 0}
+  EffectDatabase: {fileID: 0}
   characterNumber: 0
   anim: {fileID: 0}
   SeenBy: {fileID: 0}
@@ -590,7 +601,6 @@ MonoBehaviour:
   isRunning: 0
   haveItemList: 
   haveItemImageList: []
-  haveItemEffectList: []
   lookat: {fileID: 8954337909054533842}
 --- !u!1 &5635300422949944091 stripped
 GameObject:

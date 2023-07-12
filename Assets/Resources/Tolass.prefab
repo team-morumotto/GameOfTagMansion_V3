@@ -69,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -153,11 +153,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Name
-      value: SpeedZ
+      value: SpeedY
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Name
+      value: Stan
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -193,6 +201,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954635989537685225, guid: 0aa9cb92266974c4eb561a1952f9f2da, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:

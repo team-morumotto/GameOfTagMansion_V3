@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].Name
@@ -101,11 +101,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Name
-      value: SpeedZ
+      value: SpeedY
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].Type
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Name
+      value: Stan
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].Type
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[0].SynchronizeType
@@ -141,6 +149,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
       propertyPath: m_SynchronizeParameters.Array.data[10].SynchronizeType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732811848709509020, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[11].SynchronizeType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2888399786071980107, guid: 076b1d08fab574c88b4cc92d69f0d708, type: 3}
