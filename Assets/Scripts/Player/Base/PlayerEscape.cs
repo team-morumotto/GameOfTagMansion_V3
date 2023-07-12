@@ -344,9 +344,27 @@ public class PlayerEscape : PlayerBase {
             // Keyで照合;
             switch(tmpKey) {
                 case "on":
-                    abilityUseAmount = 3; //! マジックナンバー.
+                    if(isFrequency) {
+                        abilityUseAmount = 3; //! マジックナンバー.
+                        avilityRiminingAmount.text = abilityUseAmount.ToString();
+                    }else {
+                        avilityRecastAmount.fillAmount = 0.0f;
+                    }
+
+                    //== 各種パラメータの初期化 ==//
                     isUseAvility = false;
                     isCoolTime = false;
+                    isCanUseMovement = true;
+                    isCanUseAbility = true;
+                    isStan = false;
+                    anim.SetBool("Stan", false);
+                    anim.SetBool("HookShot", false);
+                    nowStamina = staminaAmount;
+                    isStaminaLoss = false;
+                    //== 各種パラメータの初期化 ==//
+
+                    EffekseerSystem.StopAllEffects();
+                    StopAllCoroutines();
 
                     // 所持アイテムリセット.
                     haveItemList = new List<ItemName>();
@@ -384,16 +402,14 @@ public class PlayerEscape : PlayerBase {
                         if(!isCanUseAbility) {
                             return;
                         }
-                        print("固有能力使用不可");
                         if(characterNumber == 9) {
                             amplification = 0; // アイテムの効果増幅無し.
                         }else if(characterNumber == 10) {
                             StopCoroutine(healBoostEffectCoroutine); // スタミナ回復ブーストのエフェクトをストップ.
-                            PhotonMatchMaker.SetCustomProperty("hb", -HealBoostAmount, 1);
+                            staminaHealAmount -= HealBoostAmount;
                         }
 
                         SE.CallItemSE(1); // SE.
-
                         isCanUseAbility = false;
                         StartCoroutine(DelayChangeFlg("CanUseAbility"));
                     }
@@ -403,10 +419,9 @@ public class PlayerEscape : PlayerBase {
                     if(isRoomPropatiesUpdater){
                         isRoomPropatiesUpdater = false;
                     }else {
-                        if(!isCanUseAbility) {
+                        if(!isCanUseMovement) {
                             return;
                         }
-                        print("移動不可");
                         anim.SetBool("Stan", true);
                         SE.CallItemSE(1); // SE.
                         isCanUseMovement = false;
