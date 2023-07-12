@@ -2,8 +2,6 @@ name: BuildCheck
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
-env:
-  cache-version: v1
 jobs:
   build:
     name: Unity Project Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
@@ -12,11 +10,14 @@ jobs:
       fail-fast: false
       matrix:
         # 走らせるプロジェクトのパス
-        projectPath: GameOfTagMansion_V3
+        projectPath:
+          - GameOfTagMansion_V3
         # Unityのバージョンを記入。特別指定しなくてはならない理由がない限り自動取得なのでいらない
-        unityVersion: 2021.3.25f1
+        unityVersion:
+          - 2021.3.25f1
         # 実行するテストのモード
-        testMode: editmode
+        testMode:
+          - editmode
     steps:
       # actions/checkout@v3 を利用して作業ディレクトリにUnity プロジェクトの中身をダウンロードしてくる
       - name: Check out my unity project.
@@ -30,9 +31,9 @@ jobs:
       - name: Check out cache.
         uses: actions/cache@v3.2.1
         with:
-          path: /home/runner/work/${{ matrix.projectPath }}/${{ matrix.projectPath }}/Library
-          key: ${{ env.cache-version }}-Library
-          restore-keys: -Library
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: Library-
 
       # webbertakken の unity-test-runner を利用して、Unity プロジェクトのビルドを実行する
       # Powered by https://github.com/game-ci/unity-test-runner
